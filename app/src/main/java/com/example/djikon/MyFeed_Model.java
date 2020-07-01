@@ -1,6 +1,6 @@
 package com.example.djikon;
 
-public class LatestFeedItem {
+public class MyFeed_Model {
 
     private int Img_UploaderProfile,
             img_FeedImage;
@@ -12,11 +12,11 @@ public class LatestFeedItem {
             txt_LikesNo,
             txt_ChatNo;
 
-    public LatestFeedItem(int img_UploaderProfile, int img_FeedImage,
+    public MyFeed_Model(int img_UploaderProfile, int img_FeedImage,
 
-                          String txt_UploaderName, String txt_UploadTime,
-                          String txt_Description, String txt_LikesNo,
-                          String txt_ChatNo) {
+                        String txt_UploaderName, String txt_UploadTime,
+                        String txt_Description, String txt_LikesNo,
+                        String txt_ChatNo) {
 
         this.Img_UploaderProfile = img_UploaderProfile;
         this.img_FeedImage = img_FeedImage;

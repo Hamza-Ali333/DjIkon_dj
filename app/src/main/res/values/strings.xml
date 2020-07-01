@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Ikon Dj</string>
-    <string name="latestFeed">Latest Feed</string>
-    <string name="liveToArtist">Live To Artist</string>
-    <string name="ChatArea">Chat Area</string>
+    <string name="myFeed">My Feed</string>
+    <string name="bookingRequest">Bookings</string>
+    <string name="ChatArea">Chat Room</string>
     <string name="SocialMediaSharing">Social Media Sharing</string>
     <string name="RequestASong">Request A Song</string>
     <string name="CurrentLiveArtist">Current Live Artist</string>

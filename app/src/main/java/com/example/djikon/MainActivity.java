@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //if the activity luch for the first time and saveInstante null then it set the fragment
         if(savedInstanceState == null) {
-            getSupportActionBar().setTitle(R.string.latestFeed);
+            getSupportActionBar().setTitle(R.string.myFeed);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new LatestFeedFragment()).commit();
+                    new MyFeedFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_MyFeed);
         }
 
@@ -95,16 +95,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_MyFeed:
 
-                getSupportActionBar().setTitle(R.string.latestFeed);
+                getSupportActionBar().setTitle(R.string.myFeed);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new LatestFeedFragment()).commit();
+                        new MyFeedFragment()).commit();
             break;
 
             case R.id.nav_BookingRequest:
 
-                getSupportActionBar().setTitle(R.string.liveToArtist);
+                getSupportActionBar().setTitle(R.string.bookingRequest);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new LiveToArtistFragment()).commit();
+                        new BookingsFragment()).commit();
                 break;
 
             case R.id.nav_ChatRoom:

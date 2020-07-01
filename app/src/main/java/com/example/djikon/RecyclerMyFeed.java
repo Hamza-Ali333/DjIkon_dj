@@ -12,14 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class RecyclerLatestFeed extends RecyclerView.Adapter<RecyclerLatestFeed.ViewHolder>{
+public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHolder>{
 
-    private ArrayList<LatestFeedItem> mLatestFeedItemArrayList;
+    private ArrayList<MyFeed_Model> mLatestFeedItemArrayList;
 
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
 
         public ImageView img_uploaderProfile, img_feedImage, img_Chat, img_Likes;
+
+
         public TextView txt_uploaderName, txt_uploadTime, txt_Description, txt_ReadMore, txt_LikesNo, txt_ChatNo;
 
         public ViewHolder(View itemView){
@@ -28,6 +30,7 @@ public class RecyclerLatestFeed extends RecyclerView.Adapter<RecyclerLatestFeed.
             img_feedImage = itemView.findViewById(R.id.img_feedImage);
             img_Likes = itemView.findViewById(R.id.img_likes);
             img_Chat = itemView.findViewById(R.id.img_chat);
+
 
             txt_uploaderName = itemView.findViewById(R.id.txt_uploaderName);
             txt_uploadTime = itemView.findViewById(R.id.txt_uploadTime);
@@ -38,25 +41,24 @@ public class RecyclerLatestFeed extends RecyclerView.Adapter<RecyclerLatestFeed.
         }
     }
 
+
 //constructor
-    public RecyclerLatestFeed (ArrayList<LatestFeedItem> latestFeedItemArrayList) {
+    public RecyclerMyFeed(ArrayList<MyFeed_Model> latestFeedItemArrayList) {
         this.mLatestFeedItemArrayList = latestFeedItemArrayList;
     }
-
-
 
 
     @Override
     public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.latest_feeds_item_layout,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_feeds_item_layout,parent,false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        LatestFeedItem currentItem = mLatestFeedItemArrayList.get(position);
+        MyFeed_Model currentItem = mLatestFeedItemArrayList.get(position);
 
         holder.img_uploaderProfile.setImageResource(currentItem.getImg_UploaderProfile());
         holder.img_feedImage.setImageResource(currentItem.getImg_FeedImage());
@@ -91,7 +93,6 @@ public class RecyclerLatestFeed extends RecyclerView.Adapter<RecyclerLatestFeed.
                 v.getContext().startActivity(i);
             }
         });
-
 }
 
     @Override
