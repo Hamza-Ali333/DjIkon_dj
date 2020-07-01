@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item android:id="@+id/nav_MyFeed"
+        android:icon="@drawable/microsoft"
+        android:title="My Feeds"/>
+
+        <item android:id="@+id/nav_BookingRequest"
+            android:icon="@drawable/booking"
+            android:title="Booking Requests"/>
+
+        <item android:id="@+id/nav_ChatRoom"
+        android:icon="@drawable/massage"
+        android:title="Message Rooms"/>
+
+        <item android:id="@+id/nav_LiveFeedToggle"
+        android:icon="@drawable/live"
+        android:title="Live Feed Toggle"/>
+
+        <item android:id="@+id/nav_Notifications"
+        android:icon="@drawable/notification"
+        android:title="Notifications"/>
+
+        <item android:id="@+id/nav_Blog"
+        android:icon="@drawable/blog"
+        android:title="Blog"/>
+
+        <item android:id="@+id/nav_UserAdmin"
+        android:icon="@drawable/user_admin"
+        android:title="User Admin"/>
+
+
+        <item android:id="@+id/nav_SocialMediaFrame"
+            android:icon="@drawable/user_admin"
+            android:title="Social Media Fram studio"/>
+
+
+
+        <item android:id="@+id/nav_Logout"
+            android:icon="@drawable/logout"
+            android:title="Logout"/>
+
+    </group>
+
+<!--    this will divied the menu-->
+
+    <!--    <item android:title="Communicate">-->
+<!--        <menu>-->
+<!--            <item android:id="@+id/nave_"-->
+<!--        </menu>-->
+<!--    </item>-->
+</menu>
