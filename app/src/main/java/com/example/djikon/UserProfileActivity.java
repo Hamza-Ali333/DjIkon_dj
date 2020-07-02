@@ -8,22 +8,43 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.Toast;
+
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class UserProfileActivity extends AppCompatActivity  {
 
     RelativeLayout  rlt_PaymentMethod, rlt_AboutApp, rlt_Setting ,rlt_Disclosures;
-    Switch swt_subcribeState;
+    Switch swt_subcribeState,swt_Profile;
+
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activiyt_user_profile);
-        getSupportActionBar().setTitle("Profile");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setContentView(R.layout.activiyt_dj_profile);
         createRefrences();
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.profile);
+
+
+        swt_Profile = findViewById(R.id.profile_swt);
+        swt_Profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+             if(swt_Profile.isChecked()){
+                 Toast.makeText(UserProfileActivity.this, "Profile Status Active Now", Toast.LENGTH_SHORT).show();
+             } else {
+                 Toast.makeText(UserProfileActivity.this, "Turn Off Profile", Toast.LENGTH_SHORT).show();
+             }
+            }
+        });
+        
+
+
 
         swt_subcribeState.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +84,6 @@ public class UserProfileActivity extends AppCompatActivity  {
         });
 
     }
-
 
 
     private void openAboutAppDialoue() {

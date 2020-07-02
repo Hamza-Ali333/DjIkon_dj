@@ -22,7 +22,7 @@
         <TextView
             android:id="@+id/txt_follwer_name"
             android:layout_toRightOf="@+id/img_follwer"
-            android:layout_marginTop="5dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,29 +31,19 @@
             android:textSize="16sp"
             />
 
-        <TextView
-            android:id="@+id/txt_SubscribeArtistStatus"
-            android:layout_toRightOf="@+id/img_follwer"
-            android:layout_below="@+id/txt_follwer_name"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CEO of WE 6 Band"
-            android:textColor="@color/Graycolor"
-            android:textSize="13sp"
-            />
-
 
         <TextView
-            android:id="@+id/txt_UnFollow"
+            android:id="@+id/txt_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlue"
-           android:padding="6dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:textSize="12sp"
             android:background="@drawable/blueround_stroke"
-            android:text="Unfollow"
+            android:text="Edit"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>
 

@@ -32,7 +32,7 @@
         <activity android:name=".UserProfileActivity"
             android:screenOrientation="portrait"
             android:resizeableActivity="false"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:theme="@style/AppTheme.NoActionBar"
             />
         <activity android:name=".PurchaseServiceActivity"
             android:screenOrientation="portrait"
@@ -40,6 +40,14 @@
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             />
         <activity android:name=".BookArtistActivity"
+            android:screenOrientation="portrait"
+            android:resizeableActivity="false"
+            />
+        <activity android:name=".EditFollwerActivity"
+            android:screenOrientation="portrait"
+            android:resizeableActivity="false"
+            />
+        <activity android:name=".FollowersActivity"
             android:screenOrientation="portrait"
             android:resizeableActivity="false"
             />

@@ -114,12 +114,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new ChatRoomFragment()).commit();
                 break;
 
-            case R.id.nav_UserAdmin:
+
+            case R.id.nav_Notifications:
 
                 getSupportActionBar().setTitle(R.string.SubscribeArtist);
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SubscribeArtistFragment()).commit();
+                        new NotificationFragment()).commit();
+
+                break;
+
+            case R.id.nav_UserAdmin:
+
 
                 break;
 

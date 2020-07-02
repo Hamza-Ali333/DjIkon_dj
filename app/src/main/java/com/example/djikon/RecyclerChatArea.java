@@ -1,6 +1,5 @@
 package com.example.djikon;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,7 @@ public class RecyclerChatArea extends RecyclerView.Adapter<RecyclerChatArea.View
             super(itemView);
             img_msg_Sender_Profile = itemView.findViewById(R.id.img_msg_sender);
 
-            txt_msg_Sender_Name = itemView.findViewById(R.id.txt_msg_sender_name);
+            txt_msg_Sender_Name = itemView.findViewById(R.id.txt_follwer_name);
             txt_Last_msg = itemView.findViewById(R.id.txt_last_send_msg);
             txt_Recive_Time = itemView.findViewById(R.id.txt_recieve_time);
             txt_UnRead = itemView.findViewById(R.id.txt_unRead_msgs);

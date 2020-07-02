@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +18,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
 
 
     RelativeLayout rlt_LiveStreaming, rlt_FaceId, rlt_Biometrics, rlt_ChangePassword, rlt_ChangePin, rlt_BookingHistory,
-    rlt_ConnectSocial;
+    rlt_ConnectSocial, rlt_ReferralCode,rlt_Followers;
 
     Switch swt_FaceId_State, swt_Biometric_State;
 
@@ -68,6 +69,21 @@ public class ProfileSettingActivity extends AppCompatActivity {
             }
         });
 
+        rlt_ReferralCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openReferralCode();
+            }
+        });
+
+        rlt_Followers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ProfileSettingActivity.this, FollowersActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 
 
@@ -76,7 +92,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.change_password_dailoge, null);
+        View view = inflater.inflate(R.layout.dailoge_change_password, null);
 
         EditText edt_oldPassword, edt_newPassword, edt_confirmPassword;
         Button btnResetPassword;
@@ -105,7 +121,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.change_pin_dailoge, null);
+        View view = inflater.inflate(R.layout.dailogue_change_pin, null);
 
         EditText edt_oldPin, edt_newPin, edt_pin;
         Button btnResetPin;
@@ -121,6 +137,34 @@ public class ProfileSettingActivity extends AppCompatActivity {
         final AlertDialog alertDialog =  builder.show();
 
         btnResetPin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+    }
+
+
+    private void openReferralCode() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.dailogue_referrel_code, null);
+
+        TextView txt_Code;
+        Button btn_Ok;
+
+        txt_Code = view.findViewById(R.id.txt_code);
+        btn_Ok = view.findViewById(R.id.btn_ok);
+
+        builder.setView(view);
+        builder.setCancelable(true);
+
+        final AlertDialog alertDialog =  builder.show();
+
+        btn_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
@@ -193,6 +237,8 @@ public class ProfileSettingActivity extends AppCompatActivity {
           rlt_FaceId = findViewById(R.id.rlt_faceId);
           rlt_ConnectSocial = findViewById(R.id.rlt_socialmedia);
           rlt_LiveStreaming = findViewById(R.id.rlt_liveStreaming);
+          rlt_ReferralCode = findViewById(R.id.rlt_view_refrell_code);
+          rlt_Followers = findViewById(R.id.rlt_followers);
     }
 
     @Override

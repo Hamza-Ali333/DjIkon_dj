@@ -53,7 +53,7 @@
         android:text="Online Users"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSubscribeArtist"
+        android:id="@+id/recyclerViewFollwer"
         android:padding="12dp"
         android:layout_width="match_parent"
         android:scrollbars="vertical"

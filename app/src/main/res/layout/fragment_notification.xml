@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="10"
+    android:background="@color/colorBlack">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSubscribeArtist"
+        android:padding="12dp"
+        android:layout_weight="9.5"
+        android:layout_width="match_parent"
+        android:scrollbars="vertical"
+        android:background="#000000"
+        android:layout_height="0dp"/>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+       android:layout_marginLeft="16dp"
+       android:layout_marginRight="16dp"
+        android:textColor="#fff"
+        android:layout_marginTop="10dp"
+        android:text="Add New Notification"
+        android:textAllCaps="false"
+        android:background="@drawable/roundshape"
+        />
+
+</LinearLayout>

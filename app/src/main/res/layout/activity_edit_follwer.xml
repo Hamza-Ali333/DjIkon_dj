@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/img_follower"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/photo2"
+        android:layout_gravity="center_horizontal"/>
+
+
+    <TextView
+        android:id="@+id/follower_name"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/colorBlue"
+        android:text="Melvin Montgomery"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        />
+
+    <LinearLayout
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+        android:id="@+id/delete_user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Delete User"
+        android:layout_marginRight="20dp"
+        android:layout_weight="1"
+        android:textColor="#fff"
+        android:background="@drawable/roundshape"/>
+
+        <Button
+            android:id="@+id/block_user"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Block User"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:background="@drawable/roundshape"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/block_user_ip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Block User IP"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:background="@drawable/roundshape"/>
+
+        <Button
+            android:id="@+id/block_user_access"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Block User Access"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:textColor="#fff"
+            android:background="@drawable/roundshape"/>
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

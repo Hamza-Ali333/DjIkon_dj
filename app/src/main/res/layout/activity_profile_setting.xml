@@ -106,7 +106,151 @@
                 android:background="@color/Graycolor" />
         </RelativeLayout>
 
-        <RelativeLayout
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/rlt_pinLogin"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:text="PIN Login"
+            android:textColor="@color/Graycolor"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/swt_pin_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="0dp"
+            android:theme="@style/SCBSwitch" />
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/Graycolor" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/rlt_allow_booking"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:text="Allow Booking"
+            android:textColor="@color/Graycolor"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/swt_allow_booking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="0dp"
+            android:theme="@style/SCBSwitch" />
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/Graycolor" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/rlt_allow_messaging"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:text="Allow Messaging"
+            android:textColor="@color/Graycolor"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/swt_allow_messaging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="0dp"
+            android:theme="@style/SCBSwitch" />
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/Graycolor" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/rlt_allow_song_request"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:text="Allow Song Request"
+            android:textColor="@color/Graycolor"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/swt_allow_song_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="0dp"
+            android:theme="@style/SCBSwitch" />
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/Graycolor" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
             android:id="@+id/rlt_ChangePassowrd"
             android:layout_width="match_parent"
             android:layout_height="30dp"
@@ -215,7 +359,81 @@
             android:layout_alignParentBottom="true"
             app:srcCompat="@drawable/ic_arrow_forward" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/Graycolor" />
+
     </RelativeLayout>
 
 
-    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlt_view_refrell_code"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:text="View Referell Code"
+            android:textColor="@color/Graycolor"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            app:srcCompat="@drawable/ic_arrow_forward" />
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/Graycolor" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlt_followers"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:text="View Follower's"
+            android:textColor="@color/Graycolor"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            app:srcCompat="@drawable/ic_arrow_forward" />
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/Graycolor" />
+    </RelativeLayout>
+
+
+
+
+
+</LinearLayout>

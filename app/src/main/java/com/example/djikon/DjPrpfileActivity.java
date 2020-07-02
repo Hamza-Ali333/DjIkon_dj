@@ -18,7 +18,7 @@ public class DjPrpfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dj_profile);
+        setContentView(R.layout.activity_dj_profile_shouldremove);
         getSupportActionBar().setTitle("Julian Hudson");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

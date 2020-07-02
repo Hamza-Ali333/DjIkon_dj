@@ -1,10 +1,10 @@
 package com.example.djikon;
 
-public class SubscribeToArtist {
+public class BlockedUser_Model {
     private int img_Subscribe_Artist;
     private String txt_SubscribeArtistName, txt_SubscribeArtistStatus;
 
-    public SubscribeToArtist(int img_live_artist, String txt_SubscribeArtistName, String txt_SubscribeArtistStatus) {
+    public BlockedUser_Model(int img_live_artist, String txt_SubscribeArtistName, String txt_SubscribeArtistStatus) {
         this.img_Subscribe_Artist = img_live_artist;
         this.txt_SubscribeArtistName = txt_SubscribeArtistName;
         this.txt_SubscribeArtistStatus = txt_SubscribeArtistStatus;
