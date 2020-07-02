@@ -26,7 +26,7 @@ public class BookingRequestsActivity extends AppCompatActivity {
 
         ArrayList<BookingRequest_Model> bookingRequest_modelArrayList = new ArrayList<>();
 
-        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.woman, "$25.00","Hamza Ali",
+        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.photo2, "$25.00","Hamza Ali",
                 "Night Dj Service", "Discount",
                 "09-07-2020","10-7-2020","105 William St, Chicago, Us"));
 
@@ -43,11 +43,9 @@ public class BookingRequestsActivity extends AppCompatActivity {
 
 
 
-        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.ic_doctor, "$25.00","Admad",
+        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.photo2, "$25.00","Admad",
                 "Night Dj Service", "Discount",
                 "09-07-2020","10-7-2020","105 William St, Chicago, Us"));
-
-
 
 
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time

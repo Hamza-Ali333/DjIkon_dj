@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 
-public class ChatAreaFragment extends Fragment {
+public class ChatRoomFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -25,7 +25,7 @@ public class ChatAreaFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_chat_area,container,false);
+        View v = inflater.inflate(R.layout.fragment_chat_room,container,false);
 
         mRecyclerView = v.findViewById(R.id.recyclerView_Chat);
 
@@ -40,7 +40,6 @@ public class ChatAreaFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mAdapter = new RecyclerChatArea(chat_modelArrayList);
-
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

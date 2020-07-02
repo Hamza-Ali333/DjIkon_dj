@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack">
+    <EditText
+        android:id="@+id/edt_search"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="Search Contact"
+        android:padding="8dp"
+        android:textSize="14sp"
+        android:textColor="@color/colorBlack"
+        android:drawableRight="@drawable/ic_search"
+        android:paddingRight="8dp"
+        android:background="@drawable/white_roundshape"/>
+
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/create_group"
+        android:layout_marginTop="20dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/edt_search"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/ic_group_add"
+        />
+
+    <TextView
+        android:id="@+id/txt_create_new_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:layout_marginTop="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/edt_search"
+        android:layout_toRightOf="@+id/create_group"
+        android:textSize="18sp"
+        android:text="Create New Group"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/create_group"
+        android:layout_marginTop="20dp"
+        android:id="@+id/recyclerView_Chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</RelativeLayout>

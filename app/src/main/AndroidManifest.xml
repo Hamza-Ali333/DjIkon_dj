@@ -19,6 +19,16 @@
             android:resizeableActivity="false"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             />
+        <activity android:name=".AcceptRequestActivity"
+            android:screenOrientation="portrait"
+            android:resizeableActivity="false"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            />
+        <activity android:name=".CancelRequestActivity"
+            android:screenOrientation="portrait"
+            android:resizeableActivity="false"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            />
         <activity android:name=".UserProfileActivity"
             android:screenOrientation="portrait"
             android:resizeableActivity="false"

@@ -26,13 +26,28 @@ public class BookingsFragment extends Fragment {
 
 
        rlt_View_All_Request.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               Intent i = new Intent(view.getContext(), BookingRequestsActivity.class);
-               startActivity(i);
-           }
-       });
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), BookingRequestsActivity.class);
+                startActivity(i);
+            }
+        });
 
+       rlt_Cancle_Request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), CancelRequestActivity.class);
+                startActivity(i);
+            }
+        });
+
+        rlt_Approved_Request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), AcceptRequestActivity.class);
+                startActivity(i);
+            }
+        });
        return v;
     }
 
