@@ -144,19 +144,19 @@
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/edt_User_PhoneNo" />
 
-    <Button
-        android:id="@+id/btn_UpdateProfile"
-        android:layout_width="175dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/fullroundshape"
-        android:text="Update"
-        android:textAllCaps="false"
-        android:textColor="#fff"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/edt_UserAddress" />
+        <Button
+            android:id="@+id/btn_UpdateProfile"
+            android:layout_width="175dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/fullroundshape"
+            android:text="Update"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toBottomOf="@+id/txt_rate_per_hour" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -322,6 +322,19 @@
 
 
         </LinearLayout>
+
+        <EditText
+            android:id="@+id/txt_rate_per_hour"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:text="Rate Per Hour"
+            android:textColor="#FFFFFF"
+            android:paddingLeft="8dp"
+            android:background="@drawable/edt_shape"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toBottomOf="@+id/edt_UserAddress" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

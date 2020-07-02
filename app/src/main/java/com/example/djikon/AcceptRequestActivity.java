@@ -15,9 +15,7 @@ public class AcceptRequestActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-
     TextView txt_total_canceled_request;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +41,6 @@ public class AcceptRequestActivity extends AppCompatActivity {
 
         cacelAndAcceptRequest_modelArrayList.add(new CacelAndAcceptRequest_Model(R.drawable.woman, "$15.00","Bilawal",
                 "Night Dj Service", "Discount", "105 William St, Chicago, Us"));
-
-
 
         cacelAndAcceptRequest_modelArrayList.add(new CacelAndAcceptRequest_Model(R.drawable.photo2, "$25.00","Admad",
                 "Night Dj Service", "Discount", "William St, Chicago, Us"));

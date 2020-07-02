@@ -123,14 +123,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
 
-            case R.id.nav_LiveFeedToggle:
 
-                getSupportActionBar().setTitle(R.string.SocialMediaSharing);
+            case R.id.nav_SocialMediaFrame:
+
+                getSupportActionBar().setTitle(R.string.SocialMediaFram);
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SocialMediaShareFragment()).commit();
+                        new SocialMediaFramFragment()).commit();
 
                 break;
+
+
+            case R.id.nav_LiveFeedToggle:
+
+                getSupportActionBar().setTitle(R.string.SocialMediaFram);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new LiveFeedToggleFragment()).commit();
+
+                break;
+
+            case R.id.nav_ViewSongRequest:
+
+                getSupportActionBar().setTitle(R.string.ViewSong);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ViewSongRequestFragment()).commit();
+
+                break;
+
 
             case R.id.nav_Blog:
 

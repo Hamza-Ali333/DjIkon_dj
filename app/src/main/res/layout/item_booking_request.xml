@@ -152,7 +152,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_address" />
 
         <ImageView
-            android:id="@+id/imageView10"
+            android:id="@+id/accept_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -181,11 +181,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toStartOf="@+id/txt_message"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/txt_accept"
-            app:layout_constraintTop_toTopOf="@+id/imageView10"
+            app:layout_constraintTop_toBottomOf="@+id/txt_address"
             app:srcCompat="@drawable/ic_message" />
 
         <TextView
@@ -199,11 +199,11 @@
             android:text="Accept"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+            app:layout_constraintBottom_toBottomOf="@+id/accept_check"
             app:layout_constraintEnd_toStartOf="@+id/imageView12"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView10"
-            app:layout_constraintTop_toTopOf="@+id/imageView10" />
+            app:layout_constraintStart_toEndOf="@+id/accept_check"
+            app:layout_constraintTop_toTopOf="@+id/accept_check" />
 
         <TextView
             android:id="@+id/txt_message"

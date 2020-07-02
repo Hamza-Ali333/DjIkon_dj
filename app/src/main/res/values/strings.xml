@@ -3,8 +3,8 @@
     <string name="myFeed">My Feed</string>
     <string name="bookingRequest">Bookings</string>
     <string name="ChatArea">Chat Room</string>
-    <string name="SocialMediaSharing">Social Media Sharing</string>
-    <string name="RequestASong">Request A Song</string>
+    <string name="SocialMediaFram">Social Media Fram</string>
+    <string name="ViewSong">All Song Requests</string>
     <string name="CurrentLiveArtist">Current Live Artist</string>
     <string name="SubscribeArtist">Subscribe Artist</string>
 

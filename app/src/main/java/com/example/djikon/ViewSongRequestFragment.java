@@ -1,28 +1,33 @@
 package com.example.djikon;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class BookingRequestsActivity extends AppCompatActivity {
+
+public class ViewSongRequestFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_booking_requests);
-        getSupportActionBar().setTitle("All Booking Requests");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        mRecyclerView = findViewById(R.id.recyclerView_booking_request);
+       View v =  inflater.inflate(R.layout.activity_booking_requests,container,false);
+
+
+        mRecyclerView = v.findViewById(R.id.recyclerView_booking_request);
 
         ArrayList<BookingRequest_Model> bookingRequest_modelArrayList = new ArrayList<>();
 
@@ -42,24 +47,18 @@ public class BookingRequestsActivity extends AppCompatActivity {
                 "09-07-2020","10-7-2020","105 William St, Chicago, Us"));
 
 
-
         bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.photo2, "$25.00","Admad",
                 "Night Dj Service", "Discount",
                 "09-07-2020","10-7-2020","105 William St, Chicago, Us"));
 
 
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
-        mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new RecyclerBookingRequests(bookingRequest_modelArrayList,"Booking");
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new RecyclerBookingRequests(bookingRequest_modelArrayList,"Song");
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-    }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+       return v;
     }
-
 }

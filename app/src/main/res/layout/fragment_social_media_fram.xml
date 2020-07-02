@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:background="@color/colorBlack"
+    android:weightSum="10">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <Button
+            android:id="@+id/btn_upload_fram"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Upload New Fram"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:background="@drawable/roundshape"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
