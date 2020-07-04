@@ -26,7 +26,7 @@ public class PackageActivity extends AppCompatActivity {
             lunchMainActivity();
             }
         });
-        btn_Monthly_Pakage.setOnClickListener(new View.OnClickListener() {
+        btn_Yearly_Package.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                lunchMainActivity();

@@ -55,7 +55,7 @@
 
         <Button
             android:id="@+id/btn_mothly_package"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:text="Get It"
@@ -118,7 +118,7 @@
 
         <Button
             android:id="@+id/btn_year_package"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:text="Get It"

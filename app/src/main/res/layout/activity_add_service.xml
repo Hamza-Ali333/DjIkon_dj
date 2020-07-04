@@ -104,7 +104,7 @@
         android:text="Publish"
         android:textColor="#fff"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/fullround_white_stroke"
+        android:background="@drawable/fullroundshape"
         />
 
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -13,11 +14,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 public class UserProfileActivity extends AppCompatActivity  {
 
     RelativeLayout  rlt_PaymentMethod, rlt_AboutApp, rlt_Setting ,rlt_Disclosures;
-    Switch swt_subcribeState,swt_Profile;
+    Switch swt_Profile;
 
     private Toolbar toolbar;
 
@@ -29,6 +31,14 @@ public class UserProfileActivity extends AppCompatActivity  {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.profile);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+
+        Window window = this.getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorBlack));
+
 
 
         swt_Profile = findViewById(R.id.profile_swt);
@@ -45,13 +55,6 @@ public class UserProfileActivity extends AppCompatActivity  {
         
 
 
-
-        swt_subcribeState.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         rlt_PaymentMethod.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,9 +97,6 @@ public class UserProfileActivity extends AppCompatActivity  {
         View view = inflater.inflate(R.layout.dialogue_about_app, null);
 
         ImageView img_close = view.findViewById(R.id.close);
-
-
-
 
         builder.setView(view);
         builder.setCancelable(false);
@@ -142,7 +142,6 @@ public class UserProfileActivity extends AppCompatActivity  {
 
 
     public void createRefrences(){
-        swt_subcribeState = findViewById(R.id.swt_subscribeState);
         rlt_AboutApp = findViewById(R.id.rlt_aboutApp);
         rlt_Disclosures = findViewById(R.id.rlt_disclosures);
         rlt_PaymentMethod = findViewById(R.id.rlt_paymentMethod);

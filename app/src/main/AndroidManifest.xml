@@ -24,12 +24,12 @@
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             />
         <activity android:name=".UserProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity android:name=".PurchaseServiceActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             />
-        <activity android:name=".BookArtistActivity"
+        <activity android:name=".BlockedUserActivity"
             />
         <activity android:name=".PackageActivity"
             />
@@ -39,21 +39,17 @@
             />
         <activity android:name=".FollowersActivity"
             />
-        <activity android:name=".ServiceDetailActivity"
-            />
         <activity android:name=".ResetPasswordActivity"
             />
-        <activity android:name=".DjPrpfileActivity"
-            />
+
         <activity android:name=".BookingHistoryActivity"
             />
         <activity android:name=".ProfileSettingActivity"
             android:screenOrientation="portrait"
             android:resizeableActivity="false"
             />
+
         <activity android:name=".PaymentMethodActivity"
-            />
-        <activity android:name=".BookingPaymentMethodActivity"
             />
         <activity android:name=".SignInActivity"
             />

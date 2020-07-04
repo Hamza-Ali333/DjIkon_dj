@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_Notifications:
 
-                getSupportActionBar().setTitle(R.string.SubscribeArtist);
+                getSupportActionBar().setTitle(R.string.Notification);
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new NotificationFragment()).commit();
@@ -125,8 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_UserAdmin:
-
-
+                Toast.makeText(this, "This Feature Will available Soon", Toast.LENGTH_SHORT).show();
                 break;
 
 
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(R.string.SocialMediaFram);
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SocialMediaFramFragment()).commit();
+                        new SocialMediaFrameFragment()).commit();
 
                 break;
 

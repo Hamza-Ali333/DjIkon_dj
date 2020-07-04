@@ -70,29 +70,29 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
         holder.txt_LikesNo.setText(currentItem.getTxt_LikesNo());
         holder.txt_ChatNo.setText(currentItem.getTxt_ChatNo());
 
-        holder.img_uploaderProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), DjPrpfileActivity.class);
-                v.getContext().startActivity(i);
-            }
-        });
-
-        holder.img_feedImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), DjPrpfileActivity.class);
-                v.getContext().startActivity(i);
-            }
-        });
-
-        holder.img_feedImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), DjPrpfileActivity.class);
-                v.getContext().startActivity(i);
-            }
-        });
+//        holder.img_uploaderProfile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(v.getContext(), DjPrpfileActivity.class);
+//                v.getContext().startActivity(i);
+//            }
+//        });
+//
+//        holder.img_feedImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(v.getContext(), DjPrpfileActivity.class);
+//                v.getContext().startActivity(i);
+//            }
+//        });
+//
+//        holder.img_feedImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(v.getContext(), DjPrpfileActivity.class);
+//                v.getContext().startActivity(i);
+//            }
+//        });
 }
 
     @Override

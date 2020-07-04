@@ -3,6 +3,7 @@ package com.example.djikon;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,15 @@ public class EditFollwerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         createRefrence();
+
+
+        btn_Block_User.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(view.getContext(),BlockedUserActivity.class));
+            }
+        });
+
     }
 
     private void createRefrence() {
@@ -25,5 +35,12 @@ public class EditFollwerActivity extends AppCompatActivity {
         btn_Block_User = findViewById(R.id.block_user);
         btn_Block_User_IP = findViewById(R.id.block_user_ip);
         btn_Block_User_Access = findViewById(R.id.block_user_access);
+    }
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

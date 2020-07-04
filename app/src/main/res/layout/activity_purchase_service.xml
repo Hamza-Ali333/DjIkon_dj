@@ -96,6 +96,6 @@
         android:layout_margin="16dp"
         android:textColor="#fff"
         android:text="Confirm Payment"
-        android:background="@drawable/roundshape"/>
+        android:background="@drawable/fullroundshape"/>
 
 </LinearLayout>

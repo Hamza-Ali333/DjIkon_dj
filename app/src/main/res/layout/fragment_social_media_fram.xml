@@ -7,17 +7,20 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:background="@color/colorBlack"
-    android:weightSum="10">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"/>
+   >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_height="wrap_content"
+        android:layout_weight="8">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    </RelativeLayout>
+
 
         <Button
             android:id="@+id/btn_upload_fram"
@@ -31,6 +34,6 @@
             android:textColor="#fff"
             android:background="@drawable/roundshape"
             />
-    </RelativeLayout>
+
 
 </LinearLayout>

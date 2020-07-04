@@ -19,7 +19,7 @@
             app:srcCompat="@drawable/ic_doctor" />
 
         <TextView
-            android:id="@+id/txt_follwer_name"
+            android:id="@+id/txt_User_name"
             android:layout_toRightOf="@+id/img_msg_sender"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
@@ -33,7 +33,7 @@
         <TextView
             android:id="@+id/txt_last_send_msg"
             android:layout_toRightOf="@+id/img_msg_sender"
-            android:layout_below="@+id/txt_follwer_name"
+            android:layout_below="@+id/txt_User_name"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
             android:padding="6dp"
             android:textSize="12sp"
             android:text="Time"
-            android:layout_alignBaseline="@+id/txt_follwer_name"
+            android:layout_alignBaseline="@+id/txt_User_name"
             android:layout_alignParentRight="true"/>
 
 

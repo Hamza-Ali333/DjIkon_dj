@@ -50,10 +50,10 @@
         android:layout_marginTop="8dp"
         android:textSize="14sp"
         android:textColor="@color/Graycolor"
-        android:text="Online Users"/>
+        android:text="Blocked Users"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewFollwer"
+        android:id="@+id/recyclerView_blocked_users"
         android:padding="12dp"
         android:layout_width="match_parent"
         android:scrollbars="vertical"
@@ -61,3 +61,5 @@
         android:layout_height="match_parent"/>
 
 </LinearLayout>
+
+

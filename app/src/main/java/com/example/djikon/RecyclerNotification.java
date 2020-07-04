@@ -14,9 +14,9 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
 
-public class RecyclerBlockedUser extends RecyclerView.Adapter<RecyclerBlockedUser.ViewHolder>{
+public class RecyclerNotification extends RecyclerView.Adapter<RecyclerNotification.ViewHolder>{
 
-    private ArrayList<BlockedUser_Model> mSubscribeToArtistArrayList;
+    private ArrayList<Notification_Model> mSubscribeToArtistArrayList;
     private String st_Activity_Name;
 
     //view holder class
@@ -26,21 +26,21 @@ public class RecyclerBlockedUser extends RecyclerView.Adapter<RecyclerBlockedUse
         public TextView txt_Subscribe_Artist_Name;
         public TextView  txt_Subscribe_Artist_Status;
         public TextView  txt_UnFollow;
-        public RelativeLayout rlt_SubscribeArtist;
+
 
         public ViewHolder(View itemView){
             super(itemView);
-            img_Subscribe_Artist_Profile = itemView.findViewById(R.id.img_follwer);
+            img_Subscribe_Artist_Profile = itemView.findViewById(R.id.img_profile);
 
-            txt_Subscribe_Artist_Name = itemView.findViewById(R.id.txt_follwer_name);
+            txt_Subscribe_Artist_Name = itemView.findViewById(R.id.txt_User_name);
             txt_Subscribe_Artist_Status = itemView.findViewById(R.id.txt_SubscribeArtistStatus);
-            txt_UnFollow = itemView.findViewById(R.id.txt_UnFollow);
-            rlt_SubscribeArtist = itemView.findViewById(R.id.follwer_layout);
+            txt_UnFollow = itemView.findViewById(R.id.txt_UnBlock);
+
         }
     }
 
 //constructor
-    public RecyclerBlockedUser(ArrayList<BlockedUser_Model> subscribeToArtistArrayList, String ActivityName) {
+    public RecyclerNotification(ArrayList<Notification_Model> subscribeToArtistArrayList, String ActivityName) {
         this.mSubscribeToArtistArrayList = subscribeToArtistArrayList;
         this.st_Activity_Name= ActivityName;
 
@@ -51,14 +51,14 @@ public class RecyclerBlockedUser extends RecyclerView.Adapter<RecyclerBlockedUse
     @Override
     public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.subscribe_artist_item,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notification_layout,parent,false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final BlockedUser_Model currentItem = mSubscribeToArtistArrayList.get(position);
+        final Notification_Model currentItem = mSubscribeToArtistArrayList.get(position);
 
        holder.img_Subscribe_Artist_Profile.setImageResource(currentItem.getImg_Subscribe_Artist());
        holder.txt_Subscribe_Artist_Name.setText(currentItem.getTxt_SubscribeArtistName());
@@ -70,14 +70,7 @@ public class RecyclerBlockedUser extends RecyclerView.Adapter<RecyclerBlockedUse
            holder.txt_UnFollow.setVisibility(View.GONE);
        }
 
-       holder.rlt_SubscribeArtist.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
 
-               Intent intent = new Intent(view.getContext(), DjPrpfileActivity.class);
-               view.getContext().startActivity(intent);
-           }
-       });
 
         holder.txt_UnFollow.setOnClickListener(new View.OnClickListener() {
             @Override

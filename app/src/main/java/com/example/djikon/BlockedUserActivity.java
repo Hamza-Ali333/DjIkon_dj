@@ -8,23 +8,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-
-public class FollowersActivity extends AppCompatActivity {
+public class BlockedUserActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_followers);
-        getSupportActionBar().setTitle("Followers");
+        setContentView(R.layout.activity_blocked_users);
+        getSupportActionBar().setTitle("Blocked User");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        mRecyclerView = findViewById(R.id.recyclerViewFollwer);
+        mRecyclerView = findViewById(R.id.recyclerView_blocked_users);
 
         ArrayList<FollowerAndBlocked_User_Model> follower_modelArrayList = new ArrayList<>();
 
@@ -35,15 +32,12 @@ public class FollowersActivity extends AppCompatActivity {
 
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new RecyclerFollowerAndBlockedUser(follower_modelArrayList,"Followers");
+        mAdapter = new RecyclerFollowerAndBlockedUser(follower_modelArrayList,"BlockedUsers");
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-
     }
-
-
 
 
     @Override
@@ -51,4 +45,5 @@ public class FollowersActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
 }

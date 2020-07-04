@@ -28,20 +28,20 @@ public class NotificationFragment extends Fragment {
 
         mRecyclerView = v.findViewById(R.id.recyclerViewSubscribeArtist);
 
-        ArrayList<BlockedUser_Model> subscribeToArtistArrayList = new ArrayList<>();
+        ArrayList<Notification_Model> subscribeToArtistArrayList = new ArrayList<>();
 
-        subscribeToArtistArrayList.add(new BlockedUser_Model(R.drawable.woman,"Usama","cold play Ghost Stiries"));
-        subscribeToArtistArrayList.add(new BlockedUser_Model(R.drawable.ic_doctor,"Hamza","Adhitia Sofyan Adeialide sky"));
-        subscribeToArtistArrayList.add(new BlockedUser_Model(R.drawable.woman,"Usama","CEO Web Febricant DJ"));
-        subscribeToArtistArrayList.add(new BlockedUser_Model(R.drawable.ic_doctor,"Ahmad","Farig Awara Wella wakeel"));
-        subscribeToArtistArrayList.add(new BlockedUser_Model(R.drawable.woman,"Usama","cold play Ghost Stiries"));
-        subscribeToArtistArrayList.add(new BlockedUser_Model(R.drawable.ic_doctor,"Hamza","Adhitia Sofyan Adeialide sky"));
-        subscribeToArtistArrayList.add(new BlockedUser_Model(R.drawable.woman,"Usama","CEO Web Febricant DJ"));
-        subscribeToArtistArrayList.add(new BlockedUser_Model(R.drawable.ic_doctor,"Ahmad","Farig Awara Wella wakeel"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.woman,"Usama","cold play Ghost Stiries"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_doctor,"Hamza","Adhitia Sofyan Adeialide sky"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.woman,"Usama","CEO Web Febricant DJ"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_doctor,"Ahmad","Farig Awara Wella wakeel"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.woman,"Usama","cold play Ghost Stiries"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_doctor,"Hamza","Adhitia Sofyan Adeialide sky"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.woman,"Usama","CEO Web Febricant DJ"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_doctor,"Ahmad","Farig Awara Wella wakeel"));
 
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this.getContext());
-        mAdapter = new RecyclerBlockedUser(subscribeToArtistArrayList,"Notification");
+        mAdapter = new RecyclerNotification(subscribeToArtistArrayList,"Notification");
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
