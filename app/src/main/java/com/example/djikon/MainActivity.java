@@ -161,11 +161,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_Blog:
 
-                getSupportActionBar().setTitle(R.string.CurrentLiveArtist);
+                getSupportActionBar().setTitle(R.string.Services);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new BlogFragment()).commit();
                 break;
 
+
+            case R.id.nav_MyServices:
+
+                getSupportActionBar().setTitle(R.string.Services);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ServicesFragment()).commit();
+
+                break;
 
 
         }

@@ -8,88 +8,59 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:resizeableActivity="false"
+        android:screenOrientation="portrait"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
-            android:resizeableActivity="false"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".BookingRequestsActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             />
         <activity android:name=".AcceptRequestActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             />
         <activity android:name=".CancelRequestActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             />
         <activity android:name=".UserProfileActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity android:name=".PurchaseServiceActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             />
         <activity android:name=".BookArtistActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
+            />
+        <activity android:name=".PackageActivity"
+            />
+        <activity android:name=".AddServiceActivity"
             />
         <activity android:name=".EditFollwerActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             />
         <activity android:name=".FollowersActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             />
         <activity android:name=".ServiceDetailActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             />
         <activity android:name=".ResetPasswordActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             />
         <activity android:name=".DjPrpfileActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             />
         <activity android:name=".BookingHistoryActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             />
         <activity android:name=".ProfileSettingActivity"
             android:screenOrientation="portrait"
             android:resizeableActivity="false"
             />
         <activity android:name=".PaymentMethodActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             />
         <activity android:name=".BookingPaymentMethodActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             />
         <activity android:name=".SignInActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             />
         <activity android:name=".RegistrationActivity"
-            android:screenOrientation="portrait"
-            android:resizeableActivity="false"
             />
         <activity android:name=".SplashScreenActivity"
-            android:resizeableActivity="false"
-            android:screenOrientation="portrait">
+           >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

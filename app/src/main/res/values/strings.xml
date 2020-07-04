@@ -1,15 +1,22 @@
 <resources>
-    <string name="app_name">Ikon Dj</string>
+    <string name="app_name">Subscriber</string>
     <string name="profile">Profile Info</string>
     <string name="myFeed">My Feed</string>
     <string name="bookingRequest">Bookings</string>
     <string name="ChatArea">Chat Room</string>
     <string name="SocialMediaFram">Social Media Fram</string>
     <string name="ViewSong">All Song Requests</string>
-    <string name="CurrentLiveArtist">Current Live Artist</string>
+    <string name="Services">My Services</string>
     <string name="SubscribeArtist">Subscribe Artist</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string-array name="rate_type">
+        <item>Set Charge According too..</item>
+        <item>Fixed Rate</item>
+        <item>Rate Per Hour</item>
+    </string-array>
 </resources>

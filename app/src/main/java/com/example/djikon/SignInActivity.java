@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +28,6 @@ public class SignInActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign__in);
         getSupportActionBar().hide();
-
         createReferencer();
 
         txt_Create_new_account.setOnClickListener(new View.OnClickListener() {
@@ -48,8 +48,9 @@ public class SignInActivity  extends AppCompatActivity {
         btn_SignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(SignInActivity.this,
-                        MainActivity.class);
+                        PackageActivity.class);
                 startActivity(i);
                 finish();
 

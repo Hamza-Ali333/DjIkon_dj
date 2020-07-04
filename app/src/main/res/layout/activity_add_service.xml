@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:fillViewport="true"
+    android:background="@color/colorBlack">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:text="Add Service Image"/>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:background="@drawable/white_roundshape"
+        >
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/ic_add_a_photo_"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+
+    <EditText
+        android:layout_marginTop="16dp"
+        android:id="@+id/edt_service_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="10dp"
+        android:textSize="18sp"
+        android:textColor="#F4F4F4"
+        android:textColorHint="#EAD5D5"
+        android:background="@drawable/edt_shape"
+        android:hint="Service Title"/>
+
+    <EditText
+        android:layout_marginTop="16dp"
+        android:id="@+id/edt_service_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        android:padding="10dp"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:gravity="top"
+        android:textColorHint="#EAD5D5"
+        android:background="@drawable/edt_shape"
+        android:hint="Description"/>
+
+    <Spinner
+        android:id="@+id/ratetype"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="7dp"
+        android:entries="@array/rate_type"
+        android:theme="@style/Spinner"
+        style="@android:style/Widget.Holo.Light.Spinner"
+        android:drawSelectorOnTop="true"/>
+
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/edt_service_rate"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="10dp"
+        android:textSize="18sp"
+        android:textColor="#F4F4F4"
+        android:textColorHint="#EAD5D5"
+        android:background="@drawable/edt_shape"
+        android:hint="Service Rate"/>
+
+        <Button
+            android:layout_marginTop="16dp"
+            android:id="@+id/btn_add_event_images"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Add Event Images"
+            android:textColor="#fff"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/blueround_stroke"/>
+    <Button
+        android:layout_marginTop="16dp"
+        android:id="@+id/btn_publish"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="Publish"
+        android:textColor="#fff"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/fullround_white_stroke"
+        />
+
+
+
+    </LinearLayout>
+
+</ScrollView>
