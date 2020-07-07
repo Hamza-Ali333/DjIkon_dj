@@ -1,5 +1,6 @@
 package com.example.djikon;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,13 @@ public class RecyclerServices extends RecyclerView.Adapter<RecyclerServices.View
             txt_Title = itemView.findViewById(R.id.txt_servic_name);
             txt_Discription = itemView.findViewById(R.id.txt_servic_description);
             txt_Charges = itemView.findViewById(R.id.txt_service_prize);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.getContext().startActivity(new Intent(v.getContext(),ServiceDetailActivity.class));
+                }
+            });
 
         }
     }

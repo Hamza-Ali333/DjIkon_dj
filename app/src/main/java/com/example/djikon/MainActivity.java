@@ -125,11 +125,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
 
-            case R.id.nav_UserAdmin:
-                Toast.makeText(this, "This Feature Will available Soon", Toast.LENGTH_SHORT).show();
-                break;
-
-
             case R.id.nav_SocialMediaFrame:
 
                 getSupportActionBar().setTitle(R.string.SocialMediaFram);
@@ -165,6 +160,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new BlogFragment()).commit();
                 break;
+
+
+            case R.id.nav_UserAdmin:
+
+                getSupportActionBar().setTitle(R.string.UserAdmin);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new UserAdminFragment()).commit();
+
+                break;
+
 
 
             case R.id.nav_MyServices:

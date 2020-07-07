@@ -30,15 +30,15 @@ public class UserProfileActivity extends AppCompatActivity  {
         createRefrences();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(R.string.profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-
         Window window = this.getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorBlack));
-
 
 
         swt_Profile = findViewById(R.id.profile_swt);
@@ -52,8 +52,6 @@ public class UserProfileActivity extends AppCompatActivity  {
              }
             }
         });
-        
-
 
 
         rlt_PaymentMethod.setOnClickListener(new View.OnClickListener() {

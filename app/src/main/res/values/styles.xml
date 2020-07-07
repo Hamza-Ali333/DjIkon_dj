@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/colorBlack</item>
         <item name="colorPrimaryDark">@color/colorBlack</item>
         <item name="colorAccent">@color/colorBlack</item>
+
     </style>
     
     <style name="AppTheme.NoActionBar">
@@ -32,6 +33,18 @@
         <item name="android:textSize">18sp</item>
         <item name="android:popupBackground">#DFFFFFFF</item>
     </style>
+
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#eaeaea</item>
+        <item name="colorControlActivated">#ffc600</item>
+    </style>
+
+
+    <style name="feedoptions" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
 
 
 </resources>

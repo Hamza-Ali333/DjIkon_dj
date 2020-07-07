@@ -38,7 +38,7 @@ public class PackageActivity extends AppCompatActivity {
 
     private void lunchMainActivity(){
                 Intent i = new Intent(PackageActivity.this,
-                        MainActivity.class);
+                        PaymentMethodActivity.class);
                 startActivity(i);
     }
 }

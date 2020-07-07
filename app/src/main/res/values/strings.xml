@@ -8,6 +8,7 @@
     <string name="ViewSong">All Song Requests</string>
     <string name="Services">My Services</string>
     <string name="Notification">Create Notification</string>
+    <string name="UserAdmin">User Admin</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

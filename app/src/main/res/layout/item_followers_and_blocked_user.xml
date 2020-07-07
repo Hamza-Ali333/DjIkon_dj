@@ -36,16 +36,16 @@
             android:id="@+id/txt_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorBlue"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:textSize="12sp"
-            android:background="@drawable/blueround_stroke"
-            android:text="Edit"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"/>
+            android:background="@drawable/blueround_stroke"
+            android:paddingLeft="10dp"
+            android:paddingTop="4dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="4dp"
+            android:text="Control"
+            android:textColor="@color/colorBlue"
+            android:textSize="12sp" />
 
         <View
             android:id="@+id/divider10"

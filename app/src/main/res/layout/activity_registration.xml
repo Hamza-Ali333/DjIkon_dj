@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
@@ -123,20 +123,6 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/edt_email" />
 
-    <EditText
-        android:id="@+id/edt_refrel_code"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="8dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:hint="Refrel Code"
-        android:inputType="textPersonName"
-        android:paddingLeft="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/edt_password" />
-
     <TextView
         android:id="@+id/term_info"
         android:layout_width="0dp"
@@ -146,7 +132,7 @@
         android:textColor="@color/colorBlue"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/edt_refrel_code"
+        app:layout_constraintTop_toBottomOf="@+id/edt_password"
         tools:text="By checking this box you consent to our:" />
 
     <RadioButton

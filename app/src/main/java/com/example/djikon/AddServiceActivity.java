@@ -65,4 +65,9 @@ public class AddServiceActivity extends AppCompatActivity {
         btn_Publish = findViewById(R.id.btn_publish);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

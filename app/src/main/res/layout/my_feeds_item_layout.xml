@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="start"
     android:background="#fff"
-    android:layout_marginTop="4dp"
+    android:layout_marginTop="10dp"
     app:cardCornerRadius="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingBottom="8dp">
 
         <com.mikhaellopez.circularimageview.CircularImageView
@@ -20,23 +20,10 @@
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/woman"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/rectangle2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txt_uploaderName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="4dp"
-            android:text="Fransic Briggs"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/img_uploaderImage"
-            app:layout_constraintTop_toTopOf="@+id/img_uploaderImage"
-            tools:text="Fransic Briggs" />
 
         <TextView
             android:id="@+id/txt_uploadTime"
@@ -44,13 +31,29 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="31m ago"
+            app:layout_constraintBottom_toBottomOf="@+id/img_uploaderImage"
             app:layout_constraintStart_toStartOf="@+id/txt_uploaderName"
             app:layout_constraintTop_toBottomOf="@+id/txt_uploaderName" />
+
+        <TextView
+            android:id="@+id/txt_uploaderName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:text="Fransic Briggs"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/txt_uploadTime"
+            app:layout_constraintStart_toEndOf="@+id/img_uploaderImage"
+            app:layout_constraintTop_toTopOf="@+id/img_uploaderImage"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Fransic Briggs" />
 
         <ImageView
             android:id="@+id/img_feedImage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio=""
             app:layout_constraintEnd_toEndOf="parent"
@@ -113,14 +116,14 @@
             android:id="@+id/txt_LikesNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:text="1122"
             android:textColor="#000000"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_chat"
-            app:layout_constraintEnd_toStartOf="@+id/img_chat"
-            app:layout_constraintTop_toTopOf="@+id/img_chat"
+            app:layout_constraintBottom_toBottomOf="@+id/img_likes"
+            app:layout_constraintStart_toEndOf="@+id/img_likes"
+            app:layout_constraintTop_toTopOf="@+id/img_likes"
             tools:text="1122" />
 
         <ImageView
@@ -128,16 +131,13 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/txt_LikesNo"
-            app:layout_constraintEnd_toStartOf="@+id/txt_LikesNo"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_ReadMore"
             app:srcCompat="@drawable/ic_heart_fill"
             tools:ignore="VectorDrawableCompat" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/txt_uploaderName"
@@ -146,29 +146,6 @@
             app:layout_constraintStart_toEndOf="@+id/txt_uploaderName"
             app:layout_constraintTop_toTopOf="@+id/txt_uploaderName"
             app:srcCompat="@drawable/ic_more_horiz" />
-
-        <ImageView
-            android:id="@+id/img_edit_feed"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="@+id/txt_ReadMore"
-            app:layout_constraintTop_toBottomOf="@+id/txt_ReadMore"
-            app:srcCompat="@drawable/ic_edit" />
-
-        <ImageView
-            android:id="@+id/img_del_feed"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_edit_feed"
-            app:layout_constraintStart_toEndOf="@+id/img_edit_feed"
-            app:layout_constraintTop_toTopOf="@+id/img_edit_feed"
-            app:srcCompat="@drawable/ic_deletet" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

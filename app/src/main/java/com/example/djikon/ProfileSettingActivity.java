@@ -18,7 +18,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
 
 
     RelativeLayout rlt_LiveStreaming, rlt_FaceId, rlt_Biometrics, rlt_ChangePassword, rlt_ChangePin, rlt_BookingHistory,
-    rlt_ConnectSocial, rlt_ReferralCode,rlt_Followers;
+    rlt_ConnectSocial, rlt_ReferralCode;
 
     Switch swt_FaceId_State, swt_Biometric_State;
 
@@ -76,13 +76,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
             }
         });
 
-        rlt_Followers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(ProfileSettingActivity.this, FollowersActivity.class);
-                startActivity(i);
-            }
-        });
+
 
     }
 
@@ -238,7 +232,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
           rlt_ConnectSocial = findViewById(R.id.rlt_socialmedia);
           rlt_LiveStreaming = findViewById(R.id.rlt_liveStreaming);
           rlt_ReferralCode = findViewById(R.id.rlt_view_refrell_code);
-          rlt_Followers = findViewById(R.id.rlt_followers);
+
     }
 
     @Override
