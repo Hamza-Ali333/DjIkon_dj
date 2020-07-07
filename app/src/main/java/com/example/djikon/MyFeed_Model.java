@@ -6,27 +6,28 @@ public class MyFeed_Model {
             img_FeedImage;
 
 
-    private String txt_UploaderName,
+    private String title,
             txt_UploadTime,
-            txt_Description,
-            txt_LikesNo,
-            txt_ChatNo;
+            desciption,
+            Likes,
+            video;
+
 
     public MyFeed_Model(int img_UploaderProfile, int img_FeedImage,
 
-                        String txt_UploaderName, String txt_UploadTime,
-                        String txt_Description, String txt_LikesNo,
-                        String txt_ChatNo) {
+                        String title, String txt_UploadTime,
+                        String desciption, String Likes,
+                        String video) {
 
         this.Img_UploaderProfile = img_UploaderProfile;
         this.img_FeedImage = img_FeedImage;
 
 
-        this.txt_UploaderName = txt_UploaderName;
+        this.title = title;
         this.txt_UploadTime = txt_UploadTime;
-        this.txt_Description = txt_Description;
-        this.txt_LikesNo = txt_LikesNo;
-        this.txt_ChatNo = txt_ChatNo;
+        this.desciption = desciption;
+        this.Likes = Likes;
+        this.video = video;
     }
 
     public int getImg_UploaderProfile() {
@@ -37,23 +38,23 @@ public class MyFeed_Model {
         return img_FeedImage;
     }
 
-    public String getTxt_UploaderName() {
-        return txt_UploaderName;
+    public String getTitle() {
+        return title;
     }
 
     public String getTxt_UploadTime() {
         return txt_UploadTime;
     }
 
-    public String getTxt_Description() {
-        return txt_Description;
+    public String getDesciption() {
+        return desciption;
     }
 
-    public String getTxt_LikesNo() {
-        return txt_LikesNo;
+    public String getLikes() {
+        return Likes;
     }
 
-    public String getTxt_ChatNo() {
-        return txt_ChatNo;
+    public String getVideo() {
+        return video;
     }
 }

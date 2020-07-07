@@ -4,6 +4,14 @@
     android:layout_height="match_parent"
     android:background="#000">
 
+<!--    <TextView-->
+<!--        android:id="@+id/text"-->
+<!--        android:textColor="#fff"-->
+<!--        android:text="This is you xml"-->
+<!--        android:textSize="18sp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"/>-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLatestFeed"
         android:padding="12dp"
