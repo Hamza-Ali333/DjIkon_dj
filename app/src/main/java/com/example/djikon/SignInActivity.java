@@ -1029,14 +1029,12 @@ public class SignInActivity extends AppCompatActivity {
         txt_signwith_face = findViewById(R.id.txt_face_id);
         txt_signwith_PIN = findViewById(R.id.txt_signInWithPIN);
 
-
         edt_Email = findViewById(R.id.edt_Email);
         edt_password = findViewById(R.id.edt_Password);
 
         btn_SignIn = findViewById(R.id.btn_SignIn);
         img_face_Id = findViewById(R.id.img_face_id);
         img_Finger_Print = findViewById(R.id.img_finger_print);
-
 
     }
 
