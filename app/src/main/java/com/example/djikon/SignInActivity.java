@@ -77,12 +77,12 @@ import retrofit2.Retrofit;
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class SignInActivity extends AppCompatActivity {
 
-    private TextView txt_Create_new_account, txt_Forgot_Password, txt_signwith_face, txt_signwith_Finger, txt_signwith_PIN, txt_Error;
+    private TextView txt_Create_new_account, txt_Forgot_Password, txt_signwith_face, txt_signwith_Finger, txt_signwith_PIN;
 
 
     private Button btn_SignIn;
 
-    private ImageView img_face_Id, img_Finger_Print, img_Error_Sign;
+    private ImageView img_face_Id, img_Finger_Print;
     private EditText edt_Email, edt_password;
     private PreferenceData preferenceData;
     private Retrofit retrofit;
@@ -492,10 +492,7 @@ public class SignInActivity extends AppCompatActivity {
 
                                     preferenceData.setUserLoggedInStatus(SignInActivity.this, true);
 
-                                    txt_Error.setVisibility(View.GONE);
-                                    img_Error_Sign.setVisibility(View.GONE);
                                     progressDialog.dismiss();
-
 
                                     startActivity(new Intent(SignInActivity.this, MainActivity.class));
                                     finish();
@@ -860,15 +857,12 @@ public class SignInActivity extends AppCompatActivity {
 
     private void isUserExits() {
 
-        Call<LoginRegistrationModel> call = jsonApiHolder.Login(edt_Email.getText().toString().trim(), edt_password.getText().toString().trim(), 2);
+        Call<LoginRegistrationModel> call = jsonApiHolder.Login(edt_Email.getText().toString().trim(), edt_password.getText().toString().trim(), 1);
 
         call.enqueue(new Callback<LoginRegistrationModel>() {
             @Override
             public void onResponse(Call<LoginRegistrationModel> call, Response<LoginRegistrationModel> response) {
                 if (response.isSuccessful()) {
-
-                    Log.i("TAG", "onResponse: " + "token:>>  " + response.body().getSuccess());
-
                     preferenceData.setUserToken(SignInActivity.this, response.body().getSuccess());
                     String id = String.valueOf(response.body().getId());
                     preferenceData.setUserId(SignInActivity.this, id);
@@ -876,8 +870,7 @@ public class SignInActivity extends AppCompatActivity {
                     preferenceData.setUserImage(SignInActivity.this, response.body().getProfile_image());
                     preferenceData.setUserLoggedInStatus(SignInActivity.this, true);
 
-                    txt_Error.setVisibility(View.GONE);
-                    img_Error_Sign.setVisibility(View.GONE);
+
                     progressDialog.dismiss();
 
                     signInUserOnFirebase(edt_Email.getText().toString().trim(),edt_password.getText().toString().trim());
@@ -906,16 +899,12 @@ public class SignInActivity extends AppCompatActivity {
 
                 } else if (response.code() == 403) {
 
-                    alert_AND_forgetDailoge = DialogsUtils.showAlertDialog(SignInActivity.this, false, "Note", "This email is register as Subscriber can't use it here in User App");
-                    txt_Error.setVisibility(View.GONE);
-                    img_Error_Sign.setVisibility(View.GONE);
+                    alert_AND_forgetDailoge = DialogsUtils.showAlertDialog(SignInActivity.this, false, "Note", "This email is register as User can't use it here in Subscriber App");
                     progressDialog.dismiss();
 
                 } else {
 
-                    txt_Error.setVisibility(View.VISIBLE);
-                    img_Error_Sign.setVisibility(View.VISIBLE);
-                    txt_Error.setText("Email or Password is in Correct");
+
                     progressDialog.dismiss();
                 }
             }
@@ -1039,7 +1028,7 @@ public class SignInActivity extends AppCompatActivity {
         txt_signwith_Finger = findViewById(R.id.txt_finger_print);
         txt_signwith_face = findViewById(R.id.txt_face_id);
         txt_signwith_PIN = findViewById(R.id.txt_signInWithPIN);
-        txt_Error = findViewById(R.id.txt_error);
+
 
         edt_Email = findViewById(R.id.edt_Email);
         edt_password = findViewById(R.id.edt_Password);
@@ -1047,7 +1036,7 @@ public class SignInActivity extends AppCompatActivity {
         btn_SignIn = findViewById(R.id.btn_SignIn);
         img_face_Id = findViewById(R.id.img_face_id);
         img_Finger_Print = findViewById(R.id.img_finger_print);
-        img_Error_Sign = findViewById(R.id.img_error_sign);
+
 
     }
 

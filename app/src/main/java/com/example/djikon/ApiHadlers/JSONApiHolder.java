@@ -59,17 +59,6 @@ public interface JSONApiHolder {
 //    @GET("bookingHistory")
 //    Call<List<BookingHistory>> getBookingHistory();
 //
-//    @FormUrlEncoded
-//    @POST("register")
-//    Call <SuccessErrorModel> registerUser(
-//            @Field("firstname") String firstname,
-//            @Field("lastname") String lastname,
-//            @Field("email") String email,
-//            @Field("password") String password,
-//            @Field("c_password") String c_password,
-//            @Field("refferal") String refferal,
-//            @Field("role") int role
-//    );
 //
 //
 //
@@ -103,12 +92,64 @@ public interface JSONApiHolder {
 //    );
 //
 //
-//    @FormUrlEncoded
-//    @POST("change_password")
-//    Call <SuccessErrorModel> changepasswrod(
-//            @Field("oldpass") String oldpassword,
-//            @Field("password") String newpassword
+    //    @FormUrlEncoded
+//    @POST()
+//    Call <SuccessErrorModel>  LikeUnlike(
+//            @Url String blogid,
+//            @Field("status") Integer likeStatus
+//
 //    );
+//
+//
+//    @POST()
+//    Call <SuccessErrorModel>  followUnFollowArtist(
+//            @Url String artistId
+//    );
+
+
+
+//    @FormUrlEncoded
+//    @POST()
+//    Call<SuccessErrorModel> postBooking(
+//            @Url String id,
+//            @Field("name") String Name,
+//            @Field("email") String Email,
+//            @Field("phone") String Phone,
+//            @Field("address") String Address,
+//            @Field("start_date") String Start_Date,
+//            @Field("end_date") String End_Date,
+//            @Field("start_time") String Start_Time,
+//            @Field("end_time") String End_Time,
+//            @Field("price") String PaidAmount
+//    );
+
+    //    @FormUrlEncoded
+//    @POST()
+//    Call<SuccessErrorModel> postSongRequest(
+//            @Url String id,
+//            @Field("name") String your_Name,
+//            @Field("song_name") String Song_Name
+//    );
+
+                /*Login And Registration Model*/
+    @FormUrlEncoded
+    @POST("change_password")
+    Call <SuccessErrorModel> changepasswrod(
+            @Field("oldpass") String oldpassword,
+            @Field("password") String newpassword
+    );
+
+
+    @FormUrlEncoded
+    @POST("register")
+    Call <SuccessErrorModel> registerUser(
+            @Field("firstname") String firstname,
+            @Field("lastname") String lastname,
+            @Field("email") String email,
+            @Field("password") String password,
+            @Field("c_password") String c_password,
+            @Field("role") int role
+    );
 
 
     @FormUrlEncoded
@@ -159,44 +200,7 @@ public interface JSONApiHolder {
     @POST("logout")
     Call <LoginRegistrationModel> logout();
 
-//    @FormUrlEncoded
-//    @POST()
-//    Call <SuccessErrorModel>  LikeUnlike(
-//            @Url String blogid,
-//            @Field("status") Integer likeStatus
-//
-//    );
-//
-//
-//    @POST()
-//    Call <SuccessErrorModel>  followUnFollowArtist(
-//            @Url String artistId
-//    );
 
-
-
-//    @FormUrlEncoded
-//    @POST()
-//    Call<SuccessErrorModel> postBooking(
-//            @Url String id,
-//            @Field("name") String Name,
-//            @Field("email") String Email,
-//            @Field("phone") String Phone,
-//            @Field("address") String Address,
-//            @Field("start_date") String Start_Date,
-//            @Field("end_date") String End_Date,
-//            @Field("start_time") String Start_Time,
-//            @Field("end_time") String End_Time,
-//            @Field("price") String PaidAmount
-//    );
-
-//    @FormUrlEncoded
-//    @POST()
-//    Call<SuccessErrorModel> postSongRequest(
-//            @Url String id,
-//            @Field("name") String your_Name,
-//            @Field("song_name") String Song_Name
-//    );
 
 }
 
