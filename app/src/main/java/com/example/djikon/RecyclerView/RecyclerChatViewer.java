@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.djikon.Models.ChatModel;
 import com.example.djikon.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +34,7 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
     public  String currentUserId;
 
     DatabaseReference myRef;
+    FirebaseUser fuser;
 
     public static final int MSG_TYPE_RIGHT = 0;
     public static final int MSG_TYPE_LEFT = 1;
@@ -131,7 +134,8 @@ holder.rlt_ChatItem.setOnLongClickListener(new View.OnLongClickListener() {
     @Override
     public int getItemViewType(int position) {
 
-        if(mChat_model.get(position).getSender().equals(currentUserId)){
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
+        if(mChat_model.get(position).getSender().equals(fuser.getUid())){
             return MSG_TYPE_RIGHT;
         }else {
             return MSG_TYPE_LEFT;

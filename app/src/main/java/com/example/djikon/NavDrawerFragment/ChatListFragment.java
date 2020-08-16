@@ -56,7 +56,7 @@ public class ChatListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
+
     }
 
     @Nullable
@@ -74,6 +74,7 @@ public class ChatListFragment extends Fragment {
         ((LinearLayoutManager) mLayoutManager).setStackFromEnd(true);//always at new entry at the top
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        fuser = FirebaseAuth.getInstance().getCurrentUser();
         //this will contain the currentUser id
         currentUserId = PreferenceData.getUserId(getContext());
 
@@ -127,7 +128,7 @@ public class ChatListFragment extends Fragment {
                         showHideProgressBar();
 
                     }else {
-                        mAlertDialog = DialogsUtils.showAlertDialog(getContext(),false,"Note","It's seems like you didn't have conversation with any DJ");
+                        mAlertDialog = DialogsUtils.showAlertDialog(getContext(),false,"Note","It's seems like you didn't have conversation with any User");
                     }
                 }
 

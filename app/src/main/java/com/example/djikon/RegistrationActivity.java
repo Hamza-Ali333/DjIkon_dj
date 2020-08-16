@@ -88,8 +88,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private JSONApiHolder jsonApiHolder;
 
-    //FireBase Authentication
-    FirebaseAuth mFirebaseAuth;
+
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
 
@@ -102,7 +101,7 @@ public class RegistrationActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mFirebaseAuth = FirebaseAuth.getInstance();
+
     }
 
     @Override
@@ -114,9 +113,7 @@ public class RegistrationActivity extends AppCompatActivity {
         createRefrences();
 
         mNetworkChangeReceiver = new NetworkChangeReceiver(this);
-
         preferenceData = new PreferenceData();
-
         TextView textView = findViewById(R.id.term_info);
 
 
@@ -225,7 +222,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (isInfoRight()) {
                     progressDailoge = DialogsUtils.showProgressDialog(RegistrationActivity.this, "Checking Credentials", "Please Wait...");
 
-                    sendDataToServer();
+                    signUpNewUser();
                 }
             }//if
         });
@@ -299,10 +296,9 @@ public class RegistrationActivity extends AppCompatActivity {
         return matcher.matches();
     }
 
-    private void sendDataToServer() {
+    private void signUpNewUser() {
 
         retrofit = ApiClient.retrofit(BASEURL_DATA, this);
-
         jsonApiHolder = retrofit.create(JSONApiHolder.class);
 
         Call<SuccessErrorModel> call = jsonApiHolder.registerUser(
@@ -317,14 +313,17 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
                 progressDailoge.dismiss();
-                if (response.isSuccessful()) {
 
-                    creatingUserOnFirebase();
+                if (response.isSuccessful()) {
+                    //store the Email adrress for sending otp on it
+                    EmailForOTP = edt_Email.getText().toString();
+                    openVerfiyOTPDialogue();
 
                 } else if (response.code() == 409) {
                     edt_Email.requestFocus();
                     edt_Email.setError("Email Already Exit");
                 } else {
+
                     Toast.makeText(RegistrationActivity.this, "Something Happend Wrong", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -519,18 +518,23 @@ public class RegistrationActivity extends AppCompatActivity {
                                 alertDialog.dismiss();
                                 progressDialog.dismiss();
 
-                                preferenceData.setUserToken(RegistrationActivity.this, response.body().getSuccess());
+                                LoginRegistrationModel data = response.body();
 
-                                String id = String.valueOf(response.body().getId());
+                                saveDataInPreferences(data.getSuccess(),
+                                        String.valueOf(data.getId()),
+                                        data.getFirstname()+" "+data.getLastname(),
+                                        data.getProfile_image());
 
-                                preferenceData.setUserId(RegistrationActivity.this, id);
-
-                                preferenceData.setUserName(RegistrationActivity.this, response.body().getFirstname() + " " + response.body().getLastname());
-
-                                preferenceData.setUserLoggedInStatus(RegistrationActivity.this, true);
 
                                 startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
 
+
+                                Intent i = new Intent(RegistrationActivity.this,MainActivity.class);
+                                i.putExtra("come_from_registration",true);
+                                i.putExtra("email",edt_Email.getText().toString().trim());
+                                i.putExtra("password",edt_Password.getText().toString().trim());
+                                startActivity(i);
+                                finish();
                             } else {
                                 error.setVisibility(View.VISIBLE);
                                 progressDialog.dismiss();
@@ -635,29 +639,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    private void creatingUserOnFirebase() {
-        //Creating User
-        mFirebaseAuth.createUserWithEmailAndPassword
-                (edt_Email.getText().toString().trim(), edt_Password.getText().toString().trim())
-                .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
 
-                            //store the Email adrress for sending otp on it
-                            EmailForOTP = edt_Email.getText().toString();
-
-                            openVerfiyOTPDialogue();
-                            Toast.makeText(RegistrationActivity.this, "User Successfully SignUp On Firebase", Toast.LENGTH_SHORT).show();
-                        }
-                        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                            Toast.makeText(RegistrationActivity.this, "User with this email already exist.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(RegistrationActivity.this, "SignUp UnSuccessful, Please Try Again", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
 
     private void createRefrences() {
 
@@ -671,6 +653,14 @@ public class RegistrationActivity extends AppCompatActivity {
         btn_GoogleSignIn = findViewById(R.id.btn_google_sign_up);
 
         radioButton = findViewById(R.id.radiobutton_term);
+    }
+
+    private void saveDataInPreferences(String userToken, String userId, String userName, String profileImage){
+        preferenceData.setUserToken(RegistrationActivity.this, userToken);
+        preferenceData.setUserId(RegistrationActivity.this, userId);
+        preferenceData.setUserName(RegistrationActivity.this, userName);
+        preferenceData.setUserImage(RegistrationActivity.this, profileImage);
+        preferenceData.setUserLoggedInStatus(RegistrationActivity.this, true);
     }
 
     @Override

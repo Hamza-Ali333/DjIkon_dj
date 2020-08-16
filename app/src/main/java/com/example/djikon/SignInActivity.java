@@ -11,14 +11,12 @@ import android.content.pm.PackageManager;
 import androidx.biometric.BiometricPrompt;
 
 import android.hardware.fingerprint.FingerprintManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
 import android.text.Editable;
-import android.text.PrecomputedText;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,7 +31,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.text.PrecomputedTextCompat;
 
 import com.example.djikon.ApiHadlers.ApiClient;
 import com.example.djikon.ApiHadlers.JSONApiHolder;
@@ -42,9 +39,6 @@ import com.example.djikon.GlobelClasses.NetworkChangeReceiver;
 import com.example.djikon.GlobelClasses.PreferenceData;
 import com.example.djikon.Models.LoginRegistrationModel;
 import com.example.djikon.Models.SuccessErrorModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText;
 
@@ -83,7 +77,7 @@ public class SignInActivity extends AppCompatActivity {
     private Button btn_SignIn;
 
     private ImageView img_face_Id, img_Finger_Print;
-    private EditText edt_Email, edt_password;
+    private EditText edt_Email, edt_Password;
     private PreferenceData preferenceData;
     private Retrofit retrofit;
     private JSONApiHolder jsonApiHolder;
@@ -106,8 +100,7 @@ public class SignInActivity extends AppCompatActivity {
     private Cipher cipher;
     private String KEY_NAME = "AndroidKey";
 
-    //FireBase Authentication
-    FirebaseAuth mFirebaseAuth;
+
     //Google Biometric Promot
     private Executor executor;
     public BiometricPrompt biometricPrompt;
@@ -121,8 +114,7 @@ public class SignInActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        //firebase Auth i
-        mFirebaseAuth = FirebaseAuth.getInstance();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -206,10 +198,9 @@ public class SignInActivity extends AppCompatActivity {
         retrofit = ApiClient.retrofit(BASEURL, this);
         jsonApiHolder = retrofit.create(JSONApiHolder.class);
 
-
         preferenceData = new PreferenceData();
 
-        edt_password.addTextChangedListener(new TextWatcher() {
+        edt_Password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -217,7 +208,7 @@ public class SignInActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                edt_password.setError(null);
+                edt_Password.setError(null);
             }
 
             @Override
@@ -246,8 +237,6 @@ public class SignInActivity extends AppCompatActivity {
                 if (isInfoRight()) {
                     progressDialog = DialogsUtils.showProgressDialog(SignInActivity.this, "Checking Credentials", "Please Wait While Cheking...");
                     isUserExits();
-
-
                 }
 
             }
@@ -477,25 +466,14 @@ public class SignInActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<LoginRegistrationModel> call, Response<LoginRegistrationModel> response) {
                                 if (response.isSuccessful()) {
+                                    LoginRegistrationModel data = response.body();
 
-                                    preferenceData.setUserToken(SignInActivity.this, response.body().getSuccess());
+                                    saveDataInPreferences(data.getSuccess(),
+                                            String.valueOf(data.getId()),
+                                            data.getFirstname()+" "+data.getLastname(),
+                                            data.getProfile_image());
 
-                                    String id = String.valueOf(response.body().getId());
-
-                                    preferenceData.setUserId(SignInActivity.this, id);
-
-
-                                    preferenceData.setUserName(SignInActivity.this, response.body().getFirstname() + " " + response.body().getLastname());
-                                    Log.i("TAG", "onResponse: first " + response.body().getFirstname() + " " + response.body().getLastname());
-
-                                    preferenceData.setUserImage(SignInActivity.this, response.body().getProfile_image());
-
-                                    preferenceData.setUserLoggedInStatus(SignInActivity.this, true);
-
-                                    progressDialog.dismiss();
-
-                                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                                    finish();
+                                    lunchNextActivity();
 
                                 } else {
                                     alert_AND_forgetDailoge = DialogsUtils.showAlertDialog(SignInActivity.this, false, "Not", "Some thing happened wrong please verify email again");
@@ -689,11 +667,11 @@ public class SignInActivity extends AppCompatActivity {
             result = false;
         } else if (Password.getText().length() < 8) {
             Password.setError("Password can't be less then 8 digit");
-            edt_password.requestFocus();
+            edt_Password.requestFocus();
             result = false;
         } else if (!Password.getText().toString().trim().equals(confirmPassword.getText().toString().trim())) {
             Password.setError("Password not matched");
-            edt_password.requestFocus();
+            edt_Password.requestFocus();
             result = false;
         }
         return result;
@@ -841,13 +819,13 @@ public class SignInActivity extends AppCompatActivity {
             edt_Email.setError("Not a Valid Email Address");
             edt_Email.requestFocus();
             result = false;
-        } else if (edt_password.getText().toString().trim().isEmpty()) {
-            edt_password.setError("Please Enter Password");
-            edt_password.requestFocus();
+        } else if (edt_Password.getText().toString().trim().isEmpty()) {
+            edt_Password.setError("Please Enter Password");
+            edt_Password.requestFocus();
             result = false;
-        } else if (edt_password.getText().toString().trim().length() < 8) {
-            edt_password.setError("Password Can't be less then 8 Digits!");
-            edt_password.requestFocus();
+        } else if (edt_Password.getText().toString().trim().length() < 8) {
+            edt_Password.setError("Password Can't be less then 8 Digits!");
+            edt_Password.requestFocus();
             result = false;
         }
 
@@ -857,25 +835,24 @@ public class SignInActivity extends AppCompatActivity {
 
     private void isUserExits() {
 
-        Call<LoginRegistrationModel> call = jsonApiHolder.Login(edt_Email.getText().toString().trim(), edt_password.getText().toString().trim(), 1);
+        Call<LoginRegistrationModel> call = jsonApiHolder.Login(edt_Email.getText().toString().trim(), edt_Password.getText().toString().trim(), 1);
 
         call.enqueue(new Callback<LoginRegistrationModel>() {
             @Override
             public void onResponse(Call<LoginRegistrationModel> call, Response<LoginRegistrationModel> response) {
                 if (response.isSuccessful()) {
-                    preferenceData.setUserToken(SignInActivity.this, response.body().getSuccess());
-                    String id = String.valueOf(response.body().getId());
-                    preferenceData.setUserId(SignInActivity.this, id);
-                    preferenceData.setUserName(SignInActivity.this, response.body().getFirstname() + " " + response.body().getLastname());
-                    preferenceData.setUserImage(SignInActivity.this, response.body().getProfile_image());
-                    preferenceData.setUserLoggedInStatus(SignInActivity.this, true);
+                    LoginRegistrationModel data = response.body();
 
+                    //saving Data into Preferences
+                    saveDataInPreferences(data.getSuccess(),
+                            String.valueOf(data.getId()),
+                            data.getFirstname()+" "+data.getLastname(),
+                            data.getProfile_image());
 
-                    progressDialog.dismiss();
-
-                    signInUserOnFirebase(edt_Email.getText().toString().trim(),edt_password.getText().toString().trim());
+                    lunchNextActivity();
 
                 } else if (response.code() == 402) {
+                    //Email is not Verifyed
                     EmailForOTP = edt_Email.getText().toString();
                     Call<SuccessErrorModel> resendOTPCall = jsonApiHolder.resendOTP(EmailForOTP);
 
@@ -883,8 +860,10 @@ public class SignInActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
                             if (response.isSuccessful()) {
-                                openVerfiyOTPDialogue(true);
                                 progressDialog.dismiss();
+
+                                openVerfiyOTPDialogue(true);
+
                             } else {
                                 alert_AND_forgetDailoge = DialogsUtils.showAlertDialog(SignInActivity.this, false, "Note", "Someting happend worng try again");
                             }
@@ -898,14 +877,12 @@ public class SignInActivity extends AppCompatActivity {
 
 
                 } else if (response.code() == 403) {
-
                     alert_AND_forgetDailoge = DialogsUtils.showAlertDialog(SignInActivity.this, false, "Note", "This email is register as User can't use it here in Subscriber App");
                     progressDialog.dismiss();
 
                 } else {
-
-
                     progressDialog.dismiss();
+                    alert_AND_forgetDailoge = DialogsUtils.showAlertDialog(SignInActivity.this, false, "Note", "Try again");
                 }
             }
 
@@ -1003,25 +980,6 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-    private void signInUserOnFirebase(String Email, String Password){
-        //Creating User
-        mFirebaseAuth.signInWithEmailAndPassword(Email,
-                Password).addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }  else {
-                    progressDialog.dismiss();
-                    Toast.makeText(SignInActivity.this, "FireBase User Name or Password Incorrect", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-
     private void createReferencer() {
         txt_Create_new_account = findViewById(R.id.txt_Create_new_account);
         txt_Forgot_Password = findViewById(R.id.txt_Forgot_Password);
@@ -1030,12 +988,30 @@ public class SignInActivity extends AppCompatActivity {
         txt_signwith_PIN = findViewById(R.id.txt_signInWithPIN);
 
         edt_Email = findViewById(R.id.edt_Email);
-        edt_password = findViewById(R.id.edt_Password);
+        edt_Password = findViewById(R.id.edt_Password);
 
         btn_SignIn = findViewById(R.id.btn_SignIn);
         img_face_Id = findViewById(R.id.img_face_id);
         img_Finger_Print = findViewById(R.id.img_finger_print);
 
+    }
+
+    private void lunchNextActivity(){
+        Intent i = new Intent(SignInActivity.this,MainActivity.class);
+        i.putExtra("come_from_registration",false);
+        i.putExtra("email",edt_Email.getText().toString().trim());
+        i.putExtra("password", edt_Password.getText().toString().trim());
+        progressDialog.dismiss();
+        startActivity(i);
+        finish();
+    }
+
+    private void saveDataInPreferences(String userToken, String userId, String userName, String profileImage){
+        preferenceData.setUserToken(SignInActivity.this, userToken);
+        preferenceData.setUserId(SignInActivity.this, userId);
+        preferenceData.setUserName(SignInActivity.this, userName);
+        preferenceData.setUserImage(SignInActivity.this, profileImage);
+        preferenceData.setUserLoggedInStatus(SignInActivity.this, true);
     }
 
     @Override

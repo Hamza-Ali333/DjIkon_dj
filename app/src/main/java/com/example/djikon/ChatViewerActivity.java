@@ -178,27 +178,24 @@ public class ChatViewerActivity extends AppCompatActivity {
 
     }
 
-    private void readMassages() {
+    private void readMassages(final String thisDJId, final String userId, String imageurl) {
         mChatModel = new ArrayList<>();
 
-        myRef.child("Massages").child(chatNodeName).addValueEventListener(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     mChatModel.clear();
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        // snapshot object is every child of "Restaurant" that match the filter
-                        //now here set data in to the field
+                        ChatModel chatModel = snapshot.getValue(ChatModel.class);
 
-                        mChatModel.add(new ChatModel(
-                                snapshot.child("sender").getValue(String.class),
-                                snapshot.child("receiver").getValue(String.class),
-                                snapshot.child("message").getValue(String.class),
-                                snapshot.child("time_stemp").getValue(String.class),
-                                snapshot.getKey()
-                                ));
+                        if(chatModel.getReceiver().equals(thisDJId) && chatModel.sender.equals(userId) ||
+                                chatModel.getReceiver().equals(userId) && chatModel.sender.equals(thisDJId)) {
 
+                            mChatModel.add(chatModel);
+
+                        }
                     }
                     mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
 
