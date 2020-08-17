@@ -33,7 +33,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,12 +62,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NetworkChangeReceiver mNetworkChangeReceiver;
 
     private FirebaseAuth mFirebaseAuth;
-    private Boolean firebaseLoginStatus =false;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference myRef;
 
-    String currentUserEmail;
-    String currentUserPassword;
-    Boolean isComeFromRegistrationActivity;
 
+    private String currentUserEmail;
+    private String currentUserPassword;
+    private Boolean isComeFromRegistrationActivity;
+
+    private PreferenceData preferenceData;
 
     @Override
     protected void onStart() {
@@ -68,14 +79,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mFirebaseAuth = FirebaseAuth.getInstance();
 
-        Intent i = getIntent();
-        isComeFromRegistrationActivity = i.getBooleanExtra("come_from_registration",false);
-        currentUserEmail = i.getStringExtra("email");
-        currentUserPassword = i.getStringExtra("password");
-        new RegisteringUserAlsoOnFirebase().execute(isComeFromRegistrationActivity);
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
+            //if User in not Register on FireBase then Register him
+        if (mFirebaseUser == null){
+            Intent i = getIntent();
+            isComeFromRegistrationActivity = i.getBooleanExtra("come_from_registration",false);
+            currentUserEmail = i.getStringExtra("email");
+            currentUserPassword = i.getStringExtra("password");
+            new RegisteringUserAlsoOnFirebase().execute(isComeFromRegistrationActivity);
+        }
     }
 
     @Override
@@ -83,6 +98,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createRefrencer();
+
+        myRef = FirebaseDatabase.getInstance().getReference("All_Users");
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -248,12 +265,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private  void userLogOut () {
-
         Retrofit retrofit= ApiClient.retrofit(BASEURL,this);
-
         JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
-
-
         Call<LoginRegistrationModel> call = jsonApiHolder.logout();
 
         call.enqueue(new Callback<LoginRegistrationModel>() {
@@ -320,56 +333,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void run() {
                         if (task.isSuccessful()) {
-
+                            mFirebaseAuth = FirebaseAuth.getInstance();
+                            mFirebaseUser = mFirebaseAuth.getCurrentUser();
                             Toast.makeText(MainActivity.this, "Yes Firebase Login", Toast.LENGTH_SHORT).show();
 
                         }  else {
-
-                            alertDialog = DialogsUtils.showAlertDialog(MainActivity.this,false,"Firebase Sign In","Email or Password in not correct");
+                            Toast.makeText(MainActivity.this, "User Not Found", Toast.LENGTH_SHORT).show();
+                            creatingUserOnFirebase(Email,Password);
                         }
                     }
                 });
-
             }
         });
+
     }
 
+    private void saveUserIDAndUIDonFirebase (){
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-    private void isUserLoginedInFireBase(){
-        try {
-            mFirebaseAuth = FirebaseAuth.getInstance();
-            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        Map<String, String> userData = new HashMap<>();
+        userData.put("id", preferenceData.getUserId(this));
+        userData.put("uid", mFirebaseUser.getUid());
 
-            if (mFirebaseUser != null){
-                firebaseLoginStatus = true;
-                Toast.makeText(this, "User Login", Toast.LENGTH_SHORT).show();
-            }else {
-                firebaseLoginStatus = false;
-                Toast.makeText(this, "Not Login", Toast.LENGTH_SHORT).show();
-            }
-
-        }catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        myRef.child("DJs").push().setValue(userData);
     }
+
 
     private class RegisteringUserAlsoOnFirebase extends AsyncTask<Boolean,Void,Void>{
-
         @Override
         protected Void doInBackground(Boolean... booleans) {
-
             if(booleans[0]){
                //isUserComeFromRegistrationActivity
                 creatingUserOnFirebase(currentUserEmail, currentUserPassword);
+                saveUserIDAndUIDonFirebase();
             }else {
                 //isUserComeFromSignIn
                 signInUserOnFirebase(currentUserEmail, currentUserPassword);
+
             }
 
             return null;
         }
 
     }
-
 
 }

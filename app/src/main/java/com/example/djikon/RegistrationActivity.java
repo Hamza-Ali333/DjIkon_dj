@@ -88,8 +88,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private JSONApiHolder jsonApiHolder;
 
-
-
     private NetworkChangeReceiver mNetworkChangeReceiver;
 
     int seconds;
@@ -132,7 +130,6 @@ public class RegistrationActivity extends AppCompatActivity {
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-                                Log.i("LoginActivity", response.toString());
                                 try {
                                     // Application code
                                     String email = response.getJSONObject().getString("email");
@@ -525,20 +522,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                         data.getFirstname()+" "+data.getLastname(),
                                         data.getProfile_image());
 
+                                lunchNextActivity();
 
-                                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
-
-
-                                Intent i = new Intent(RegistrationActivity.this,MainActivity.class);
-                                i.putExtra("come_from_registration",true);
-                                i.putExtra("email",edt_Email.getText().toString().trim());
-                                i.putExtra("password",edt_Password.getText().toString().trim());
-                                startActivity(i);
-                                finish();
                             } else {
                                 error.setVisibility(View.VISIBLE);
                                 progressDialog.dismiss();
-
                             }
                         }
 
@@ -653,6 +641,15 @@ public class RegistrationActivity extends AppCompatActivity {
         btn_GoogleSignIn = findViewById(R.id.btn_google_sign_up);
 
         radioButton = findViewById(R.id.radiobutton_term);
+    }
+
+    private void lunchNextActivity(){
+        Intent i = new Intent(RegistrationActivity.this,MainActivity.class);
+        i.putExtra("come_from_registration",true);
+        i.putExtra("email",edt_Email.getText().toString().trim());
+        i.putExtra("password",edt_Password.getText().toString().trim());
+        startActivity(i);
+        finish();
     }
 
     private void saveDataInPreferences(String userToken, String userId, String userName, String profileImage){

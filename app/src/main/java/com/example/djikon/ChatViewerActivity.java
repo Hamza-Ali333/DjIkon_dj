@@ -1,22 +1,23 @@
 package com.example.djikon;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.djikon.GlobelClasses.DialogsUtils;
 import com.example.djikon.GlobelClasses.PreferenceData;
@@ -52,6 +53,9 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 public class ChatViewerActivity extends AppCompatActivity {
 
@@ -64,7 +68,6 @@ public class ChatViewerActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
 
     private String chatNodeName;
     private DatabaseReference myRef;
@@ -160,7 +163,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                 if(!edt_Massage.getText().toString().isEmpty()){
                     if(!alreadyHaveChat){
                         //MAke Node for this new User if they are texting first time
-                       // UserChatListModel userChatListModel = new UserChatListModel(String.valueOf(djId), djName, imgProfileUrl);
+                        // UserChatListModel userChatListModel = new UserChatListModel(String.valueOf(djId), djName, imgProfileUrl);
                         UserChatListModel userChatListModel = new UserChatListModel();
                         userChatListModel.setId(String.valueOf(djId));
                         userChatListModel.setDj_Name(djName);
@@ -178,24 +181,27 @@ public class ChatViewerActivity extends AppCompatActivity {
 
     }
 
-    private void readMassages(final String thisDJId, final String userId, String imageurl) {
+    private void readMassages() {
         mChatModel = new ArrayList<>();
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.child("Massages").child(chatNodeName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
+                if (dataSnapshot.exists()){
                     mChatModel.clear();
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        ChatModel chatModel = snapshot.getValue(ChatModel.class);
+                        // snapshot object is every child of "Restaurant" that match the filter
+                        //now here set data in to the field
 
-                        if(chatModel.getReceiver().equals(thisDJId) && chatModel.sender.equals(userId) ||
-                                chatModel.getReceiver().equals(userId) && chatModel.sender.equals(thisDJId)) {
+                        mChatModel.add(new ChatModel(
+                                snapshot.child("sender").getValue(String.class),
+                                snapshot.child("receiver").getValue(String.class),
+                                snapshot.child("message").getValue(String.class),
+                                snapshot.child("time_stemp").getValue(String.class),
+                                snapshot.getKey()
+                        ));
 
-                            mChatModel.add(chatModel);
-
-                        }
                     }
                     mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
 
@@ -329,7 +335,7 @@ public class ChatViewerActivity extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               //nead to check this line what is the propose of this line
+                //nead to check this line what is the propose of this line
                 // String user= dataSnapshot.getValue(String.class);
                 if(notify){
                     sendNotification(Receiver,"CurrentUserName",msg);
@@ -354,7 +360,7 @@ public class ChatViewerActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(fuser.getUid(), R.mipmap.ic_launcher,userName+": "+messaage,"New Message",
+                    Data data = new Data(fuser.getUid(),R.mipmap.ic_launcher,userName+": "+messaage,"New Message",
                             userId);
 
                     Sender sender = new Sender(data,token.getToken());
