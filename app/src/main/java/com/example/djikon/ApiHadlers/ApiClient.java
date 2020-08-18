@@ -15,10 +15,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static Retrofit retrofit (String BASEURL, Context context){
+    public static Retrofit retrofit (Context context){
 
         PreferenceData preferenceData = new PreferenceData();
-        String Token = preferenceData.getUserToken(context);
+        final String Token = preferenceData.getUserToken(context);
+
+        final String BASE_URL = "http://ec2-52-91-44-156.compute-1.amazonaws.com/api/";
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor()
                 .setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -38,7 +40,7 @@ public class ApiClient {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASEURL)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();

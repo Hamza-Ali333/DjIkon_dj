@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
@@ -27,6 +28,7 @@ import com.example.djikon.GlobelClasses.PreferenceData;
 import com.example.djikon.Models.LoginRegistrationModel;
 import com.example.djikon.NavDrawerFragment.ChatListFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
@@ -48,9 +50,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String BASEURL ="http://ec2-54-161-107-128.compute-1.amazonaws.com/api/";
     private DrawerLayout drawer;
     private NavigationView navigationView;
 
@@ -65,12 +66,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
-
     private String currentUserEmail;
     private String currentUserPassword;
     private Boolean isComeFromRegistrationActivity;
 
     private PreferenceData preferenceData;
+    private Boolean LoginResult = false;
 
     @Override
     protected void onStart() {
@@ -80,17 +81,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
 
+        //if User in not Register on FireBase then Register him
+        try {
             mFirebaseAuth = FirebaseAuth.getInstance();
             mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-            //if User in not Register on FireBase then Register him
-        if (mFirebaseUser == null){
-            Intent i = getIntent();
-            isComeFromRegistrationActivity = i.getBooleanExtra("come_from_registration",false);
-            currentUserEmail = i.getStringExtra("email");
-            currentUserPassword = i.getStringExtra("password");
-            new RegisteringUserAlsoOnFirebase().execute(isComeFromRegistrationActivity);
+            if (mFirebaseUser == null) {
+                Intent i = getIntent();
+                isComeFromRegistrationActivity = i.getBooleanExtra("come_from_registration", false);
+                currentUserEmail = i.getStringExtra("email");
+                currentUserPassword = i.getStringExtra("password");
+                if (currentUserEmail != null && currentUserEmail != null)
+                    new RegisteringUserAlsoOnFirebase().execute(isComeFromRegistrationActivity);
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -98,8 +105,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createRefrencer();
-
-        myRef = FirebaseDatabase.getInstance().getReference("All_Users");
+        if (mFirebaseUser == null) {
+            Toast.makeText(this, "Not Found", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "Found", Toast.LENGTH_SHORT).show();
+        }
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -130,13 +140,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setItemIconTintList(null);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                  R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         //if the activity luch for the first time and saveInstante null then it set the fragment
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             getSupportActionBar().setTitle(R.string.myFeed);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MyFeedFragment()).commit();
@@ -149,12 +159,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else  {
+        } else {
             super.onBackPressed();
         }
     }
 
-    private void createRefrencer(){
+    private void createRefrencer() {
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
 
@@ -170,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(R.string.myFeed);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyFeedFragment()).commit();
-            break;
+                break;
 
             case R.id.nav_BookingRequest:
 
@@ -242,7 +252,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
 
-
             case R.id.nav_MyServices:
 
                 getSupportActionBar().setTitle(R.string.Services);
@@ -254,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_Logout:
 
-                progressDialog= DialogsUtils.showProgressDialog(this,"LogingOut","Please wait...");
+                progressDialog = DialogsUtils.showProgressDialog(this, "LogingOut", "Please wait...");
                 userLogOut();
                 break;
 
@@ -264,33 +273,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private  void userLogOut () {
-        Retrofit retrofit= ApiClient.retrofit(BASEURL,this);
+    private void userLogOut() {
+        Retrofit retrofit = ApiClient.retrofit(this);
         JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
         Call<LoginRegistrationModel> call = jsonApiHolder.logout();
 
         call.enqueue(new Callback<LoginRegistrationModel>() {
             @Override
             public void onResponse(Call<LoginRegistrationModel> call, Response<LoginRegistrationModel> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     PreferenceData.clearPrefrences(MainActivity.this);
                     mFirebaseAuth.getInstance().signOut();
                     progressDialog.dismiss();
-                    startActivity(new Intent(MainActivity.this,SignInActivity.class));
+                    startActivity(new Intent(MainActivity.this, SignInActivity.class));
                     finish();
 
-                }
-                else {
+                } else {
                     progressDialog.dismiss();
                     Toast.makeText(MainActivity.this, "please check Your Network", Toast.LENGTH_SHORT).show();
-                    Log.i("TAG", "onResponse: "+response.code());
+                    Log.i("TAG", "onResponse: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<LoginRegistrationModel> call, Throwable t) {
-                Log.i("TAG", "onFailure: "+t.getMessage());
-                alertDialog = DialogsUtils.showAlertDialog(MainActivity.this,false,"No Internet","Please Check Your Internet Connection");
+                Log.i("TAG", "onFailure: " + t.getMessage());
+                alertDialog = DialogsUtils.showAlertDialog(MainActivity.this, false, "No Internet", "Please Check Your Internet Connection");
 
             }
         });
@@ -300,82 +308,77 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void creatingUserOnFirebase(String Email, String Password) {
         //Creating DJ also on Firebase for Chat System
         mFirebaseAuth.createUserWithEmailAndPassword
-                (Email,Password)
+                (Email, Password)
                 .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                       runOnUiThread(new Runnable() {
-                           @Override
-                           public void run() {
-                               if (task.isSuccessful()) {
-                                   //store the Email adrress for sending otp on it
-                                   Toast.makeText(MainActivity.this, "User Successfully SignUp On Firebase", Toast.LENGTH_SHORT).show();
-                               }
-                               if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                   alertDialog = DialogsUtils.showAlertDialog(MainActivity.this,false,"Firebase","Email or Password in not correct");
-                               } else {
-                                   alertDialog = DialogsUtils.showAlertDialog(MainActivity.this,false,"Firebase Creating User","UnSuccessfull Registration");
-                               }
-                           }
-                       });
-
+                        if (task.isSuccessful()) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //store the Email adrress for sending otp on it
+                                    Toast.makeText(MainActivity.this, "Successfully SignUp", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }else {
+                            saveUserIDAndUIDonFirebase();
+                        }
                     }
                 });
     }
 
-    private void signInUserOnFirebase(String Email, String Password){
+    private void signInUserOnFirebase(String Email, String Password) {
         //SignIn DJ Also on FireBase For ChatSystem
         mFirebaseAuth.signInWithEmailAndPassword(Email,
                 Password).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (task.isSuccessful()) {
-                            mFirebaseAuth = FirebaseAuth.getInstance();
-                            mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                            Toast.makeText(MainActivity.this, "Yes Firebase Login", Toast.LENGTH_SHORT).show();
-
-                        }  else {
-                            Toast.makeText(MainActivity.this, "User Not Found", Toast.LENGTH_SHORT).show();
-                            creatingUserOnFirebase(Email,Password);
-                        }
-                    }
-                });
+                if (!task.isSuccessful()) {
+                    //if user is not exit in data base but successfully Sign in ON server then should create also on firebase
+                    creatingUserOnFirebase(Email, Password);
+                    Log.i("TAG", "onComplete: SignIn Done");
+                }else {
+                    saveUserIDAndUIDonFirebase();
+                }
             }
         });
+    }
+
+    private void saveUserIDAndUIDonFirebase() {
+
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            mFirebaseAuth = FirebaseAuth.getInstance();
+
+            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            myRef = FirebaseDatabase.getInstance().getReference("All_Users");
+
+            if (mFirebaseUser != null) {
+                Log.i("TAG", "saveUserIDAndUIDonFirebase: user found");
+                Map<String, String> userData = new HashMap<>();
+                userData.put("uid", mFirebaseUser.getUid());
+                userData.put("server_id", preferenceData.getUserId(this));
+
+                myRef.child("DJs").child(preferenceData.getUserId(this)).setValue(userData);
+            } else {
+                Log.i("TAG", "saveUserIDAndUIDonFirebase: no user found");
+            }
+
 
     }
 
-    private void saveUserIDAndUIDonFirebase (){
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        Map<String, String> userData = new HashMap<>();
-        userData.put("id", preferenceData.getUserId(this));
-        userData.put("uid", mFirebaseUser.getUid());
-
-        myRef.child("DJs").push().setValue(userData);
-    }
-
-
-    private class RegisteringUserAlsoOnFirebase extends AsyncTask<Boolean,Void,Void>{
+    private class RegisteringUserAlsoOnFirebase extends AsyncTask<Boolean, Void, Void> {
         @Override
         protected Void doInBackground(Boolean... booleans) {
-            if(booleans[0]){
-               //isUserComeFromRegistrationActivity
+            if (booleans[0]) {
+                //isUserComeFromRegistrationActivity
                 creatingUserOnFirebase(currentUserEmail, currentUserPassword);
-                saveUserIDAndUIDonFirebase();
-            }else {
+            } else {
                 //isUserComeFromSignIn
                 signInUserOnFirebase(currentUserEmail, currentUserPassword);
-
             }
 
             return null;
         }
-
     }
-
 }

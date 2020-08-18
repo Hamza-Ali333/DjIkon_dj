@@ -65,8 +65,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private static final String EMAIL = "email";
 
-    String BASEURL_DATA = "http://ec2-54-161-107-128.compute-1.amazonaws.com/api/";
-
     ProgressDialog progressDailoge;
     CallbackManager mCallbackManager;
     private EditText edt_Name, edt_LastName, edt_Email, edt_Password, edt_C_Password;
@@ -295,7 +293,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void signUpNewUser() {
 
-        retrofit = ApiClient.retrofit(BASEURL_DATA, this);
+        retrofit = ApiClient.retrofit(this);
         jsonApiHolder = retrofit.create(JSONApiHolder.class);
 
         Call<SuccessErrorModel> call = jsonApiHolder.registerUser(
