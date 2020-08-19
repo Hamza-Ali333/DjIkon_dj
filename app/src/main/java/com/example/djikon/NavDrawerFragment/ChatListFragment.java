@@ -108,16 +108,16 @@ public class ChatListFragment extends Fragment {
     private void getChatList(){
         //if get some data or not get the default value(No Email) form preferences
         if (!currentUserId.isEmpty() && !currentUserId.equals("No Id")) {
-            myRef.child("chatListOfUser").child(currentUserId).addValueEventListener(new ValueEventListener() {
+            myRef.child("chatListOfDj").child(currentUserId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()) {
                         mUserChatList.clear();
-
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             mUserChatList.add(new UserChatListModel(
                                     snapshot.child("id").getValue(String.class),
-                                    snapshot.child("dj_Name").getValue(String.class),
+                                    snapshot.child("user_Uid").getValue(String.class),
+                                    snapshot.child("User_Name").getValue(String.class),
                                     snapshot.child("imageUrl").getValue(String.class),
                                     snapshot.getKey()
                             ));

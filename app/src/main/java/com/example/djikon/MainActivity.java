@@ -313,14 +313,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //store the Email adrress for sending otp on it
-                                    Toast.makeText(MainActivity.this, "Successfully SignUp", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }else {
+
                             saveUserIDAndUIDonFirebase();
                         }
                     }
@@ -345,11 +338,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void saveUserIDAndUIDonFirebase() {
-
             mFirebaseAuth = FirebaseAuth.getInstance();
             mFirebaseAuth = FirebaseAuth.getInstance();
-
-            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            mFirebaseUser = mFirebaseAuth.getCurrentUser();
             myRef = FirebaseDatabase.getInstance().getReference("All_Users");
 
             if (mFirebaseUser != null) {

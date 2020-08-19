@@ -81,7 +81,7 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
        final UserChatListModel currentItem = mChat_Aera.get(position);
 
 
-       holder.txt_msg_Sender_Name.setText(currentItem.getDj_Name());
+       holder.txt_msg_Sender_Name.setText(currentItem.getUser_Name());
 
         if (!currentItem.getImageUrl().equals("no")) {
 
@@ -113,11 +113,11 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
            @Override
            public void onClick(View view) {
                Intent i = new Intent(view.getContext(), ChatViewerActivity.class);
-               i.putExtra("id",Integer.parseInt(currentItem.getId()));
-               i.putExtra("djName",currentItem.getDj_Name());
+               i.putExtra("id",Integer.parseInt(currentItem.getUser_Id()));
+               i.putExtra("djName",currentItem.getUser_Name());
                i.putExtra("imgProfileUrl",currentItem.getImageUrl());
                view.getContext().startActivity(i);
-               Log.i("Recycler", "onClick: id "+currentItem.getDj_Name());
+               Log.i("Recycler", "onClick: id "+currentItem.getUser_Name());
            }
        });
 

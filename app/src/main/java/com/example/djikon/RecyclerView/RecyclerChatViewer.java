@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.djikon.Models.ChatModel;
 import com.example.djikon.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,10 +29,9 @@ import java.util.List;
 public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.ViewHolder>{
 
     private List<ChatModel> mChat_model;
-    public  String currentUserId;
+    public  String currentDjUid;
 
     DatabaseReference myRef;
-    FirebaseUser fuser;
 
     public static final int MSG_TYPE_RIGHT = 0;
     public static final int MSG_TYPE_LEFT = 1;
@@ -57,10 +54,10 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
         }
     }
 
-//constructor
-    public RecyclerChatViewer(List<ChatModel> chat_modelList, String currentUserId, String chatMainNode) {
+    //constructor
+    public RecyclerChatViewer(List<ChatModel> chat_modelList,String currentDjUid, String chatMainNode) {
         this.mChat_model = chat_modelList;
-        this.currentUserId = currentUserId;
+        this.currentDjUid = currentDjUid;
         myRef = FirebaseDatabase.getInstance().getReference("Chats").child("Massages").child(chatMainNode);
     }
 
@@ -70,7 +67,7 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
         View v;
         if (viewType == MSG_TYPE_RIGHT) {
 
-             v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_right, parent, false);
+            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_right, parent, false);
 
         }else {
             v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_left, parent, false);
@@ -81,12 +78,12 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-       final ChatModel currentItem = mChat_model.get(position);
+        final ChatModel currentItem = mChat_model.get(position);
 
-       holder.txt_msg.setText(currentItem.getMessage());
-       holder.txt_Time.setText(currentItem.getTime_stemp());
+        holder.txt_msg.setText(currentItem.getMessage());
+        holder.txt_Time.setText(currentItem.getTime_stemp());
 
-       //image setting remaining
+        //image setting remaining
 
 
 /*       holder.rlt_ChatItem.setOnClickListener(new View.OnClickListener() {
@@ -100,42 +97,41 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
            }
        });*/
 
-holder.rlt_ChatItem.setOnLongClickListener(new View.OnLongClickListener() {
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public boolean onLongClick(View view) {
-        PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.rlt_ChatItem);
-        popupMenu.inflate(R.menu.chat_option);
-        popupMenu.setGravity(Gravity.END);
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        holder.rlt_ChatItem.setOnLongClickListener(new View.OnLongClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.delete:
-                        deleteNode(currentItem.getKey(),position);
+            public boolean onLongClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.rlt_ChatItem);
+                popupMenu.inflate(R.menu.chat_option);
+                popupMenu.setGravity(Gravity.END);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.delete:
+                                deleteNode(currentItem.getKey(),position);
 
-                        break;
-                    default:
-                        break;
-                }
+                                break;
+                            default:
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
                 return true;
+
+
             }
         });
-        popupMenu.show();
-        return true;
 
 
     }
-});
-
-
-}
 
     @Override
     public int getItemViewType(int position) {
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
-        if(mChat_model.get(position).getSender().equals(fuser.getUid())){
+        if(mChat_model.get(position).getSender().equals(currentDjUid)){
             return MSG_TYPE_RIGHT;
         }else {
             return MSG_TYPE_LEFT;

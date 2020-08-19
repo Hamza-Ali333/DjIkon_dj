@@ -12,7 +12,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,9 +52,6 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-
-import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 public class ChatViewerActivity extends AppCompatActivity {
 
@@ -72,7 +68,6 @@ public class ChatViewerActivity extends AppCompatActivity {
     private String chatNodeName;
     private DatabaseReference myRef;
 
-
     private Button btn_SendMsg;
     private EditText edt_Massage;
 
@@ -83,6 +78,7 @@ public class ChatViewerActivity extends AppCompatActivity {
     private Boolean alreadyHaveChat = false;
 
     int djId;
+    String djUid;
     String djName , imgProfileUrl;
     String userId;
 
@@ -94,13 +90,21 @@ public class ChatViewerActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         fuser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //getting data of the Receiver
+        Intent i = getIntent();
+        djId =i.getIntExtra("id",0);
+        djUid = i.getStringExtra("uid");
+        djName = i.getStringExtra("djName");
+        imgProfileUrl = i.getStringExtra("imgProfileUrl");
+        setDjProfile(imgProfileUrl);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_viewer);
-        createRefrences();
+        createReferences();
         setSupportActionBar(toolbar);
 
         apiService = Client.getClient("https://fcm.googleapis.com").create(APIService.class);
@@ -117,25 +121,15 @@ public class ChatViewerActivity extends AppCompatActivity {
             }
         });
 
+        toolBarTitle.setText(djName);//set DJ Name in tool bar
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         myRef = FirebaseDatabase.getInstance().getReference("Chats");
 
 
-        //getting email of the Receiver
-        Intent i = getIntent();
-        djId =i.getIntExtra("id",0);
-        djName = i.getStringExtra("djName");
-        imgProfileUrl = i.getStringExtra("imgProfileUrl");
-        toolBarTitle.setText(djName);//set DJ Name in tool bar
-        getSupportActionBar().setTitle(" ");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-        setDjProfile(imgProfileUrl);
-
         userId = PreferenceData.getUserId(this);
-
 
         chatNodeName = "djId_"+ djId +"_userId_"+userId;
         checkHaveChatOrNot();
@@ -165,13 +159,13 @@ public class ChatViewerActivity extends AppCompatActivity {
                         //MAke Node for this new User if they are texting first time
                         // UserChatListModel userChatListModel = new UserChatListModel(String.valueOf(djId), djName, imgProfileUrl);
                         UserChatListModel userChatListModel = new UserChatListModel();
-                        userChatListModel.setId(String.valueOf(djId));
-                        userChatListModel.setDj_Name(djName);
+                        userChatListModel.setUser_Id(String.valueOf(djId));
+                        userChatListModel.setUser_Name(djName);
                         userChatListModel.setImageUrl(imgProfileUrl);
                         myRef.child("chatListOfUser").child(userId).push().setValue(userChatListModel);
                     }
 
-                    sendMassage(edt_Massage.getText().toString(),userId,String.valueOf(djId),currentDateandTime);
+                    sendMassage(edt_Massage.getText().toString(),fuser.getUid(),djUid,currentDateandTime);
                 }else{
                     Toast.makeText(ChatViewerActivity.this, "You Can't Send Empty massage", Toast.LENGTH_SHORT).show();
                 }
@@ -206,8 +200,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                     mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
 
                     mLayoutManager = new LinearLayoutManager(ChatViewerActivity.this);
-                    mAdapter = new RecyclerChatViewer(mChatModel,userId,chatNodeName);
-
+                    mAdapter = new RecyclerChatViewer(mChatModel,fuser.getUid(),chatNodeName);
 
                     mRecyclerView.setLayoutManager(mLayoutManager);
                     mRecyclerView.setAdapter(mAdapter);
@@ -293,8 +286,7 @@ public class ChatViewerActivity extends AppCompatActivity {
     }
 
 
-    private void createRefrences() {
-
+    private void createReferences() {
         toolbar = findViewById(R.id.toolbar);
         toolBarTitle = findViewById(R.id.toolbar_title);
         currentUserProfile = findViewById(R.id.currentUserProfile);
@@ -338,7 +330,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                 //nead to check this line what is the propose of this line
                 // String user= dataSnapshot.getValue(String.class);
                 if(notify){
-                    sendNotification(Receiver,"CurrentUserName",msg);
+                    sendNotification(djUid,"Bilawal Dj",msg);
                 }
                 notify = false;
             }

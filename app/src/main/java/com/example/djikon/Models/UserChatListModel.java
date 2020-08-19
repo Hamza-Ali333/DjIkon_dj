@@ -2,26 +2,35 @@ package com.example.djikon.Models;
 
 public class UserChatListModel {
 
-    private  String id, dj_Name,  imageUrl,key;
+    private  String user_Id, user_Name, user_Uid ,imageUrl,key;
     private  String talkTime,last_send_msg;
 
     public UserChatListModel() {
     }
 
     //this constructor only for id , dJName, imageUrl
-    public UserChatListModel(String id, String dj_Name, String imageUrl,String key) {
-        this.id = id;
-        this.dj_Name = dj_Name;
+    public UserChatListModel(String user_Id, String user_Uid, String user_Name, String imageUrl, String key) {
+        this.user_Id = user_Id;
+        this.user_Uid = user_Uid;
+        this.user_Name = user_Name;
         this.imageUrl = imageUrl;
         this.key = key;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getUser_Uid() {
+        return user_Uid;
     }
 
-    public void setDj_Name(String dj_Name) {
-        this.dj_Name = dj_Name;
+    public void setUser_Uid(String user_Uid) {
+        this.user_Uid = user_Uid;
+    }
+
+    public void setUser_Id(String user_Id) {
+        this.user_Id = user_Id;
+    }
+
+    public void setUser_Name(String user_Name) {
+        this.user_Name = user_Name;
     }
 
     public void setImageUrl(String imageUrl) {
@@ -52,16 +61,16 @@ public class UserChatListModel {
         this.last_send_msg = last_send_msg;
     }
 
-    public String getDj_Name() {
-        return dj_Name;
+    public String getUser_Name() {
+        return user_Name;
     }
 
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public String getId() {
-        return id;
+    public String getUser_Id() {
+        return user_Id;
     }
 
 }
