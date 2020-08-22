@@ -21,15 +21,15 @@ public class UserChatListModel {
         return user_Uid;
     }
 
-    public void setUser_Uid(String user_Uid) {
+    public void setuser_Uid(String user_Uid) {
         this.user_Uid = user_Uid;
     }
 
-    public void setUser_Id(String user_Id) {
+    public void setuser_Id(String user_Id) {
         this.user_Id = user_Id;
     }
 
-    public void setUser_Name(String user_Name) {
+    public void setuser_Name(String user_Name) {
         this.user_Name = user_Name;
     }
 

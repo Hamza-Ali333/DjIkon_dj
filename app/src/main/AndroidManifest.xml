@@ -63,6 +63,10 @@
         <activity android:name=".UserProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity
+            android:name=".ChatViewerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".PurchaseServiceActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity android:name=".BlockedUserActivity" />

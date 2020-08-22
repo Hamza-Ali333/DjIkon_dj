@@ -93,7 +93,6 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
                         @Override
                         public void onSuccess() {
 
-
                         }
 
                         @Override
@@ -113,8 +112,9 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
            @Override
            public void onClick(View view) {
                Intent i = new Intent(view.getContext(), ChatViewerActivity.class);
-               i.putExtra("id",Integer.parseInt(currentItem.getUser_Id()));
-               i.putExtra("djName",currentItem.getUser_Name());
+               i.putExtra("user_Id",currentItem.getUser_Id());
+               i.putExtra("user_Uid",currentItem.getUser_Uid());
+               i.putExtra("user_Name",currentItem.getUser_Name());
                i.putExtra("imgProfileUrl",currentItem.getImageUrl());
                view.getContext().startActivity(i);
                Log.i("Recycler", "onClick: id "+currentItem.getUser_Name());

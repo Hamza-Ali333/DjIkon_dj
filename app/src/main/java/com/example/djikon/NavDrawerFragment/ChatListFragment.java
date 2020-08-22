@@ -115,10 +115,10 @@ public class ChatListFragment extends Fragment {
                         mUserChatList.clear();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             mUserChatList.add(new UserChatListModel(
-                                    snapshot.child("id").getValue(String.class),
+                                    snapshot.child("user_Id").getValue(String.class),
                                     snapshot.child("user_Uid").getValue(String.class),
-                                    snapshot.child("User_Name").getValue(String.class),
-                                    snapshot.child("imageUrl").getValue(String.class),
+                                    snapshot.child("user_Name").getValue(String.class),
+                                    snapshot.child("imgProfileUrl").getValue(String.class),
                                     snapshot.getKey()
                             ));
                         }

@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -46,8 +47,10 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,10 +80,11 @@ public class ChatViewerActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     private Boolean alreadyHaveChat = false;
 
-    int djId;
-    String djUid;
-    String djName , imgProfileUrl;
-    String userId;
+    private String userId;
+    private String userUid;
+    private String userName, imgProfileUrl;
+    private String CurrentDJId;
+    private String CurrentDJName;
 
     private APIService apiService;
     private FirebaseUser fuser;
@@ -90,14 +94,7 @@ public class ChatViewerActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         fuser = FirebaseAuth.getInstance().getCurrentUser();
-
-        //getting data of the Receiver
-        Intent i = getIntent();
-        djId =i.getIntExtra("id",0);
-        djUid = i.getStringExtra("uid");
-        djName = i.getStringExtra("djName");
-        imgProfileUrl = i.getStringExtra("imgProfileUrl");
-        setDjProfile(imgProfileUrl);
+        CurrentDJName = PreferenceData.getUserName(this);
     }
 
     @Override
@@ -110,28 +107,35 @@ public class ChatViewerActivity extends AppCompatActivity {
         apiService = Client.getClient("https://fcm.googleapis.com").create(APIService.class);
 
         //give the Current Time and Date
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm aa", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
         //tool bar UserProfile
         currentUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ChatViewerActivity.this, UserProfileActivity.class);
-                i.putExtra("id",djId);
+                i.putExtra("id", userId);
                 startActivity(i);
             }
         });
 
-        toolBarTitle.setText(djName);//set DJ Name in tool bar
+        toolBarTitle.setText(userName);//set DJ Name in tool bar
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        //getting data of the Receiver
+        Intent i = getIntent();
+        userId =i.getStringExtra("user_Id");
+        userUid = i.getStringExtra("user_Uid");
+        userName = i.getStringExtra("user_Name");
+        imgProfileUrl = i.getStringExtra("imgProfileUrl");
+        setDjProfile(imgProfileUrl);
+
         myRef = FirebaseDatabase.getInstance().getReference("Chats");
 
+        CurrentDJId = PreferenceData.getUserId(this);
 
-        userId = PreferenceData.getUserId(this);
-
-        chatNodeName = "djId_"+ djId +"_userId_"+userId;
+        chatNodeName = "djId_" +CurrentDJId  + "_userId_" +userId;
         checkHaveChatOrNot();
 
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -153,19 +157,15 @@ public class ChatViewerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 notify = true;
-                String currentDateandTime = sdf.format(new Date());
+                String currentDateAndTime = sdf.format(new Date());
                 if(!edt_Massage.getText().toString().isEmpty()){
                     if(!alreadyHaveChat){
                         //MAke Node for this new User if they are texting first time
                         // UserChatListModel userChatListModel = new UserChatListModel(String.valueOf(djId), djName, imgProfileUrl);
-                        UserChatListModel userChatListModel = new UserChatListModel();
-                        userChatListModel.setUser_Id(String.valueOf(djId));
-                        userChatListModel.setUser_Name(djName);
-                        userChatListModel.setImageUrl(imgProfileUrl);
-                        myRef.child("chatListOfUser").child(userId).push().setValue(userChatListModel);
+                        new CreateChatListOfUserAndDJ().execute();
                     }
 
-                    sendMassage(edt_Massage.getText().toString(),fuser.getUid(),djUid,currentDateandTime);
+                    sendMassage(edt_Massage.getText().toString(),fuser.getUid(), userUid,currentDateAndTime);
                 }else{
                     Toast.makeText(ChatViewerActivity.this, "You Can't Send Empty massage", Toast.LENGTH_SHORT).show();
                 }
@@ -285,19 +285,6 @@ public class ChatViewerActivity extends AppCompatActivity {
 
     }
 
-
-    private void createReferences() {
-        toolbar = findViewById(R.id.toolbar);
-        toolBarTitle = findViewById(R.id.toolbar_title);
-        currentUserProfile = findViewById(R.id.currentUserProfile);
-
-        pullToRefresh =findViewById(R.id.pullToRefresh);
-
-        edt_Massage = findViewById(R.id.edt_sendmsg);
-        btn_SendMsg = findViewById(R.id.btn_send_msg);
-        mRecyclerView = findViewById(R.id.chat_viewer_recycler);
-    }
-
     private void sendMassage (String Massage, String Sender, String Receiver,String sendTime) {
 
         //ChatModel chatModel = new ChatModel(Sender, Receiver, Massage,sendTime);
@@ -330,7 +317,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                 //nead to check this line what is the propose of this line
                 // String user= dataSnapshot.getValue(String.class);
                 if(notify){
-                    sendNotification(djUid,"Bilawal Dj",msg);
+                    sendNotification(userUid,"Bilawal Dj",msg);
                 }
                 notify = false;
             }
@@ -340,8 +327,6 @@ public class ChatViewerActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void sendNotification(String receiver,final String userName,final String messaage) {
@@ -353,7 +338,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
                     Data data = new Data(fuser.getUid(),R.mipmap.ic_launcher,userName+": "+messaage,"New Message",
-                            userId);
+                            userUid);
 
                     Sender sender = new Sender(data,token.getToken());
 
@@ -362,7 +347,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                     if(! response.isSuccessful()){
-                                        Toast.makeText(ChatViewerActivity.this, "Faild to send Notification", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ChatViewerActivity.this, "Failed to send Notification", Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -405,10 +390,46 @@ public class ChatViewerActivity extends AppCompatActivity {
 
     }
 
+    private void createReferences() {
+        toolbar = findViewById(R.id.toolbar);
+        toolBarTitle = findViewById(R.id.toolbar_title);
+        currentUserProfile = findViewById(R.id.currentUserProfile);
+
+        pullToRefresh =findViewById(R.id.pullToRefresh);
+
+        edt_Massage = findViewById(R.id.edt_sendmsg);
+        btn_SendMsg = findViewById(R.id.btn_send_msg);
+        mRecyclerView = findViewById(R.id.chat_viewer_recycler);
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private class CreateChatListOfUserAndDJ extends AsyncTask<Void,Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            //Saving this User into DJ Node for make list of chat with
+            UserChatListModel userChatListModel = new UserChatListModel();
+            userChatListModel.setuser_Id(String.valueOf(userId));
+            userChatListModel.setuser_Uid(userUid);
+            userChatListModel.setuser_Name(userName);
+            userChatListModel.setImageUrl(imgProfileUrl);
+            myRef.child("chatListOfDj").child(String.valueOf(CurrentDJId)).push().setValue(userChatListModel);
+
+            //Saving this DJ into User Node for make list of chat with
+            Map<String, String> userData = new HashMap<>();
+            userData.put("dj_Id", CurrentDJId);
+            userData.put("dj_Name",userName);
+            userData.put("dj_Uid", fuser.getUid());
+            userData.put("imageUrl",imgProfileUrl);
+            myRef.child("chatListOfUser").child(String.valueOf(userId)).push().setValue(userData);
+
+            return null;
+        }
     }
 
 }
