@@ -32,6 +32,6 @@ public class EditBlogActivity extends AppCompatActivity {
     }
 
     private void createRefrences(){
-        btn_UpDatePost = findViewById(R.id.btn_post);
+       // btn_UpDatePost = findViewById(R.id.btn_post);
     }
 }

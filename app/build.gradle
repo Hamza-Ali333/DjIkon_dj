@@ -76,4 +76,7 @@ dependencies {
     //loggin_intersepter
     implementation('com.squareup.okhttp3:logging-interceptor:4.8.0')
 
+    //image Cropper
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.5.+'
+
 }

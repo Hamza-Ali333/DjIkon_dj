@@ -1,6 +1,7 @@
 package com.example.djikon.NavDrawerFragment;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,10 +20,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.djikon.ApiHadlers.ApiClient;
 import com.example.djikon.ApiHadlers.JSONApiHolder;
 import com.example.djikon.Blog;
+import com.example.djikon.BlogFragment;
 import com.example.djikon.GlobelClasses.DialogsUtils;
 import com.example.djikon.Models.MyFeedBlogModel;
 import com.example.djikon.R;
 import com.example.djikon.RecyclerMyFeed;
+import com.example.djikon.ViewSongRequestFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +49,7 @@ public class MyFeedFragment extends Fragment {
     private AlertDialog alertDialog;
     private RelativeLayout rlt_progressBar;
 
+    private FloatingActionButton AddNewBlog;
 
     @Nullable
     @Override
@@ -66,6 +71,14 @@ public class MyFeedFragment extends Fragment {
             }
         });
 
+        AddNewBlog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new BlogFragment()).commit();
+            }
+        });
+
         return v;
     }
 
@@ -73,6 +86,7 @@ public class MyFeedFragment extends Fragment {
         mRecyclerView = v.findViewById(R.id.recyclerViewLatestFeed);
         pullToRefresh =v.findViewById(R.id.pullToRefresh);
         rlt_progressBar = v.findViewById(R.id.progressbar);
+        AddNewBlog = v.findViewById(R.id.fab);
     }
 
     private class DownloadThisArtistBlogs extends AsyncTask<Void,Void,Void> {
@@ -92,13 +106,6 @@ public class MyFeedFragment extends Fragment {
                 @Override
                 public void onResponse(Call<List<MyFeedBlogModel>> call, Response<List<MyFeedBlogModel>> response) {
 
-                   getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                        }
-                    });
                     if (!response.isSuccessful()) {
                         Log.i(TAG, "onResponse: "+response.code());
                         rlt_progressBar.setVisibility(View.GONE);
