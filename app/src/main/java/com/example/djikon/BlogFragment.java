@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,11 +24,15 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.loader.content.CursorLoader;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.File;
+
 import static android.app.Activity.RESULT_OK;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class BlogFragment extends Fragment {
@@ -40,6 +45,8 @@ public class BlogFragment extends Fragment {
     private static final int STORAFGE_REQUEST_CODE = 400;
     private static final int IMAGE_PICK_GALLARY_REQUEST_CODE = 1000;
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 2000;
+    private static final int REQUEST_TAKE_GALLERY_VIDEO = 2342;
+    private static final int REQUEST_TAKE_Audio = 1376;
 
     String cameraPermission[];
     String storagePermission[];
@@ -81,6 +88,28 @@ public class BlogFragment extends Fragment {
            }
        });
 
+       img_Video.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent intent = new Intent();
+               intent.setType("video/*");
+               intent.setAction(Intent.ACTION_GET_CONTENT);
+               startActivityForResult(Intent.createChooser(intent,"Select Video"),REQUEST_TAKE_GALLERY_VIDEO);
+
+           }
+       });
+
+
+       img_Audio.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent intent_upload = new Intent();
+               intent_upload.setType("audio/*");
+               intent_upload.setAction(Intent.ACTION_GET_CONTENT);
+               startActivityForResult(intent_upload,REQUEST_TAKE_Audio);
+           }
+       });
+
 
        return v;
     }
@@ -93,6 +122,7 @@ public class BlogFragment extends Fragment {
           img_Featured = v.findViewById(R.id.featuredimg);
           img_Gallery = v.findViewById(R.id.imgGallery);
           img_Audio = v.findViewById(R.id.imgAudio);
+          img_Video = v.findViewById(R.id.imgVideo);
     }
     private void showImageImportDailog(){
 
@@ -227,12 +257,80 @@ public class BlogFragment extends Fragment {
 
 
             }
+
+            //video
+            if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
+                Uri selectedImageUri = data.getData();
+
+                // OI FILE Manager
+                String filemanagerstring = selectedImageUri.getPath();
+
+                // MEDIA GALLERY
+                String selectedImagePath = getVideoPath(selectedImageUri);
+                if (selectedImagePath != null) {
+
+//                    Intent intent = new Intent(HomeActivity.this,
+//                            VideoplayAvtivity.class);
+//                    intent.putExtra("path", selectedImagePath);
+//                    startActivity(intent);
+                }
+            }
+
+            //audio
+            if (requestCode == REQUEST_TAKE_Audio){
+                Uri uri = data.getData();
+                try {
+                    String uriString = uri.toString();
+                    File myFile = new File(uriString);
+                    //    String path = myFile.getAbsolutePath();
+                    String displayName = null;
+                    String path2 = getAudioPath(uri);
+                    File f = new File(path2);
+                    long fileSizeInBytes = f.length();
+                    long fileSizeInKB = fileSizeInBytes / 1024;
+                    long fileSizeInMB = fileSizeInKB / 1024;
+                    if (fileSizeInMB > 8) {
+                        //customAlterDialog("Can't Upload ", "sorry file size is large");
+                    } else {
+                       // profilePicUrl = path2;
+                        //isPicSelect = true;
+                    }
+                } catch (Exception e) {
+                    //handle exception
+                    Toast.makeText(getContext(), "Unable to process,try again", Toast.LENGTH_SHORT).show();
+                }
+                String path1 = uri.getPath();
+            }
+
         }else {
             Toast.makeText(getContext(), "Image is not Selected", Toast.LENGTH_SHORT).show();
         }
 
 
     }//onActivity Result
+    // UPDATED!
+    public String getVideoPath(Uri uri) {
+        String[] projection = { MediaStore.Video.Media.DATA };
+        Cursor cursor = getContext().getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
+            // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } else
+            return null;
+    }
 
+   // This function is use for absolute path of audio file
+    private String getAudioPath(Uri uri) {
+        String[] data = {MediaStore.Audio.Media.DATA};
+        CursorLoader loader = new CursorLoader(getApplicationContext(), uri, data, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
 
 }
