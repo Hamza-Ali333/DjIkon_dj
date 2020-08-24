@@ -3,7 +3,7 @@ package com.example.djikon.ApiHadlers;
 import com.example.djikon.Models.AllArtistModel;
 import com.example.djikon.Models.BookingHistory;
 import com.example.djikon.Models.DjAndUserProfileModel;
-import com.example.djikon.Models.FeedBlogModel;
+import com.example.djikon.Models.MyFeedBlogModel;
 import com.example.djikon.Models.LoginRegistrationModel;
 import com.example.djikon.Models.RequestedSongsModel;
 import com.example.djikon.Models.SingleBlogDetailModel;
@@ -25,111 +25,111 @@ import retrofit2.http.Url;
 
 public interface JSONApiHolder {
 
-//    //will return all the blogs
-//    @GET ("blog")
-//    Call<List<FeedBlogModel>> getBlogs();
-//
-//    //will return All subscribed Artist  by current User
-//    @GET ("following")
-//    Call<List<SubscribeArtistModel>> getSubscribeArtist();
-//
-//    //will return All subscribed Artist  by current User
-//    @GET ("artistAll")
-//    Call<List<AllArtistModel>> getAllArtist();
-//
-//    //will return all the requested Song
-//    @GET ("requested_songs")
-//    Call<List<RequestedSongsModel>> getRequestedSongs();
-//
-//    //will return detail of a blog
-//    @GET
-//    Call<SingleBlogDetailModel> getSingleBlog(@Url String id);
-//
-//    //this will return full detail dj profile
-//    //same for  current user profile
-//    @GET
-//    Call<DjAndUserProfileModel> getDjOrUserProfile(@Url String id);
-//
-//
-//    //this will return full detail of a service
-//    @GET
-//    Call<SingleServiceModel> getSingleServieData(@Url String id);
-//
-//    //this will return current UserAll the booking
-//    @GET("bookingHistory")
-//    Call<List<BookingHistory>> getBookingHistory();
-//
-//
-//
-//
-//    @FormUrlEncoded
-//    @POST()
-//    Call <SuccessErrorModel> UpdateUserProfile(
-//            @Url String userid,
-//            @Field("image") String image,
-//            @Field("firstname") String firstname,
-//            @Field("lastname") String lastname,
-//            @Field("contact") String contact,
-//            @Field("gender") String gender,
-//            @Field("location") String location
-//    );
-//
-//
-//        @Multipart
-//        @POST()
-//        Call<SuccessErrorModel> uploadImage(
-//                @Url String userid,
-//                @Part MultipartBody.Part image
-//        );
-//
-//
-//
-//
-//    @FormUrlEncoded
-//    @POST()
-//    Call<SuccessErrorModel> postComment(@Url String blogId,
-//                                        @Field("body") String body
-//    );
-//
-//
-    //    @FormUrlEncoded
-//    @POST()
-//    Call <SuccessErrorModel>  LikeUnlike(
-//            @Url String blogid,
-//            @Field("status") Integer likeStatus
-//
-//    );
-//
-//
-//    @POST()
-//    Call <SuccessErrorModel>  followUnFollowArtist(
-//            @Url String artistId
-//    );
+    //will return all the blogs
+    @GET ("artist_blogs")
+    Call<List<MyFeedBlogModel>> getBlogs();
+
+    //will return All subscribed Artist  by current User
+    @GET ("following")
+    Call<List<SubscribeArtistModel>> getSubscribeArtist();
+
+    //will return All subscribed Artist  by current User
+    @GET ("artistAll")
+    Call<List<AllArtistModel>> getAllArtist();
+
+    //will return all the requested Song
+    @GET ("requested_songs")
+    Call<List<RequestedSongsModel>> getRequestedSongs();
+
+    //will return detail of a blog
+    @GET
+    Call<SingleBlogDetailModel> getSingleBlog(@Url String id);
+
+    //this will return full detail dj profile
+    //same for  current user profile
+    @GET
+    Call<DjAndUserProfileModel> getDjOrUserProfile(@Url String id);
+
+
+    //this will return full detail of a service
+    @GET
+    Call<SingleServiceModel> getSingleServieData(@Url String id);
+
+    //this will return current UserAll the booking
+    @GET("bookingHistory")
+    Call<List<BookingHistory>> getBookingHistory();
 
 
 
-//    @FormUrlEncoded
-//    @POST()
-//    Call<SuccessErrorModel> postBooking(
-//            @Url String id,
-//            @Field("name") String Name,
-//            @Field("email") String Email,
-//            @Field("phone") String Phone,
-//            @Field("address") String Address,
-//            @Field("start_date") String Start_Date,
-//            @Field("end_date") String End_Date,
-//            @Field("start_time") String Start_Time,
-//            @Field("end_time") String End_Time,
-//            @Field("price") String PaidAmount
-//    );
 
-    //    @FormUrlEncoded
-//    @POST()
-//    Call<SuccessErrorModel> postSongRequest(
-//            @Url String id,
-//            @Field("name") String your_Name,
-//            @Field("song_name") String Song_Name
-//    );
+    @FormUrlEncoded
+    @POST()
+    Call <SuccessErrorModel> UpdateUserProfile(
+            @Url String userid,
+            @Field("image") String image,
+            @Field("firstname") String firstname,
+            @Field("lastname") String lastname,
+            @Field("contact") String contact,
+            @Field("gender") String gender,
+            @Field("location") String location
+    );
+
+
+        @Multipart
+        @POST()
+        Call<SuccessErrorModel> uploadImage(
+                @Url String userid,
+                @Part MultipartBody.Part image
+        );
+
+
+
+
+    @FormUrlEncoded
+    @POST()
+    Call<SuccessErrorModel> postComment(@Url String blogId,
+                                        @Field("body") String body
+    );
+
+
+        @FormUrlEncoded
+    @POST()
+    Call <SuccessErrorModel>  LikeUnlike(
+            @Url String blogid,
+            @Field("status") Integer likeStatus
+
+    );
+
+
+    @POST()
+    Call <SuccessErrorModel>  followUnFollowArtist(
+            @Url String artistId
+    );
+
+
+
+    @FormUrlEncoded
+    @POST()
+    Call<SuccessErrorModel> postBooking(
+            @Url String id,
+            @Field("name") String Name,
+            @Field("email") String Email,
+            @Field("phone") String Phone,
+            @Field("address") String Address,
+            @Field("start_date") String Start_Date,
+            @Field("end_date") String End_Date,
+            @Field("start_time") String Start_Time,
+            @Field("end_time") String End_Time,
+            @Field("price") String PaidAmount
+    );
+
+        @FormUrlEncoded
+    @POST()
+    Call<SuccessErrorModel> postSongRequest(
+            @Url String id,
+            @Field("name") String your_Name,
+            @Field("song_name") String Song_Name
+    );
 
                 /*Login And Registration Model*/
     @FormUrlEncoded

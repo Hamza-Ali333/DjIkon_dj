@@ -350,7 +350,6 @@ public class ChatViewerActivity extends AppCompatActivity {
                                         Toast.makeText(ChatViewerActivity.this, "Failed to send Notification", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-
                                 @Override
                                 public void onFailure(Call<MyResponse> call, Throwable t) {
 

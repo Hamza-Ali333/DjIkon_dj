@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.djikon.Models.MyFeedBlogModel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -28,8 +30,9 @@ import java.util.List;
 
 public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHolder> {
 
-    private List<Blog> mBlogs;
+    private List<MyFeedBlogModel> mBlogs;
     private Context context;
+
 
 //for custom menu
     private PopupWindow mDropdown = null;
@@ -40,11 +43,16 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
 
         public ImageView img_uploaderProfile, img_feedImage, img_Chat, img_Likes, img_menu;
 
+        public ProgressBar progressBarProfile, progressBarFeed;
+
 
         public TextView txt_uploaderName, txt_uploadTime, txt_Description, txt_ReadMore, txt_LikesNo, txt_ChatNo;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            progressBarProfile = itemView.findViewById(R.id.progressBarProfile);
+            progressBarFeed = itemView.findViewById(R.id.progressBarFead);
+
             img_uploaderProfile = itemView.findViewById(R.id.img_uploaderImage);
             img_feedImage = itemView.findViewById(R.id.img_feedImage);
             img_Likes = itemView.findViewById(R.id.img_likes);
@@ -65,7 +73,7 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
 
 
     //constructor
-    public RecyclerMyFeed(List<Blog> blogs, Context context) {
+    public RecyclerMyFeed(List<MyFeedBlogModel> blogs, Context context) {
         this.context = context;
         this.mBlogs = blogs;
     }
@@ -81,31 +89,57 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Blog currentItem = mBlogs.get(position);
+        MyFeedBlogModel currentItem = mBlogs.get(position);
 
         holder.img_feedImage.setImageResource(R.drawable.rectangle2);
 
         holder.txt_uploaderName.setText(currentItem.getTitle());
-        //   holder.txt_uploadTime.setText(currentItem.getTxt_UploadTime());
+        holder.txt_uploadTime.setText(currentItem.getCreated_at());
         holder.txt_Description.setText(currentItem.getDescription());
-        holder.txt_LikesNo.setText(currentItem.getLikes());
-        holder.txt_ChatNo.setText(currentItem.getVideo());
+        holder.txt_LikesNo.setText(String.valueOf(currentItem.getLikes()));
+        holder.txt_ChatNo.setText(String.valueOf(currentItem.getComments()));
 
 
+//featured Image
         if (!currentItem.getPhoto().isEmpty()) {
+            holder.progressBarFeed.setVisibility(View.VISIBLE);
             Picasso.get().load((currentItem.getPhoto()))
-                    .placeholder(R.drawable.ic_doctor)
-                    .into(holder.img_uploaderProfile, new Callback() {
+                    .into(holder.img_feedImage, new Callback() {
                         @Override
                         public void onSuccess() {
-                            Toast.makeText(context, "Downloaded", Toast.LENGTH_SHORT).show();
+                            holder.progressBarFeed.setVisibility(View.GONE);
                         }
 
                         @Override
                         public void onError(Exception e) {
-                            Toast.makeText(context, "Something Happend Wrong", Toast.LENGTH_SHORT).show();
+                            holder.progressBarFeed.setVisibility(View.GONE);
                         }
                     });
+        }
+
+        //Artist Image
+            if (!currentItem.getArtist_image().isEmpty() && !currentItem.getArtist_image().equals("no")) {
+                holder.progressBarProfile.setVisibility(View.VISIBLE);
+                Picasso.get().load((currentItem.getArtist_image()))
+                        .placeholder(R.drawable.ic_doctor)
+                        .into(holder.img_uploaderProfile, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                holder.progressBarProfile.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                holder.progressBarProfile.setVisibility(View.GONE);
+                            }
+                        });
+
+                //0 means unlik
+                if(currentItem.getLike_status()==0){
+                    holder.img_Likes.setImageResource(R.drawable.ic_unlike);
+                }else {
+                    holder.img_Likes.setImageResource(R.drawable.ic_heart_fill);
+                }
 
 
             holder.img_menu.setOnClickListener(new View.OnClickListener() {
@@ -134,8 +168,9 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
                         }
                     });
                     popupMenu.show();
+
                     //custom popupmenu
-                    // initiatePopupWindow(context,holder);
+                    //initiatePopupWindow(context,holder);
                 }
             });
 

@@ -1,23 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pullToRefresh"
     android:background="#000">
-
-<!--    <TextView-->
-<!--        android:id="@+id/text"-->
-<!--        android:textColor="#fff"-->
-<!--        android:text="This is you xml"-->
-<!--        android:textSize="18sp"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"/>-->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewLatestFeed"
-        android:padding="12dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:scrollbars="vertical"
-        android:background="#000000"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewLatestFeed"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:scrollbars="vertical"
+            android:background="#000000"
+            android:layout_height="match_parent"/>
 
-</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/progressbar"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ProgressBar
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:secondaryProgress="0"
+                android:indeterminateDrawable="@drawable/progressbar"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loading.."
+                android:layout_centerInParent="true"
+                android:textColor="#fff"/>
+        </RelativeLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            app:srcCompat="@drawable/ic_add"
+            android:background="@color/colorBlue"
+            app:backgroundTint="@color/colorBlue"
+            app:fabSize="normal"
+            />
+
+    </RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

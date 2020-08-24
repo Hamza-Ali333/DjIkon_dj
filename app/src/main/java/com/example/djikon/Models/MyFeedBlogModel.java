@@ -1,6 +1,6 @@
 package com.example.djikon.Models;
 
-public class FeedBlogModel {
+public class MyFeedBlogModel {
 
         private Integer id;
         private Integer artist_profile_id;
@@ -16,8 +16,8 @@ public class FeedBlogModel {
 
         private String single_blog_link;
 
-        public FeedBlogModel(Integer id, Integer artist_profile_id, String title, String description, String photo, Integer likes, String created_at, String likeLink,
-                             String artistImage, String singleBlogLink, Integer comments, Integer like_status) {
+        public MyFeedBlogModel(Integer id, Integer artist_profile_id, String title, String description, String photo, Integer likes, String created_at, String likeLink,
+                               String artistImage, String singleBlogLink, Integer comments, Integer like_status) {
             super();
             this.id = id;
             this.artist_profile_id = artist_profile_id;

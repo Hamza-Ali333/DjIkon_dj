@@ -25,7 +25,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
        // preferenceData.clearPrefrences(this);
-       // mFirebaseAuth.getInstance().signOut();
+        //mFirebaseAuth.getInstance().signOut();
 
         getSupportActionBar().hide();
         new Handler().postDelayed(new Runnable() {
