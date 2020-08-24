@@ -346,7 +346,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                             .enqueue(new Callback<MyResponse>() {
                                 @Override
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                    if(! response.isSuccessful()){
+                                    if(!response.isSuccessful()){
                                         Toast.makeText(ChatViewerActivity.this, "Failed to send Notification", Toast.LENGTH_SHORT).show();
                                     }
                                 }
