@@ -25,6 +25,7 @@ import com.example.djikon.GlobelClasses.DialogsUtils;
 import com.example.djikon.GlobelClasses.NetworkChangeReceiver;
 import com.example.djikon.GlobelClasses.PreferenceData;
 import com.example.djikon.Models.LoginRegistrationModel;
+import com.example.djikon.NavDrawerFragment.BlogFragment;
 import com.example.djikon.NavDrawerFragment.ChatListFragment;
 import com.example.djikon.NavDrawerFragment.MyFeedFragment;
 import com.google.android.gms.tasks.OnCompleteListener;

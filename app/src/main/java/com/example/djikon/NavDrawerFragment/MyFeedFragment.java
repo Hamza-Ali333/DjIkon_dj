@@ -1,7 +1,6 @@
 package com.example.djikon.NavDrawerFragment;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,16 +18,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.djikon.ApiHadlers.ApiClient;
 import com.example.djikon.ApiHadlers.JSONApiHolder;
-import com.example.djikon.Blog;
-import com.example.djikon.BlogFragment;
 import com.example.djikon.GlobelClasses.DialogsUtils;
 import com.example.djikon.Models.MyFeedBlogModel;
 import com.example.djikon.R;
 import com.example.djikon.RecyclerMyFeed;
-import com.example.djikon.ViewSongRequestFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -129,11 +124,10 @@ public class MyFeedFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            alertDialog = DialogsUtils.showAlertDialog(getContext(),false,"No Internet","Please Check Your Internet Connection");
+                            alertDialog = DialogsUtils.showAlertDialog(getContext(),false,"No Server Connection",t.getMessage());
                             rlt_progressBar.setVisibility(View.INVISIBLE);
                         }
                     });
-
                 }
             });
             return null;

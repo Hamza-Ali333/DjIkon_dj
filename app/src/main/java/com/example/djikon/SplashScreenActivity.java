@@ -24,7 +24,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         PreferenceData preferenceData = new PreferenceData();
 
 
-       // preferenceData.clearPrefrences(this);
+        //preferenceData.clearPrefrences(this);
         //mFirebaseAuth.getInstance().signOut();
 
         getSupportActionBar().hide();

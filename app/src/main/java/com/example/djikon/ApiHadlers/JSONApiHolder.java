@@ -14,6 +14,7 @@ import com.example.djikon.Models.SuccessErrorModel;
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -61,6 +62,14 @@ public interface JSONApiHolder {
 
 
 
+    //Post Methods
+    @Multipart
+    @POST("blog")
+    Call <SuccessErrorModel> AddBlog(
+            @Part("title") RequestBody  title,
+            @Part("description") RequestBody description,
+            @Part("photo") MultipartBody.Part image
+    );
 
     @FormUrlEncoded
     @POST()
@@ -123,7 +132,7 @@ public interface JSONApiHolder {
             @Field("price") String PaidAmount
     );
 
-        @FormUrlEncoded
+    @FormUrlEncoded
     @POST()
     Call<SuccessErrorModel> postSongRequest(
             @Url String id,

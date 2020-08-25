@@ -1,4 +1,4 @@
-package com.example.djikon;
+package com.example.djikon.NavDrawerFragment;
 
 import android.Manifest;
 import android.app.Activity;
@@ -8,9 +8,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +30,26 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.loader.content.CursorLoader;
 
+import com.example.djikon.ApiHadlers.ApiClient;
+import com.example.djikon.ApiHadlers.JSONApiHolder;
+import com.example.djikon.Models.MyFeedBlogModel;
+import com.example.djikon.Models.SuccessErrorModel;
+import com.example.djikon.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -38,19 +58,20 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class BlogFragment extends Fragment {
 
     private EditText edt_Title, edt_Discription;
-    private ImageView img_Video, img_Gallery, img_Camera, img_Featured, img_Audio;
+    private ImageView img_Video, img_Gallery, img_Camera, img_Featured, img_Audio, img_Selected;
     private Button btn_Post;
 
     private static final int CAMERA_REQUEST_CODE = 300;
-    private static final int STORAFGE_REQUEST_CODE = 400;
-    private static final int IMAGE_PICK_GALLARY_REQUEST_CODE = 1000;
+    private static final int STORAGE_REQUEST_CODE = 400;
+    private static final int IMAGE_PICK_GALLERY_REQUEST_CODE = 1000;
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 2000;
     private static final int REQUEST_TAKE_GALLERY_VIDEO = 2342;
     private static final int REQUEST_TAKE_Audio = 1376;
 
-    String cameraPermission[];
-    String storagePermission[];
-    Uri Image_uri;
+    private String cameraPermission[];
+    private String storagePermission[];
+    private Uri Image_uri;
+    private Bitmap bitmap;
 
     private AlertDialog alertDialog;
 
@@ -110,6 +131,13 @@ public class BlogFragment extends Fragment {
            }
        });
 
+       btn_Post.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               new UploadBlogToServer().execute();
+           }
+       });
+
 
        return v;
     }
@@ -123,6 +151,9 @@ public class BlogFragment extends Fragment {
           img_Gallery = v.findViewById(R.id.imgGallery);
           img_Audio = v.findViewById(R.id.imgAudio);
           img_Video = v.findViewById(R.id.imgVideo);
+          img_Selected = v.findViewById(R.id.image);
+
+        btn_Post = v.findViewById(R.id.btn_publish);
     }
     private void showImageImportDailog(){
 
@@ -177,7 +208,7 @@ public class BlogFragment extends Fragment {
     }
 
     private void requestPermissionStorage(){
-        ActivityCompat.requestPermissions(getActivity(),storagePermission,STORAFGE_REQUEST_CODE);
+        ActivityCompat.requestPermissions(getActivity(),storagePermission, STORAGE_REQUEST_CODE);
     }
 
     private void pickCamera(){
@@ -197,7 +228,7 @@ public class BlogFragment extends Fragment {
         //  intent for the Image from Gallary
         Intent gallery = new Intent(Intent.ACTION_PICK);
         gallery.setType("image/*");
-        startActivityForResult(gallery,IMAGE_PICK_GALLARY_REQUEST_CODE);
+        startActivityForResult(gallery, IMAGE_PICK_GALLERY_REQUEST_CODE);
     }
 
 
@@ -217,7 +248,7 @@ public class BlogFragment extends Fragment {
                 }
                 break;
 
-            case STORAFGE_REQUEST_CODE:
+            case STORAGE_REQUEST_CODE:
                 if(grantResults.length > 0){
                     boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if(storageAccepted){
@@ -244,16 +275,27 @@ public class BlogFragment extends Fragment {
                         .start(getContext(), this);
             }
             //from gallary
-            if(requestCode == IMAGE_PICK_GALLARY_REQUEST_CODE){
+            if(requestCode == IMAGE_PICK_GALLERY_REQUEST_CODE){
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .start(getContext(), this);
             }
+
             //getcroped Image
             if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
 
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 Image_uri = result.getUri();
+                img_Featured.setImageURI(Image_uri);
+
+                //Image_uri = data.getData();//data is getting null have to check
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Image_uri);
+                    //new UploadBlogToServer().execute();
+                    //img_Profile.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    Log.i("TAG", "onActivityResult: "+e.getMessage());
+                }
 
 
             }
@@ -308,6 +350,22 @@ public class BlogFragment extends Fragment {
 
 
     }//onActivity Result
+
+    //compress the image and decode it
+    private  String imageToString () {
+        //this veriable will contain all the bytes
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        //compress the bitmap into jpg formate
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100, byteArrayOutputStream);
+        //convert the byte array output stream into array of byte
+        byte[] imageByte = byteArrayOutputStream.toByteArray();
+
+        //now encode the byte array
+        return Base64.encodeToString(imageByte,Base64.DEFAULT);
+    }
+
+
     // UPDATED!
     public String getVideoPath(Uri uri) {
         String[] projection = { MediaStore.Video.Media.DATA };
@@ -331,6 +389,50 @@ public class BlogFragment extends Fragment {
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    private class UploadBlogToServer extends AsyncTask<Void,Void,Void> {
+        Call<SuccessErrorModel> call;
+        String image;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //image = imageToString();
+            // String path = Image_uri.getPath();
+            File file = new File(Image_uri.getPath());
+
+
+            Retrofit retrofit = ApiClient.retrofit(getContext());
+            JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
+
+//           call = jsonApiHolder.AddBlog(fullName,description,image);
+
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            call.enqueue(new Callback<SuccessErrorModel>() {
+                @Override
+                public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
+                    if (response.isSuccessful()) {
+                        Log.i("TAG", "onResponse: Uploaded Successfully");
+                    } else {
+                        Log.i("TAG", "onResponse: Uploading Failed");
+                    }
+                }
+                @Override
+                public void onFailure(Call<SuccessErrorModel> call, Throwable t) {
+                    Log.i("TAG", "onResponse: Uploading Error  "+ t.getMessage());
+                }
+            });
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Toast.makeText(getContext(), "Working Done", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
