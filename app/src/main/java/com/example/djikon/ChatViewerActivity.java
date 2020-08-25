@@ -309,15 +309,13 @@ public class ChatViewerActivity extends AppCompatActivity {
             }
         });
 
-        final String msg = Massage;
-
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //nead to check this line what is the propose of this line
                 // String user= dataSnapshot.getValue(String.class);
                 if(notify){
-                    sendNotification(userUid,"Bilawal Dj",msg);
+                    sendNotification(userUid,"Sender Bilawal",Massage);
                 }
                 notify = false;
             }
@@ -340,13 +338,14 @@ public class ChatViewerActivity extends AppCompatActivity {
                     Data data = new Data(fuser.getUid(),R.mipmap.ic_launcher,userName+": "+messaage,"New Message",
                             userUid);
 
-                    Sender sender = new Sender(data,token.getToken());
+                    Sender sender = new Sender(data, token.getToken());
 
                     apiService.sendNotification(sender)
                             .enqueue(new Callback<MyResponse>() {
                                 @Override
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                     if(!response.isSuccessful()){
+                                        if(response.body().success != 1)
                                         Toast.makeText(ChatViewerActivity.this, "Failed to send Notification", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -377,7 +376,6 @@ public class ChatViewerActivity extends AppCompatActivity {
                         mRecyclerView.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-
                                 mRecyclerView.smoothScrollToPosition(
                                         mRecyclerView.getAdapter().getItemCount());
                             }
@@ -386,7 +384,6 @@ public class ChatViewerActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
 
     private void createReferences() {
