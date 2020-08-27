@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.example.djikon.GlobelClasses.DialogsUtils;
 import com.example.djikon.GlobelClasses.PreferenceData;
 import com.example.djikon.ResponseModels.MyBookingRequests;
 import com.example.djikon.ResponseModels.SuccessErrorModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -31,23 +34,24 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
 
     private List<MyBookingRequests> mBookingRequesterArrayList;
     private Context context;
+    private static final String ImageUrl = "http://ec2-52-91-44-156.compute-1.amazonaws.com/";
 
 
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
 
-        public ImageView img_Requester_Profile,img_accept;
+        public ImageView img_Requester_Profile, img_Accept,img_Cancel;
         public TextView txt_Requester_Name, txt_Service_Name, txt_Discount, txt_Service_Charges,
                 txt_Start_Date, txt_End_Date, txt_Address;
+        public ProgressBar progressBar;
 
         public TextView txt_Accept, txt_Message, txt_Cancel;
-
-
 
         public ViewHolder(View itemView){
             super(itemView);
             img_Requester_Profile = itemView.findViewById(R.id.img_requester);
-            img_accept = itemView.findViewById(R.id.accept_check);
+            img_Accept = itemView.findViewById(R.id.accept_check);
+            img_Cancel = itemView.findViewById(R.id.img_cancle);
 
             txt_Requester_Name = itemView.findViewById(R.id.txt_requester_name);
             txt_Service_Name = itemView.findViewById(R.id.txt_sirvice_name);
@@ -60,6 +64,7 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
             txt_Message = itemView.findViewById(R.id.txt_message);
             txt_Cancel = itemView.findViewById(R.id.txt_cancel);
 
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
     }
 
@@ -82,12 +87,24 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final MyBookingRequests currentItem = mBookingRequesterArrayList.get(position);
+        if(!currentItem.getUser_profile_image().equals("no") &&
+                currentItem.getUser_profile_image() != null) {
+            Picasso.get().load((ImageUrl+currentItem.getUser_profile_image()))
+                    .into(holder.img_Requester_Profile, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            holder.progressBar.setVisibility(View.GONE);
+                        }
 
-      // holder.img_Requester_Profile.setImageResource(currentItem.getRequester_image());
+                        @Override
+                        public void onError(Exception e) {
+                            holder.progressBar.setVisibility(View.GONE);
+                        }
+                    });
+        }
 
        holder.txt_Requester_Name.setText(currentItem.getName());
        holder.txt_Service_Name.setText(currentItem.getService_name());
-
 
        holder.txt_Service_Charges.setText(currentItem.getPrice());
        holder.txt_Start_Date.setText(currentItem.getStart_date());
@@ -107,9 +124,31 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
        holder.txt_Accept.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               Toast.makeText(view.getContext(), "This Feature Will Available Soon", Toast.LENGTH_SHORT).show();
+               new GetAllBookingFromServer(1).execute();
+               Toast.makeText(context, "get", Toast.LENGTH_SHORT).show();
            }
        });
+
+        holder.img_Accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new GetAllBookingFromServer(1).execute();
+            }
+        });
+
+        holder.txt_Cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new GetAllBookingFromServer(2).execute();
+            }
+        });
+
+        holder.img_Cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new GetAllBookingFromServer(2).execute();
+            }
+        });
 }
 
     @Override
@@ -118,11 +157,11 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
     }
 
 
-    private class GetAllbookingFromServer extends AsyncTask<Void,Void,Void> {
+    private class GetAllBookingFromServer extends AsyncTask<Void,Void,Void> {
         AlertDialog alertDialog;
         int status;
 
-        public GetAllbookingFromServer(int status) {
+        public GetAllBookingFromServer(int status) {
             this.status = status;
         }
 
@@ -139,7 +178,7 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
                 @Override
                 public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
                     if(response.isSuccessful()){
-
+                        Log.i("TAG", "onResponse: Done");
                     }else {
                         ((Activity)context).runOnUiThread(new Runnable() {
                             @Override

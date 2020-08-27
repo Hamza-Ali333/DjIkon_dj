@@ -58,7 +58,7 @@ public interface JSONApiHolder {
 
     //this will return current UserAll the booking
     @GET("bookings")
-    Call<MyBookingRequests> getBookings();
+    Call<List<MyBookingRequests>> getBookings();
 
 
     //Post Methods
@@ -180,7 +180,6 @@ public interface JSONApiHolder {
             @Field("email") String email,
             @Field("otp") Integer otp
     );
-
 
     @FormUrlEncoded
     @POST("send_otp")

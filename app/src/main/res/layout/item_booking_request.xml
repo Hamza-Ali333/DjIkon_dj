@@ -30,6 +30,16 @@
                 android:scaleType="centerCrop"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="61dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:indeterminateDrawable="@drawable/progressbar"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -52,10 +62,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/roundshape"
-            android:paddingLeft="6dp"
-            android:paddingTop="3dp"
-            android:paddingRight="6dp"
-            android:paddingBottom="3dp"
+            android:gravity="center"
+            android:paddingLeft="9dp"
+            android:paddingTop="4dp"
+            android:paddingRight="9dp"
+            android:paddingBottom="4dp"
             android:text="Service Name"
             android:textColor="#fff"
             android:textSize="14sp"
@@ -68,11 +79,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
+            android:gravity="center"
             android:background="@drawable/roundshape"
-            android:paddingLeft="6dp"
-            android:paddingTop="3dp"
-            android:paddingRight="6dp"
-            android:paddingBottom="3dp"
+            android:paddingLeft="9dp"
+            android:paddingTop="4dp"
+            android:paddingRight="9dp"
+            android:paddingBottom="4dp"
             android:text="Discount"
             android:textColor="#fff"
             android:textSize="14sp"
@@ -163,7 +175,7 @@
             app:srcCompat="@drawable/ic_check_circle" />
 
         <ImageView
-            android:id="@+id/imageView11"
+            android:id="@+id/img_cancle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -217,7 +229,7 @@
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView12"
-            app:layout_constraintEnd_toStartOf="@+id/imageView11"
+            app:layout_constraintEnd_toStartOf="@+id/img_cancle"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageView12"
             app:layout_constraintTop_toTopOf="@+id/imageView12" />
@@ -231,11 +243,11 @@
             android:text="Cancle"
             android:textColor="@color/colorBlack"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView11"
+            app:layout_constraintBottom_toBottomOf="@+id/img_cancle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageView11"
-            app:layout_constraintTop_toTopOf="@+id/imageView11" />
+            app:layout_constraintStart_toEndOf="@+id/img_cancle"
+            app:layout_constraintTop_toTopOf="@+id/img_cancle" />
 
         <TextView
             android:id="@+id/textView14"

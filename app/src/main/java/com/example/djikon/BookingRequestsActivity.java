@@ -61,10 +61,11 @@ public class BookingRequestsActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             Retrofit retrofit = ApiClient.retrofit(BookingRequestsActivity.this);
             JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
-            Call<MyBookingRequests> call = jsonApiHolder.getBookings();
-            call.enqueue(new Callback<MyBookingRequests>() {
+            Call<List<MyBookingRequests>> call = jsonApiHolder.getBookings();
+
+            call.enqueue(new Callback<List<MyBookingRequests>>() {
                 @Override
-                public void onResponse(Call<MyBookingRequests> call, Response<MyBookingRequests> response) {
+                public void onResponse(Call<List<MyBookingRequests>> call, Response<List<MyBookingRequests>> response) {
                     if(response.isSuccessful()){
                         List<MyBookingRequests> bookingsList = (List<MyBookingRequests>) response.body();
 
@@ -95,9 +96,8 @@ public class BookingRequestsActivity extends AppCompatActivity {
                     }
 
                 }
-
                 @Override
-                public void onFailure(Call<MyBookingRequests> call, Throwable t) {
+                public void onFailure(Call<List<MyBookingRequests>> call, Throwable t) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
