@@ -1,15 +1,15 @@
 package com.example.djikon.ApiHadlers;
 
-import com.example.djikon.Models.AllArtistModel;
-import com.example.djikon.Models.BookingHistory;
-import com.example.djikon.Models.DjAndUserProfileModel;
-import com.example.djikon.Models.MyFeedBlogModel;
-import com.example.djikon.Models.LoginRegistrationModel;
-import com.example.djikon.Models.RequestedSongsModel;
-import com.example.djikon.Models.SingleBlogDetailModel;
-import com.example.djikon.Models.SingleServiceModel;
-import com.example.djikon.Models.SubscribeArtistModel;
-import com.example.djikon.Models.SuccessErrorModel;
+import com.example.djikon.ResponseModels.AllArtistModel;
+import com.example.djikon.ResponseModels.DjAndUserProfileModel;
+import com.example.djikon.ResponseModels.MyBookingRequests;
+import com.example.djikon.ResponseModels.MyFeedBlogModel;
+import com.example.djikon.ResponseModels.LoginRegistrationModel;
+import com.example.djikon.ResponseModels.RequestedSongsModel;
+import com.example.djikon.ResponseModels.SingleBlogDetailModel;
+import com.example.djikon.ResponseModels.SingleServiceModel;
+import com.example.djikon.ResponseModels.SubscribeArtistModel;
+import com.example.djikon.ResponseModels.SuccessErrorModel;
 
 import java.util.List;
 
@@ -57,18 +57,19 @@ public interface JSONApiHolder {
     Call<SingleServiceModel> getSingleServieData(@Url String id);
 
     //this will return current UserAll the booking
-    @GET("bookingHistory")
-    Call<List<BookingHistory>> getBookingHistory();
-
+    @GET("bookings")
+    Call<MyBookingRequests> getBookings();
 
 
     //Post Methods
     @Multipart
     @POST("blog")
     Call <SuccessErrorModel> AddBlog(
+            @Part MultipartBody.Part profile,
+            @Part List<MultipartBody.Part> gallery,
+            @Part("artist_name") RequestBody  artistName,
             @Part("title") RequestBody  title,
-            @Part("description") RequestBody description,
-            @Part("photo") MultipartBody.Part image
+            @Part("description") RequestBody description
     );
 
     @FormUrlEncoded
@@ -83,16 +84,12 @@ public interface JSONApiHolder {
             @Field("location") String location
     );
 
-
         @Multipart
         @POST()
         Call<SuccessErrorModel> uploadImage(
                 @Url String userid,
                 @Part MultipartBody.Part image
         );
-
-
-
 
     @FormUrlEncoded
     @POST()
@@ -209,6 +206,18 @@ public interface JSONApiHolder {
     @POST("logout")
     Call <LoginRegistrationModel> logout();
 
+    @FormUrlEncoded
+    @POST("updateToken")
+    Call<SuccessErrorModel> postFCMTokenForWeb(
+            @Field("token") String Token
+    );
+
+    @FormUrlEncoded
+    @POST()
+    Call <SuccessErrorModel> acceptOrRejectRequest(
+            @Url String url,
+            @Field("status") int status
+    );
 
 
 }

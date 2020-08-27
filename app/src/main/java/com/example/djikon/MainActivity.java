@@ -5,13 +5,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,11 +25,13 @@ import com.example.djikon.ApiHadlers.JSONApiHolder;
 import com.example.djikon.GlobelClasses.DialogsUtils;
 import com.example.djikon.GlobelClasses.NetworkChangeReceiver;
 import com.example.djikon.GlobelClasses.PreferenceData;
-import com.example.djikon.Models.LoginRegistrationModel;
-import com.example.djikon.NavDrawerFragment.BlogFragment;
+import com.example.djikon.ResponseModels.LoginRegistrationModel;
+import com.example.djikon.ResponseModels.SuccessErrorModel;
+import com.example.djikon.NavDrawerFragment.AddBlogFragment;
 import com.example.djikon.NavDrawerFragment.ChatListFragment;
 import com.example.djikon.NavDrawerFragment.MyFeedFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
@@ -40,6 +39,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.HashMap;
@@ -73,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PreferenceData preferenceData;
     private Boolean LoginResult = false;
 
+    private Retrofit retrofit;
+    private JSONApiHolder jsonApiHolder;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-
+         retrofit = ApiClient.retrofit(this);
         //if User in not Register on FireBase then Register him
         try {
             mFirebaseAuth = FirebaseAuth.getInstance();
@@ -91,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 isComeFromRegistrationActivity = i.getBooleanExtra("come_from_registration", false);
                 currentUserEmail = i.getStringExtra("email");
                 currentUserPassword = i.getStringExtra("password");
-                if (currentUserEmail != null && currentUserEmail != null)
+                if (currentUserEmail != null && currentUserPassword != null)
                     new RegisteringUserAlsoOnFirebase().execute(isComeFromRegistrationActivity);
             }
         } catch (Exception e) {
@@ -105,11 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createRefrencer();
-        if (mFirebaseUser == null) {
-            Toast.makeText(this, "Not Found", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(this, "Found", Toast.LENGTH_SHORT).show();
-        }
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -247,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 getSupportActionBar().setTitle(R.string.Services);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new BlogFragment()).commit();
+                        new AddBlogFragment()).commit();
                 break;
 
 
@@ -282,8 +281,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void userLogOut() {
-        Retrofit retrofit = ApiClient.retrofit(this);
-        JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
+        jsonApiHolder = retrofit.create(JSONApiHolder.class);
         Call<LoginRegistrationModel> call = jsonApiHolder.logout();
 
         call.enqueue(new Callback<LoginRegistrationModel>() {
@@ -321,8 +319,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
-                            saveUserIDAndUIDonFirebase();
+                            saveUserIDAndUIDOnFirebase();
+                            sendFCMToken();
                         }
                     }
                 });
@@ -339,30 +337,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     creatingUserOnFirebase(Email, Password);
                     Log.i("TAG", "onComplete: SignIn Done");
                 }else {
-                    saveUserIDAndUIDonFirebase();
+                    saveUserIDAndUIDOnFirebase();
+                    sendFCMToken();
                 }
             }
         });
     }
 
-    private void saveUserIDAndUIDonFirebase() {
-            mFirebaseAuth = FirebaseAuth.getInstance();
-            mFirebaseAuth = FirebaseAuth.getInstance();
-            mFirebaseUser = mFirebaseAuth.getCurrentUser();
-            myRef = FirebaseDatabase.getInstance().getReference("All_Users");
+    private void saveUserIDAndUIDOnFirebase() {
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        myRef = FirebaseDatabase.getInstance().getReference("All_Users");
 
-            if (mFirebaseUser != null) {
-                Log.i("TAG", "saveUserIDAndUIDonFirebase: user found");
-                Map<String, String> userData = new HashMap<>();
-                userData.put("uid", mFirebaseUser.getUid());
-                userData.put("server_id", preferenceData.getUserId(this));
+        if (mFirebaseUser != null) {
+            String userUId = mFirebaseUser.getUid();
+            Map<String, String> userData = new HashMap<>();
+            userData.put("uid", userUId);
+            userData.put("server_id", preferenceData.getUserId(this));
 
-                myRef.child("DJs").child(preferenceData.getUserId(this)).setValue(userData);
-            } else {
-                Log.i("TAG", "saveUserIDAndUIDonFirebase: no user found");
+            myRef.child("Users").child(preferenceData.getUserId(this)).setValue(userData);
+        } else {
+            Log.i("TAG", "saveUserIDAndUIDonFirebase: no user found");
+        }
+    }
+
+    //send fcm Token to the Server for sending notification form server to application
+    private void sendFCMToken() {
+        //Get Firebase FCM token
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                jsonApiHolder = retrofit.create(JSONApiHolder.class);
+                Call<SuccessErrorModel> call = jsonApiHolder.postFCMTokenForWeb(instanceIdResult.getToken());
+
+                call.enqueue(new Callback<SuccessErrorModel>() {
+                    @Override
+                    public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
+                        if(!response.isSuccessful()){
+                            //if failed to send token on server then run Again
+                            sendFCMToken();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<SuccessErrorModel> call, Throwable t) {
+                        //if failed to send token on server then run Again
+                        sendFCMToken();
+                    }
+                });
+
             }
-
-
+        });
     }
 
 
@@ -380,4 +404,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return null;
         }
     }
+
 }

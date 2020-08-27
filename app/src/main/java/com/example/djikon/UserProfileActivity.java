@@ -36,11 +36,6 @@ public class UserProfileActivity extends AppCompatActivity  {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
-        Window window = this.getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.colorBlack));
-
-
         swt_Profile = findViewById(R.id.profile_swt);
         swt_Profile.setOnClickListener(new View.OnClickListener() {
             @Override

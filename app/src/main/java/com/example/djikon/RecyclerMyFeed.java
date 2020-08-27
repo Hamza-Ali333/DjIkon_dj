@@ -3,14 +3,12 @@ package com.example.djikon;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
@@ -22,7 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.djikon.Models.MyFeedBlogModel;
+import com.example.djikon.ResponseModels.MyFeedBlogModel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

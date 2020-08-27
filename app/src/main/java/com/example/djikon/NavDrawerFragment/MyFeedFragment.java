@@ -19,7 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.djikon.ApiHadlers.ApiClient;
 import com.example.djikon.ApiHadlers.JSONApiHolder;
 import com.example.djikon.GlobelClasses.DialogsUtils;
-import com.example.djikon.Models.MyFeedBlogModel;
+import com.example.djikon.ResponseModels.MyFeedBlogModel;
 import com.example.djikon.R;
 import com.example.djikon.RecyclerMyFeed;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -70,7 +70,7 @@ public class MyFeedFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new BlogFragment()).commit();
+                        new AddBlogFragment()).commit();
             }
         });
 

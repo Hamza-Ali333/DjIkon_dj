@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.djikon.GlobelClasses.DialogsUtils;
-import com.example.djikon.Models.UserChatListModel;
+import com.example.djikon.ResponseModels.UserChatListModel;
 import com.example.djikon.GlobelClasses.PreferenceData;
 import com.example.djikon.Notification.Token;
 import com.example.djikon.R;

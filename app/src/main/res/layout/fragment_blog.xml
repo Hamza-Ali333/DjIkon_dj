@@ -99,12 +99,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
             android:text="Blog Title"
             android:textColor="#FBF9F9"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/txt_blog_title"
-            app:layout_constraintTop_toBottomOf="@+id/image" />
+            app:layout_constraintTop_toBottomOf="@+id/gallryIamgesRecycler" />
 
         <TextView
             android:id="@+id/textView5"
@@ -155,15 +154,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/gallryIamgesRecycler"
+            android:layout_width="0dp"
+            android:layout_height="125dp"
             android:layout_marginTop="8dp"
             android:scaleType="centerCrop"
+            android:background="#fff"
+            android:padding="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgGallery"
-            tools:srcCompat="@tools:sample/avatars" />
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
