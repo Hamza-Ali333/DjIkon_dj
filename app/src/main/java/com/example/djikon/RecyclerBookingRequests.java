@@ -190,7 +190,6 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
                             }
                         });
                     }
-
                 }
 
                 @Override
