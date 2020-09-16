@@ -10,10 +10,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="@+id/guideline3"
@@ -24,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat"
             android:text="Registration"
             android:textColor="@color/colorBlue"
             android:textSize="18sp"
@@ -37,6 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat"
             android:text="Let's start with the basics"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -70,14 +73,14 @@
             android:layout_width="0dp"
             android:layout_height="44dp"
             android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
             android:layout_marginTop="24dp"
             android:background="#FFFFFF"
             android:ems="10"
-            android:paddingRight="10dp"
+            android:fontFamily="@font/montserrat"
             android:hint="Last Name"
             android:inputType="textPersonName"
             android:padding="8dp"
+            android:paddingRight="10dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toEndOf="@+id/edt_first_name"
             app:layout_constraintTop_toBottomOf="@+id/infohadertxt" />
@@ -88,13 +91,13 @@
             android:layout_height="44dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
             android:background="#FFFFFF"
             android:ems="10"
-            android:paddingRight="10dp"
+            android:fontFamily="@font/montserrat"
             android:hint="First Name"
             android:inputType="textPersonName"
             android:paddingLeft="8dp"
+            android:paddingRight="10dp"
             app:layout_constraintEnd_toStartOf="@+id/edt_last_name"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/infohadertxt" />
@@ -106,10 +109,11 @@
             android:layout_marginTop="8dp"
             android:background="#FFFFFF"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:paddingRight="10dp"
+            android:fontFamily="@font/montserrat"
             android:hint="Email"
+            android:inputType="textPersonName"
             android:paddingLeft="8dp"
+            android:paddingRight="10dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/edt_first_name" />
@@ -121,24 +125,44 @@
             android:layout_marginTop="8dp"
             android:background="#FFFFFF"
             android:ems="10"
+            android:fontFamily="@font/montserrat"
+            android:hint="password"
             android:inputType="textPersonName"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:hint="password"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/edt_email" />
+
+        <EditText
+            android:id="@+id/edt_refrel_code"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="8dp"
+            android:background="#FFFFFF"
+            android:ems="10"
+            android:fontFamily="@font/montserrat"
+            android:hint="Refrel Code"
+            android:inputType="textPersonName"
+            android:paddingLeft="8dp"
+            android:paddingRight="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/edt_c_password"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/term_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat"
             android:text="By checking this box you consent to our:"
             android:textColor="@color/colorBlue"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/edt_c_password"
+            app:layout_constraintTop_toBottomOf="@+id/edt_refrel_code"
             tools:text="By checking this box you consent to our:" />
 
         <RadioButton
@@ -146,13 +170,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:checked="false"
+            android:fontFamily="@font/montserrat"
             android:text="Terms of Use and Privacy Policy , as well as acknowledge receipt of our Privacy Notice."
             android:textColor="#FFFFFF"
-            android:checked="false"
+            app:buttonTint="@color/colorBlue"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/term_info"
-            app:buttonTint="@color/colorBlue"
             tools:text="Terms of Use and Privacy Policy , as well as acknowledge receipt of our Privacy Notice." />
 
         <Button
@@ -161,6 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
             android:background="@color/colorBlue"
+            android:fontFamily="@font/montserrat"
             android:text="Sign Up"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -168,6 +194,19 @@
             app:layout_constraintTop_toBottomOf="@+id/radiobutton_term"
             tools:text="Sign Up" />
 
+        <Button
+            android:id="@+id/btn_sign_in"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorBlue"
+            android:fontFamily="@font/montserrat"
+            android:text="Sign In"
+            android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/btn_sign_up"
+            tools:text="Sign In" />
 
         <com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText
             android:id="@+id/edt_c_password"
@@ -176,6 +215,7 @@
             android:layout_marginTop="8dp"
             android:background="#FFFFFF"
             android:ems="10"
+            android:fontFamily="@font/montserrat"
             android:hint="Confirm Password"
             android:inputType="textPersonName"
             android:paddingLeft="8dp"
@@ -184,37 +224,5 @@
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/edt_password" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/btn_sign_up">
-
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/btn_fb_sign_up"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:background="@color/colorBlue"
-                android:gravity="center"
-                android:paddingLeft="15dp"
-                android:paddingTop="13dp"
-                android:paddingBottom="13dp"
-                android:text="Sign Up With Facebook"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF" />
-
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/btn_google_sign_up"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:textAllCaps="false" />
-
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -69,9 +69,10 @@
             android:layout_marginStart="3dp"
             android:layout_marginLeft="3dp"
             android:layout_marginTop="8dp"
-            android:text="You love having a second home but the mortgage is putting a crater in your weller"
+            android:text=" mortgage is putting a crater in your weller"
             android:textColor="#000"
             android:textSize="14sp"
+            android:maxLines="3"
             app:layout_constraintStart_toStartOf="@+id/img_uploaderImage"
             app:layout_constraintTop_toBottomOf="@+id/img_feedImage" />
 

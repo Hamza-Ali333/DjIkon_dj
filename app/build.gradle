@@ -12,8 +12,8 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.djikonfordj"
-        minSdkVersion 16
+        applicationId "com.ikonholdings.ikoniconnects_subscriber"
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -50,6 +50,12 @@ dependencies {
 
     implementation 'com.github.scottyab:showhidepasswordedittext:0.8'
     implementation 'com.mikhaellopez:circularimageview:4.2.0'
+
+    //braintree
+    implementation 'com.braintreepayments.api:drop-in:4.6.0'
+    implementation 'com.braintreepayments.gateway:braintree-java:3.1.0'
+    //Async
+    implementation 'com.loopj.android:android-async-http:1.4.9'
 
     //retrofic and gson convertor
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
