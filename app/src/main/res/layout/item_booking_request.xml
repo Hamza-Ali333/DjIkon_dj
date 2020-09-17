@@ -37,6 +37,7 @@
                 android:indeterminateDrawable="@drawable/progressbar"
                 android:layout_gravity="center"
                 android:padding="4dp"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -172,7 +173,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_address"
-            app:srcCompat="@drawable/ic_check_circle" />
+            app:srcCompat="@drawable/ic_check_blue" />
 
         <ImageView
             android:id="@+id/img_cancle"

@@ -25,7 +25,7 @@ public class AcceptRequestActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        txt_total_canceled_request = findViewById(R.id.txt_new_request);
+        txt_total_canceled_request = findViewById(R.id.txt_total);
         txt_total_canceled_request.setText("You Have 05 Approved Request");
 
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);

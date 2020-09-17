@@ -1,10 +1,9 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.RecyclerView;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 import com.squareup.picasso.Picasso;
@@ -34,8 +34,6 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
 
     private List<MyBookingRequests> mBookingRequesterArrayList;
     private Context context;
-    private static final String ImageUrl = "http://ec2-52-91-44-156.compute-1.amazonaws.com/";
-
 
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
@@ -89,7 +87,8 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
         final MyBookingRequests currentItem = mBookingRequesterArrayList.get(position);
         if(!currentItem.getUser_profile_image().equals("no") &&
                 currentItem.getUser_profile_image() != null) {
-            Picasso.get().load((ImageUrl+currentItem.getUser_profile_image()))
+            holder.progressBar.setVisibility(View.VISIBLE);
+            Picasso.get().load((ApiClient.Base_Url+currentItem.getUser_profile_image()))
                     .into(holder.img_Requester_Profile, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {
@@ -124,29 +123,28 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
        holder.txt_Accept.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               new GetAllBookingFromServer(1).execute();
-               Toast.makeText(context, "get", Toast.LENGTH_SHORT).show();
+               new GetAllBookingFromServer(1,position).execute();
            }
        });
 
         holder.img_Accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new GetAllBookingFromServer(1).execute();
+                new GetAllBookingFromServer(1,position).execute();
             }
         });
 
         holder.txt_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new GetAllBookingFromServer(2).execute();
+                new GetAllBookingFromServer(2,position).execute();
             }
         });
 
         holder.img_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new GetAllBookingFromServer(2).execute();
+                new GetAllBookingFromServer(2,position).execute();
             }
         });
 }
@@ -158,11 +156,22 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
 
 
     private class GetAllBookingFromServer extends AsyncTask<Void,Void,Void> {
-        AlertDialog alertDialog;
+        ProgressDialog progressDialog;
         int status;
+        int position;
 
-        public GetAllBookingFromServer(int status) {
+
+        public GetAllBookingFromServer(int status,int position) {
             this.status = status;
+            this.position = position;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = DialogsUtils.showProgressDialog(context,
+                    "Working...",
+                    "Please wait. While connecting with the server.");
         }
 
         @Override
@@ -178,12 +187,24 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
                 @Override
                 public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
                     if(response.isSuccessful()){
-                        Log.i("TAG", "onResponse: Done");
+                        progressDialog.dismiss();
+                        switch (status){
+                            case 1:
+                                Toast.makeText(context, "Request Accepted" , Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                Toast.makeText(context, "Request Canceled" , Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        mBookingRequesterArrayList.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, mBookingRequesterArrayList.size());
                     }else {
                         ((Activity)context).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                alertDialog = DialogsUtils.showAlertDialog(context,
+                                progressDialog.dismiss();
+                                DialogsUtils.showAlertDialog(context,
                                         false,
                                         "Error",
                                         "Please try again and check your internet connection");
@@ -197,7 +218,8 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
                     ((Activity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            alertDialog = DialogsUtils.showAlertDialog(context,
+                            progressDialog.dismiss();
+                            DialogsUtils.showAlertDialog(context,
                                     false,
                                     "No Server Connection",
                                     t.getMessage());

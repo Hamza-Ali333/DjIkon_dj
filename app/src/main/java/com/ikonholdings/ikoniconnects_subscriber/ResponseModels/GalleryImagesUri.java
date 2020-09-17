@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.Models;
+package com.ikonholdings.ikoniconnects_subscriber.ResponseModels;
 
 import android.net.Uri;
 

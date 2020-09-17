@@ -1,8 +1,9 @@
 package com.ikonholdings.ikoniconnects_subscriber;
 
-import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
+import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerBookingRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 
 import java.util.List;
@@ -25,7 +27,9 @@ public class BookingRequestsActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private AlertDialog alertDialog;
+    private ProgressDialog progressDialog;
+
+    private TextView txt_Total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,12 @@ public class BookingRequestsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        txt_Total = findViewById(R.id.txt_total);
+
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);
+        progressDialog = DialogsUtils.showProgressDialog(this,
+                "Loading...",
+                "Please Wait. While getting data from server.");
         new GetAllbookingFromServer().execute();
 
     }
@@ -70,27 +79,31 @@ public class BookingRequestsActivity extends AppCompatActivity {
                         List<MyBookingRequests> bookingsList = (List<MyBookingRequests>) response.body();
 
                         if(bookingsList.isEmpty()) {
+
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    alertDialog = DialogsUtils.showAlertDialog(BookingRequestsActivity.this,
+                                      DialogsUtils.showAlertDialog(BookingRequestsActivity.this,
                                             false,
                                             "No Booking",
                                             "it's seems like you did't get any request yet!");
                                 }
                             });
                         }else{
+
                             buildRecyclerView(bookingsList);
                         }
+                        progressDialog.dismiss();
 
                     }else {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                alertDialog = DialogsUtils.showAlertDialog(BookingRequestsActivity.this,
+                                 DialogsUtils.showAlertDialog(BookingRequestsActivity.this,
                                         false,
                                         "Error",
                                         "Please try again and check your internet connection");
+                                 progressDialog.dismiss();
                             }
                         });
                     }
@@ -101,10 +114,11 @@ public class BookingRequestsActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            alertDialog = DialogsUtils.showAlertDialog(BookingRequestsActivity.this,
+                             DialogsUtils.showAlertDialog(BookingRequestsActivity.this,
                                     false,
                                     "No Server Connection",
                                     t.getMessage());
+                             progressDialog.dismiss();
                         }
                     });
                 }

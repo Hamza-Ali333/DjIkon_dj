@@ -7,14 +7,14 @@ import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ikonholdings.ikoniconnects_subscriber.Models.GalleryImagesUri;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.GalleryImagesUri;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 
 import java.util.List;
 
 public class RecyclerShowGalleryImages extends RecyclerView.Adapter<RecyclerShowGalleryImages.ViewHolder>{
 
-    private List<GalleryImagesUri> mImageUri;
+    private List<GalleryImagesUri> mImageUriList;
     private onItemClickListner onItemClickListner;
 
     public interface onItemClickListner{
@@ -41,7 +41,7 @@ public class RecyclerShowGalleryImages extends RecyclerView.Adapter<RecyclerShow
 
 //constructor
     public RecyclerShowGalleryImages(List<GalleryImagesUri> chat_List_modelArrayList) {
-        this.mImageUri = chat_List_modelArrayList;
+        this.mImageUriList = chat_List_modelArrayList;
     }
 
     @Override
@@ -54,15 +54,16 @@ public class RecyclerShowGalleryImages extends RecyclerView.Adapter<RecyclerShow
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-       final GalleryImagesUri currentItem = mImageUri.get(position);
+       final GalleryImagesUri currentItem = mImageUriList.get(position);
 
        holder.imageView.setImageURI(currentItem.getUri());
 
        holder.imgClose.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               mImageUri.remove(position);
-               notifyDataSetChanged();
+               mImageUriList.remove(position);
+               notifyItemRemoved(position);
+               notifyItemRangeChanged(position, mImageUriList.size());
                onItemClickListner.onClick(position);
            }
        });
@@ -71,7 +72,7 @@ public class RecyclerShowGalleryImages extends RecyclerView.Adapter<RecyclerShow
 
     @Override
     public int getItemCount() {
-        return mImageUri.size();
+        return mImageUriList.size();
     }
 
 }

@@ -1,7 +1,7 @@
 package com.ikonholdings.ikoniconnects_subscriber.ApiHadlers;
 
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AllArtistModel;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.BookingHistory;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.BookingRequest;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DjAndUserProfileModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
@@ -63,7 +63,7 @@ public interface JSONApiHolder {
 
     //this will return current UserAll the booking
     @GET("bookingHistory")
-    Call<List<BookingHistory>> getBookingHistory();
+    Call<List<BookingRequest>> getBookingHistory();
 
 //    @GET("liveArtist")
 //    Call<List<CurrentLiveArtistModel>> getCurrentLiveArtist();

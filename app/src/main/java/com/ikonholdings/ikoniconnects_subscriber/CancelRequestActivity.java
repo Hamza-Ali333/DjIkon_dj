@@ -28,7 +28,7 @@ public class CancelRequestActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        txt_total_canceled_request = findViewById(R.id.txt_new_request);
+        txt_total_canceled_request = findViewById(R.id.txt_total);
         txt_total_canceled_request.setText("You Have 12 Cancel Request");
 
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);

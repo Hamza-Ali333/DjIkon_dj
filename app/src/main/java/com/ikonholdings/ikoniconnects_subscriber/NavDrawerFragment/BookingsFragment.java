@@ -29,7 +29,6 @@ public class BookingsFragment extends Fragment {
        View v =  inflater.inflate(R.layout.fragment_bookings,container,false);
        createRefrences(v);
 
-
        rlt_View_All_Request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
