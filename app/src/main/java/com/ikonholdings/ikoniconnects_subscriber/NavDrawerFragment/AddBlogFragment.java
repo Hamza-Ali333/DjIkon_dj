@@ -79,8 +79,6 @@ public class AddBlogFragment extends Fragment {
     private Uri Image_uri;
     private Bitmap bitmap;
 
-    private AlertDialog alertDialog;
-
     private RecyclerView mGalleryRecycler;
     private RecyclerView.Adapter galleryAdapter;
     private RecyclerView.LayoutManager galleryLayoutManager;
@@ -91,25 +89,10 @@ public class AddBlogFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
        View v =  inflater.inflate(R.layout.fragment_blog,container,false);
        createRefrences(v);
 
-        GalleryArray = new ArrayList<>();
-
-        //camerapermission
-        cameraPermission = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        //storagepermission
-        storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-        //Ask for Required Permissions
-        final String[] permissions = new String[]{
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.CALL_PHONE
-        };
-
-        ActivityCompat.requestPermissions((Activity) getContext(), permissions, 123);
+       GalleryArray = new ArrayList<>();
 
         img_Audio.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -121,13 +104,16 @@ public class AddBlogFragment extends Fragment {
        img_Camera.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               if ( PermissionHelper.checkDefaultPermissions(getActivity())) {
-                   showImageImportDailog();
-               }else {
-                   PermissionHelper.managePermissions(getActivity());
-               }
+               manageImagePicker();
            }
        });
+
+        img_Featured.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                manageImagePicker();
+            }
+        });
 
        img_Gallery.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -174,6 +160,14 @@ public class AddBlogFragment extends Fragment {
        });
 
        return v;
+    }
+
+    private void manageImagePicker() {
+        if ( PermissionHelper.checkDefaultPermissions(getActivity())) {
+            showImageImportDailog();
+        }else {
+            PermissionHelper.managePermissions(getActivity());
+        }
     }
 
     private void createRefrences(View v){

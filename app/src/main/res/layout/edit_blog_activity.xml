@@ -19,6 +19,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/edt_shape"
+            android:fontFamily="@font/montserrat"
             android:gravity="center_vertical"
             android:hint="Required"
             android:paddingLeft="10dp"
@@ -50,43 +51,13 @@
             app:layout_constraintTop_toTopOf="@+id/featuredimg"
             app:srcCompat="@drawable/ic_add_a_photo_" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Featured Image Required"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/featuredimg" />
-
-        <ImageView
-            android:id="@+id/imgGallery"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:srcCompat="@drawable/ic_collections" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Add Collection"
-            android:textColor="#fff"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/featuredimg" />
-
         <EditText
             android:id="@+id/txt_blog_discription"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/edt_shape"
+            android:fontFamily="@font/montserrat"
             android:gravity="top"
             android:hint="Required"
             android:padding="10dp"
@@ -101,50 +72,29 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat"
             android:text="Blog Title"
             android:textColor="#FBF9F9"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/txt_blog_title"
-            app:layout_constraintTop_toBottomOf="@+id/gallryIamgesRecycler" />
+            app:layout_constraintTop_toBottomOf="@+id/featuredimg" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat"
             android:text="Description"
             android:textColor="#F6F5F5"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_blog_title" />
-
-        <ImageView
-            android:id="@+id/imgVideo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imgGallery"
-            app:layout_constraintStart_toEndOf="@+id/imgGallery"
-            app:layout_constraintTop_toTopOf="@+id/imgGallery"
-            app:srcCompat="@drawable/ic_play" />
-
-        <ImageView
-            android:id="@+id/imgAudio"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imgVideo"
-            app:layout_constraintStart_toEndOf="@+id/imgVideo"
-            app:layout_constraintTop_toTopOf="@+id/imgVideo"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/ic_music" />
 
         <Button
             android:id="@+id/btn_publish"
@@ -153,24 +103,12 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:background="@drawable/fullroundshape"
+            android:fontFamily="@font/montserrat"
             android:text="Publish"
             android:textColor="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_blog_discription" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/gallryIamgesRecycler"
-            android:layout_width="0dp"
-            android:layout_height="125dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:background="#fff"
-            android:padding="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgGallery"
-            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

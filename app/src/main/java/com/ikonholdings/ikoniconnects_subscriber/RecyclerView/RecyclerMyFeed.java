@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,6 +21,9 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
+import com.ikonholdings.ikoniconnects_subscriber.CommnetActivity;
+import com.ikonholdings.ikoniconnects_subscriber.EditBlogActivity;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -31,7 +34,6 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
 
     private List<MyFeedBlogModel> mBlogs;
     private Context context;
-
 
 //for custom menu
     private PopupWindow mDropdown = null;
