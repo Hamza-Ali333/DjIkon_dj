@@ -329,7 +329,6 @@ public class AddBlogFragment extends Fragment {
                     //handle exception
                     Toast.makeText(getContext(), "Unable to process,try again", Toast.LENGTH_SHORT).show();
                 }
-                String path1 = uri.getPath();
             }
 
                     //Multiple Images For BlogGallery
@@ -363,7 +362,6 @@ public class AddBlogFragment extends Fragment {
 
     }//onActivity Result
 
-
     // UPDATED!
     public String getVideoPath(Uri uri) {
         String[] projection = { MediaStore.Video.Media.DATA };
@@ -394,7 +392,17 @@ public class AddBlogFragment extends Fragment {
         mGalleryRecycler.setHasFixedSize(true);//if the recycler view not increase run time
         galleryLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         galleryAdapter = new RecyclerShowGalleryImages(galleryImagesUriList);
-
+        new RecyclerShowGalleryImages(galleryImagesUriList);
+        ((RecyclerShowGalleryImages) galleryAdapter).setOnItemClickListner(new RecyclerShowGalleryImages.onItemClickListner() {
+            @Override
+            public void onClick(Integer position) {
+                if(position != null){
+                    GalleryArray.remove(position);
+                }
+                else
+                    Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
         mGalleryRecycler.setLayoutManager(galleryLayoutManager);
         mGalleryRecycler.setAdapter(galleryAdapter);
     }
@@ -461,13 +469,12 @@ public class AddBlogFragment extends Fragment {
                             if (response.isSuccessful()) {
                                 DialogsUtils.showSuccessDialog(getContext(),
                                         "Uploaded Successfully","Your blog is uploaded successfully");
-                                progressDialog.dismiss();
                             } else {
                                 DialogsUtils.showAlertDialog(getContext(),false,
                                         "Uploaded Failed","Please try again. Blog uploading is failed\n" +
                                                 "And make sure you have strong internet connection");
-                                progressDialog.dismiss();
                             }
+                            progressDialog.dismiss();
                         }
                     });
                 }

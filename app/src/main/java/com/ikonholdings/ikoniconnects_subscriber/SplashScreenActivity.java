@@ -34,7 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (PreferenceData.getUserLoggedInStatus(SplashScreenActivity.this)) {
-                        startActivity(new Intent(SplashScreenActivity.this, PackageActivity.class));
+                        startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                         finish();
                     }else {
                         lunchSignInActivity();
@@ -52,7 +52,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     }
     private void lunchSignInActivity(){
-        startActivity(new Intent(SplashScreenActivity.this, PackageActivity.class));
+        startActivity(new Intent(SplashScreenActivity.this, SignInActivity.class));
         finish();
     }
 }

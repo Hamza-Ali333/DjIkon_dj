@@ -15,16 +15,27 @@ import java.util.List;
 public class RecyclerShowGalleryImages extends RecyclerView.Adapter<RecyclerShowGalleryImages.ViewHolder>{
 
     private List<GalleryImagesUri> mImageUri;
+    private onItemClickListner onItemClickListner;
+
+    public interface onItemClickListner{
+        void onClick(Integer position);//pass your object types.
+    }
+
+    //initailizing
+    public void setOnItemClickListner(RecyclerShowGalleryImages.onItemClickListner onItemClickListner) {
+        this.onItemClickListner = onItemClickListner;
+    }
 
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
 
         public ImageView imageView;
+        public ImageView imgClose;
 
         public ViewHolder(View itemView){
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
-
+            imgClose = itemView.findViewById(R.id.delete);
         }
     }
 
@@ -33,14 +44,12 @@ public class RecyclerShowGalleryImages extends RecyclerView.Adapter<RecyclerShow
         this.mImageUri = chat_List_modelArrayList;
     }
 
-
     @Override
     public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
-
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery_images,parent,false);
         ViewHolder viewHolder = new ViewHolder(v);
-        return viewHolder;
 
+        return viewHolder;
     }
 
     @Override
@@ -49,14 +58,14 @@ public class RecyclerShowGalleryImages extends RecyclerView.Adapter<RecyclerShow
 
        holder.imageView.setImageURI(currentItem.getUri());
 
-
-
-
-
-
-
-
-
+       holder.imgClose.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               mImageUri.remove(position);
+               notifyDataSetChanged();
+               onItemClickListner.onClick(position);
+           }
+       });
 
 }
 
