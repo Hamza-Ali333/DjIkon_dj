@@ -1,7 +1,6 @@
 package com.ikonholdings.ikoniconnects_subscriber.ApiHadlers;
 
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AllArtistModel;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.BookingRequest;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DjAndUserProfileModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
@@ -11,6 +10,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleBlogDetail
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleServiceModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SubscribeArtistModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
+import com.ikonholdings.ikoniconnects_subscriber.ServicesModel;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +18,7 @@ import java.util.Map;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -25,6 +26,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Url;
 
 public interface JSONApiHolder {
@@ -32,6 +34,10 @@ public interface JSONApiHolder {
     //will return all the blogs
     @GET ("artist_blogs")
     Call<List<MyFeedBlogModel>> getBlogs();
+
+    //Will return all services of current Subscriber
+    @GET("products")
+    Call<List<ServicesModel>> getServices();
 
     @GET("getStart")
     Call<SuccessErrorModel> getBrainTreeToken();
@@ -61,9 +67,6 @@ public interface JSONApiHolder {
     @GET
     Call<SingleServiceModel> getSingleServiceData(@Url String id);
 
-    //this will return current UserAll the booking
-    @GET("bookingHistory")
-    Call<List<BookingRequest>> getBookingHistory();
 
 //    @GET("liveArtist")
 //    Call<List<CurrentLiveArtistModel>> getCurrentLiveArtist();
@@ -85,17 +88,6 @@ public interface JSONApiHolder {
     Call <SuccessErrorModel> AddBlog(
             @Part MultipartBody.Part profile,
             @Part List<MultipartBody.Part> gallery,
-            @Part("artist_name") RequestBody  artistName,
-            @Part("title") RequestBody  title,
-            @Part("description") RequestBody description
-    );
-
-    //Post Methods
-    @Multipart
-    @POST("blog")
-    Call <SuccessErrorModel> AddBlogs(
-            @Part MultipartBody.Part photo,
-            @Part("artist_name") RequestBody  artistName,
             @Part("title") RequestBody  title,
             @Part("description") RequestBody description
     );
@@ -138,7 +130,6 @@ public interface JSONApiHolder {
     Call<SuccessErrorModel> postComment(@Url String relativeUrl,
                                         @Field("body") String body
     );
-
 
     @FormUrlEncoded
     @POST("change_password")
@@ -238,12 +229,23 @@ public interface JSONApiHolder {
             @Field("email") String Email
     );
 
-
     @FormUrlEncoded
     @POST()
     Call <SuccessErrorModel> acceptOrRejectRequest(
             @Url String url,
             @Field("status") int status
     );
+
+    //Edit Method
+    @Multipart
+    @POST()
+    Call<SuccessErrorModel> updateBlog(
+            @Url String url,
+            @Part MultipartBody.Part profile,
+            @Part("title") RequestBody  title,
+            @Part("description") RequestBody description);
+
+    @DELETE("blog/{id}")
+    Call<SuccessErrorModel> deleteBlog(@Path("id") int id);
 
 }

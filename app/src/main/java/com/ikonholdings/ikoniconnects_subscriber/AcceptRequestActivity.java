@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerCancelAndAcceptRequests;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class AcceptRequestActivity extends AppCompatActivity {
 
@@ -30,28 +33,16 @@ public class AcceptRequestActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);
 
-        ArrayList<CacelAndAcceptRequest_Model> cacelAndAcceptRequest_modelArrayList = new ArrayList<>();
-
-        cacelAndAcceptRequest_modelArrayList.add(new CacelAndAcceptRequest_Model(R.drawable.photo2, "$25.00","Hamza Ali",
-                "Night Subscriber Service", "Discount", "105 William St, Chicago, Us"));
 
 
-        cacelAndAcceptRequest_modelArrayList.add(new CacelAndAcceptRequest_Model(R.drawable.ic_doctor, "$20.00","Usama Ali",
-                "Night Subscriber Service", "Discount", "105 William St, Chicago, Us"));
+    }
 
-        cacelAndAcceptRequest_modelArrayList.add(new CacelAndAcceptRequest_Model(R.drawable.woman, "$15.00","Bilawal",
-                "Night Subscriber Service", "Discount", "105 William St, Chicago, Us"));
-
-        cacelAndAcceptRequest_modelArrayList.add(new CacelAndAcceptRequest_Model(R.drawable.photo2, "$25.00","Admad",
-                "Night Subscriber Service", "Discount", "William St, Chicago, Us"));
-
-
+    private void buildRecyclerView(List<CacelAndAcceptRequest_Model> list){
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new RecyclerCancelAndAcceptRequests(cacelAndAcceptRequest_modelArrayList,"Accept");
+       // mAdapter = new RecyclerCancelAndAcceptRequests(cacelAndAcceptRequest_modelArrayList,"Accept");
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
     @Override

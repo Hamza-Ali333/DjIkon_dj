@@ -12,7 +12,6 @@
         android:id="@+id/txt_total"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="You have 10 new requests."
         android:paddingLeft="16sp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/servic1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,76 +10,121 @@
     app:cardCornerRadius="8dp"
     android:background="@drawable/blackroundshape"
     >
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rlt_servic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="2dp">
+            android:paddingBottom="8dp">
 
             <ImageView
                 android:id="@+id/img_servic_image"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/dj_event" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:indeterminateDrawable="@drawable/progressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/img_servic_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/img_servic_image"
+                app:layout_constraintTop_toTopOf="@+id/img_servic_image" />
 
             <TextView
                 android:id="@+id/txt_servic_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/img_servic_image"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginLeft="4dp"
+                android:fontFamily="@font/montserrat"
                 android:text="Night Sirves"
                 android:textColor="@color/colorBlack"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_servic_image" />
 
             <TextView
                 android:id="@+id/txt_servic_description"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_servic_name"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/montserrat"
+                android:maxLines="5"
                 android:text="A product description is the marketing copy that explains what a product is and why it’s worth purchasing."
                 android:textColor="@color/Graycolor"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txt_servic_name"
+                app:layout_constraintTop_toBottomOf="@+id/txt_servic_name" />
 
             <RatingBar
                 android:id="@+id/ratbar"
                 style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_below="@+id/txt_servic_description"
-                android:layout_marginTop="2dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
                 android:numStars="5"
-                android:rating="4" />
+                android:rating="4"
+                android:theme="@style/RatingBar"
+                app:layout_constraintStart_toStartOf="@+id/txt_servic_description"
+                app:layout_constraintTop_toBottomOf="@+id/txt_servic_description" />
 
             <TextView
                 android:id="@+id/txt_servic_charges"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ratbar"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/montserrat"
                 android:text="Rate"
                 android:textColor="@color/Graycolor"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/priceType"
+                app:layout_constraintTop_toBottomOf="@+id/priceType" />
 
             <TextView
                 android:id="@+id/txt_service_prize"
-                android:layout_width="25dp"
+                android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:textSize="12sp"
                 android:layout_below="@+id/ratbar"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="2dp"
+                android:layout_marginRight="4dp"
                 android:background="@drawable/blueround_stroke"
+                android:fontFamily="@font/montserrat"
                 android:gravity="center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="$5"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_servic_charges"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txt_servic_charges" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/priceType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/montserrat"
+                android:text="PriceType"
+                android:textColor="@color/colorBlue"
+                app:layout_constraintStart_toStartOf="@+id/ratbar"
+                app:layout_constraintTop_toBottomOf="@+id/ratbar" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

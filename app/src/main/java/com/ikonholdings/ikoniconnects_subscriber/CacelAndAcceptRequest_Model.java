@@ -1,43 +1,69 @@
 package com.ikonholdings.ikoniconnects_subscriber;
 
 public class CacelAndAcceptRequest_Model {
-    private int requester_image;
-    private String requester_name,  service_charges, service_name, discount,address;
+    private int id;
+    private String start_date,
+            end_date,
+            start_time,
+            end_time,
+            name,
+            email,
+            phone,
+            price,
+            address,
+            service_name,
+            service_price_type,
+            user_profile_image;
 
-
-    public CacelAndAcceptRequest_Model(int requester_image, String service_charges, String requester_name, String service_name, String discount,  String address) {
-        this.requester_image = requester_image;
-        this.service_charges = service_charges;
-        this.requester_name = requester_name;
-        this.service_name = service_name;
-        this.discount = discount;
-
-        this.address = address;
+    public int getId() {
+        return id;
     }
 
-
-    public int getRequester_image() {
-        return requester_image;
+    public String getStart_date() {
+        return start_date;
     }
 
-    public String getService_charges() {
-        return service_charges;
+    public String getEnd_date() {
+        return end_date;
     }
 
-    public String getRequester_name() {
-        return requester_name;
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public String getService_name() {
         return service_name;
     }
 
-    public String getDiscount() {
-        return discount;
+    public String getService_price_type() {
+        return service_price_type;
     }
 
-
-    public String getAddress() {
-        return address;
+    public String getUser_profile_image() {
+        return user_profile_image;
     }
 }

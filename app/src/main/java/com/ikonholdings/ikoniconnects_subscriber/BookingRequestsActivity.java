@@ -1,6 +1,6 @@
 package com.ikonholdings.ikoniconnects_subscriber;
 
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -27,7 +27,7 @@ public class BookingRequestsActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ProgressDialog progressDialog;
+    private AlertDialog loadingDialog;
 
     private TextView txt_Total;
 
@@ -42,9 +42,7 @@ public class BookingRequestsActivity extends AppCompatActivity {
         txt_Total = findViewById(R.id.txt_total);
 
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);
-        progressDialog = DialogsUtils.showProgressDialog(this,
-                "Loading...",
-                "Please Wait. While getting data from server.");
+        loadingDialog = DialogsUtils.showLoadingDialogue(this);
         new GetAllbookingFromServer().execute();
 
     }
@@ -79,10 +77,10 @@ public class BookingRequestsActivity extends AppCompatActivity {
                         List<MyBookingRequests> bookingsList = (List<MyBookingRequests>) response.body();
 
                         if(bookingsList.isEmpty()) {
-
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    txt_Total.setText("You have total "+String.valueOf(bookingsList.size()+" booking requests."));
                                       DialogsUtils.showAlertDialog(BookingRequestsActivity.this,
                                             false,
                                             "No Booking",
@@ -93,7 +91,7 @@ public class BookingRequestsActivity extends AppCompatActivity {
 
                             buildRecyclerView(bookingsList);
                         }
-                        progressDialog.dismiss();
+                        loadingDialog.dismiss();
 
                     }else {
                         runOnUiThread(new Runnable() {
@@ -103,7 +101,7 @@ public class BookingRequestsActivity extends AppCompatActivity {
                                         false,
                                         "Error",
                                         "Please try again and check your internet connection");
-                                 progressDialog.dismiss();
+                                 loadingDialog.dismiss();
                             }
                         });
                     }
@@ -118,7 +116,7 @@ public class BookingRequestsActivity extends AppCompatActivity {
                                     false,
                                     "No Server Connection",
                                     t.getMessage());
-                             progressDialog.dismiss();
+                             loadingDialog.dismiss();
                         }
                     });
                 }

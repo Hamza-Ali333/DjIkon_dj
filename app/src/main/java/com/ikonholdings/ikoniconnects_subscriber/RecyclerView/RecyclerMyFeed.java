@@ -1,9 +1,14 @@
 package com.ikonholdings.ikoniconnects_subscriber.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,14 +26,21 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
+import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.CommnetActivity;
 import com.ikonholdings.ikoniconnects_subscriber.EditBlogActivity;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHolder> {
 
@@ -47,7 +59,7 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
         public ProgressBar progressBarProfile, progressBarFeed;
 
 
-        public TextView txt_uploaderName, txt_uploadTime, txt_Description, txt_ReadMore, txt_LikesNo, txt_ChatNo;
+        public TextView txt_BlogTitle, txt_uploadTime, txt_Description, txt_LikesNo, txt_ChatNo;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -60,10 +72,9 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
             img_Chat = itemView.findViewById(R.id.img_chat);
             img_menu = itemView.findViewById(R.id.menu);
 
-            txt_uploaderName = itemView.findViewById(R.id.txt_uploaderName);
+            txt_BlogTitle = itemView.findViewById(R.id.txt_uploaderName);
             txt_uploadTime = itemView.findViewById(R.id.txt_uploadTime);
             txt_Description = itemView.findViewById(R.id.txt_imgDescription);
-            txt_ReadMore = itemView.findViewById(R.id.txt_ReadMore);
             txt_LikesNo = itemView.findViewById(R.id.txt_LikesNo);
             txt_ChatNo = itemView.findViewById(R.id.txt_chatNo);
         }
@@ -93,7 +104,7 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
 
         holder.img_feedImage.setImageResource(R.drawable.rectangle2);
 
-        holder.txt_uploaderName.setText(currentItem.getTitle());
+        holder.txt_BlogTitle.setText(currentItem.getTitle());
         holder.txt_uploadTime.setText(currentItem.getCreated_at());
         holder.txt_Description.setText(currentItem.getDescription());
         holder.txt_LikesNo.setText(String.valueOf(currentItem.getLikes()));
@@ -154,13 +165,15 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.edit:
-                                    Intent i = new Intent(v.getContext(), EditBlogActivity.class);
-                                    v.getContext().startActivity(i);
+                                        Intent i = new Intent(v.getContext(), EditBlogActivity.class);
+                                        i.putExtra("url", currentItem.getPhoto());
+                                        i.putExtra("id", String.valueOf(currentItem.getId()));
+                                        i.putExtra("title",holder.txt_BlogTitle.getText().toString());
+                                        i.putExtra("description",holder.txt_Description.getText().toString());
+                                        v.getContext().startActivity(i);
                                     break;
                                 case R.id.delete:
-                                    Toast.makeText(v.getContext(), "Delete Option Will Available Soon", Toast.LENGTH_SHORT).show();
-                                    break;
-                                default:
+                                    new DeleteBlog(position,currentItem.getId()).execute();
                                     break;
                             }
                             return true;
@@ -191,10 +204,6 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
 //        });
 
         }
-
-
-
-
 
 //        private PopupWindow initiatePopupWindow (Context context, ViewHolder viewHolder){
 //
@@ -234,4 +243,71 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
     public int getItemCount() {
         return mBlogs.size();
     }
+
+    private class DeleteBlog extends AsyncTask<Void,Void,Void> {
+        ProgressDialog progressDialog;
+        int position;
+        int BlogId;
+
+
+        public DeleteBlog(int position,int BlogId) {
+            this.position = position;
+            this.BlogId = BlogId;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = DialogsUtils.showProgressDialog(context,
+                    "Working...",
+                    "Please wait. While connecting with the server.");
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Retrofit retrofit = ApiClient.retrofit(context);
+            JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
+            Call<SuccessErrorModel> call = jsonApiHolder.deleteBlog(
+                    BlogId
+            );
+            call.enqueue(new retrofit2.Callback<SuccessErrorModel>() {
+                @Override
+                public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
+                    if(response.isSuccessful()){
+                        progressDialog.dismiss();
+                        mBlogs.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, mBlogs.size());
+                    }else {
+                        ((Activity)context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.dismiss();
+                                DialogsUtils.showAlertDialog(context,
+                                        false,
+                                        "Error",
+                                        "Please try again and check your internet connection");
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SuccessErrorModel> call, Throwable t) {
+                    ((Activity)context).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                            DialogsUtils.showAlertDialog(context,
+                                    false,
+                                    "No Server Connection",
+                                    t.getMessage());
+                        }
+                    });
+                }
+            });
+            return null;
+        }
+    }
+
 }

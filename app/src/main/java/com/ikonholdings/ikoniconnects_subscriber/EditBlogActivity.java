@@ -2,11 +2,9 @@ package com.ikonholdings.ikoniconnects_subscriber;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,19 +22,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PathUtil;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.GalleryImagesUri;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -47,13 +40,16 @@ import retrofit2.Retrofit;
 
 public class EditBlogActivity extends AppCompatActivity {
 
-
     private Button btn_UpDatePost;
-    private ImageView img_Camera, img_Featured;
+    private ImageView img_Featured;
     private EditText edt_Title, edt_Discription;
 
     private Uri Image_uri;
-    private Bitmap bitmap;
+
+    private ProgressBar progressBarFeed;
+
+    private String blogId;
+    private Boolean profileChange = false;
 
     private static final int IMAGE_PICK_GALLERY_REQUEST_CODE = 1000;
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 2000;
@@ -62,15 +58,31 @@ public class EditBlogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_blog_activity);
-        createRefrences();
+        createReferences();
         btn_UpDatePost.setText("Update Post");
 
-        img_Camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                manageImagePicker();
-            }
-        });
+        Intent i = getIntent();
+        String Title = i.getStringExtra("title");
+        String Description = i.getStringExtra("description");
+        String Url = i.getStringExtra("url");
+        blogId = i.getStringExtra("id");
+
+        Picasso.get().load(ApiClient.Base_Url+ Url)
+                .fit()
+                .centerCrop()
+                .into(img_Featured, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressBarFeed.setVisibility(View.GONE);
+                    }
+                    @Override
+                    public void onError(Exception e) {
+                        progressBarFeed.setVisibility(View.GONE);
+                    }
+                });
+
+        edt_Title.setText(Title);
+        edt_Discription.setText(Description);
 
         img_Featured.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +94,12 @@ public class EditBlogActivity extends AppCompatActivity {
         btn_UpDatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(EditBlogActivity.this, MainActivity.class));
+                if(edt_Discription.getText().toString().equals(Description) && edt_Title.getText().toString().equals(Title) && profileChange == false){
+                    Toast.makeText(EditBlogActivity.this, "Already Update", Toast.LENGTH_SHORT).show();
+                }else {
+                    new UploadBlogToServer(edt_Title.getText().toString().trim(),
+                            edt_Discription.getText().toString().trim()).execute();
+                }
             }
         });
 
@@ -136,13 +153,14 @@ public class EditBlogActivity extends AppCompatActivity {
         startActivityForResult(gallery, IMAGE_PICK_GALLERY_REQUEST_CODE);
     }
 
-    private void createRefrences() {
-        edt_Title= v.findViewById(R.id.txt_blog_title);
-        edt_Discription = v.findViewById(R.id.txt_blog_discription);
+    private void createReferences() {
+        edt_Title= findViewById(R.id.txt_blog_title);
+        edt_Discription = findViewById(R.id.txt_blog_discription);
 
         btn_UpDatePost = findViewById(R.id.btn_publish);
-        img_Camera = findViewById(R.id.camera);
         img_Featured = findViewById(R.id.featuredimg);
+
+        progressBarFeed = findViewById(R.id.progressBarFeed);
     }
 
 
@@ -170,15 +188,7 @@ public class EditBlogActivity extends AppCompatActivity {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 Image_uri = result.getUri();
                 img_Featured.setImageURI(Image_uri);
-
-                //Image_uri = data.getData();//data is getting null have to check
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Image_uri);
-                    //new UploadBlogToServer().execute();
-                    //img_Profile.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    Log.i("TAG", "onActivityResult: "+e.getMessage());
-                }
+                profileChange = true;
 
             }
         }else {
@@ -189,6 +199,12 @@ public class EditBlogActivity extends AppCompatActivity {
 
     private class UploadBlogToServer extends AsyncTask<Void,Void,Void> {
         ProgressDialog progressDialog;
+        String Title, Description;
+        public UploadBlogToServer(String Title, String Description) {
+            this.Title = Title;
+            this.Description = Description;
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -200,26 +216,22 @@ public class EditBlogActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             Retrofit retrofit = ApiClient.retrofit(EditBlogActivity.this);
             JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
+            MultipartBody.Part profileImage = null;
 
-            File profileFile = new File(Image_uri.getPath());
-            MultipartBody.Part profileImage = MultipartBody.Part.createFormData("photo",profileFile.getName(),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), profileFile));
-            String artistName= PreferenceData.getUserName(EditBlogActivity.this);
-            RequestBody artist_name = RequestBody.create(MediaType.parse("text/plain"),
-                    artistName);
+            if(Image_uri != null){
+                File profileFile = new File(Image_uri.getPath());
+                 profileImage = MultipartBody.Part.createFormData("photo",profileFile.getName(),
+                        RequestBody.create(MediaType.parse("multipart/form-data"), profileFile));
+            }
 
-            String name = edt_Title.getText().toString();
             RequestBody title = RequestBody.create(MediaType.parse("text/plain"),
-                    name);
-
-            String descript = edt_Discription.getText().toString();
+                    Title);
             RequestBody description = RequestBody.create(MediaType.parse("text/plain"),
-                    descript);
+                    Description);
 
-            Call<SuccessErrorModel> call = jsonApiHolder.AddBlog(
-                    profileImage,
-                    artist_name,
-                    artist_name,
+            Call<SuccessErrorModel> call = jsonApiHolder.updateBlog(
+                   "updateBlog/"+ blogId,
+                   profileImage,
                     title,
                     description
             );

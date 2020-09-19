@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -17,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
@@ -38,29 +38,28 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
 
-        public ImageView img_Requester_Profile, img_Accept,img_Cancel;
-        public TextView txt_Requester_Name, txt_Service_Name, txt_Discount, txt_Service_Charges,
-                txt_Start_Date, txt_End_Date, txt_Address;
+        public ImageView img_Requester_Profile;
+        public Button btn_Accept, btn_Message, btn_Reject;
+        public TextView txt_Requester_Name, txt_Service_Name, txt_ServiceType,txt_Service_Charges,
+                txt_Start_Date, txt_End_Date, txt_Address, txt_Email,txt_PhoneNo;
         public ProgressBar progressBar;
-
-        public TextView txt_Accept, txt_Message, txt_Cancel;
 
         public ViewHolder(View itemView){
             super(itemView);
             img_Requester_Profile = itemView.findViewById(R.id.img_requester);
-            img_Accept = itemView.findViewById(R.id.accept_check);
-            img_Cancel = itemView.findViewById(R.id.img_cancle);
+            btn_Accept = itemView.findViewById(R.id.accept);
+            btn_Reject = itemView.findViewById(R.id.reject);
+            btn_Message = itemView.findViewById(R.id.message);
 
             txt_Requester_Name = itemView.findViewById(R.id.txt_requester_name);
-            txt_Service_Name = itemView.findViewById(R.id.txt_sirvice_name);
-            txt_Discount = itemView.findViewById(R.id.txt_discount);
+            txt_Service_Name = itemView.findViewById(R.id.serviceName);
+            txt_ServiceType = itemView.findViewById(R.id.serviceType);
             txt_Service_Charges = itemView.findViewById(R.id.txt_sirvice_charges);
             txt_Start_Date = itemView.findViewById(R.id.txt_start_date);
             txt_End_Date = itemView.findViewById(R.id.txt_end_date);
+            txt_Email = itemView.findViewById(R.id.email);
+            txt_PhoneNo = itemView.findViewById(R.id.phoneNo);
             txt_Address = itemView.findViewById(R.id.txt_address);
-            txt_Accept = itemView.findViewById(R.id.txt_accept);
-            txt_Message = itemView.findViewById(R.id.txt_message);
-            txt_Cancel = itemView.findViewById(R.id.txt_cancel);
 
             progressBar = itemView.findViewById(R.id.progressBar);
         }
@@ -70,7 +69,6 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
     public RecyclerBookingRequests(List<MyBookingRequests> bookingRequest_modelArrayList, Context context) {
         this.mBookingRequesterArrayList = bookingRequest_modelArrayList;
         this.context = context;
-
     }
 
     @Override
@@ -79,7 +77,6 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_booking_request,parent,false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
-
     }
 
     @Override
@@ -104,10 +101,13 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
 
        holder.txt_Requester_Name.setText(currentItem.getName());
        holder.txt_Service_Name.setText(currentItem.getService_name());
+       holder.txt_ServiceType.setText(currentItem.getService_price_type());
 
-       holder.txt_Service_Charges.setText(currentItem.getPrice());
+       holder.txt_Service_Charges.setText("$"+currentItem.getPrice());
        holder.txt_Start_Date.setText(currentItem.getStart_date());
        holder.txt_End_Date.setText(currentItem.getEnd_date());
+       holder.txt_Email.setText(currentItem.getEmail());
+       holder.txt_PhoneNo.setText(currentItem.getPhone());
        holder.txt_Address.setText(currentItem.getAddress());
 
 //        if (st_Activity_Name.equals("Song")) {
@@ -120,31 +120,21 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
 //            holder.img_accept.setVisibility(View.VISIBLE);
 //        }
        
-       holder.txt_Accept.setOnClickListener(new View.OnClickListener() {
+       holder.btn_Accept.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               new GetAllBookingFromServer(1,position).execute();
+               new GetAllBookingFromServer(1,
+                       position,
+                       currentItem.getId()).execute();
            }
        });
 
-        holder.img_Accept.setOnClickListener(new View.OnClickListener() {
+        holder.btn_Reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new GetAllBookingFromServer(1,position).execute();
-            }
-        });
-
-        holder.txt_Cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new GetAllBookingFromServer(2,position).execute();
-            }
-        });
-
-        holder.img_Cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new GetAllBookingFromServer(2,position).execute();
+                new GetAllBookingFromServer(2,
+                        position,
+                        currentItem.getId()).execute();
             }
         });
 }
@@ -159,11 +149,13 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
         ProgressDialog progressDialog;
         int status;
         int position;
+        int bookingId;
 
 
-        public GetAllBookingFromServer(int status,int position) {
+        public GetAllBookingFromServer(int status,int position,int bookingId) {
             this.status = status;
             this.position = position;
+            this.bookingId = bookingId;
         }
 
         @Override
@@ -178,7 +170,7 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
         protected Void doInBackground(Void... voids) {
             Retrofit retrofit = ApiClient.retrofit(context);
             JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
-            String relativeUrl = "bookingStatus/"+ PreferenceData.getUserId(context);
+            String relativeUrl = "bookingStatus/"+ bookingId;
             Call<SuccessErrorModel> call = jsonApiHolder.acceptOrRejectRequest(
                     relativeUrl,
                     status

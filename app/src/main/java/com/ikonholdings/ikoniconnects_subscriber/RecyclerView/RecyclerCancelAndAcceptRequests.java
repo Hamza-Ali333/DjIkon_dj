@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.ikonholdings.ikoniconnects_subscriber.CacelAndAcceptRequest_Model;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 
 import java.util.ArrayList;
 
@@ -23,8 +26,6 @@ public class RecyclerCancelAndAcceptRequests extends RecyclerView.Adapter<Recycl
 
         public TextView txt_Requester_Name, txt_Service_Name, txt_Discount, txt_Service_Charges,
                txt_Address;
-
-
 
 
         public ViewHolder(View itemView){
@@ -62,21 +63,20 @@ public class RecyclerCancelAndAcceptRequests extends RecyclerView.Adapter<Recycl
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final CacelAndAcceptRequest_Model currentItem = mCancleRequestArrayList.get(position);
 
-       holder.img_Requester_Profile.setImageResource(currentItem.getRequester_image());
-
-       holder.txt_Requester_Name.setText(currentItem.getRequester_name());
-       holder.txt_Service_Name.setText(currentItem.getService_name());
-
-       holder.txt_Service_Charges.setText(currentItem.getService_charges());
-       holder.txt_Address.setText(currentItem.getAddress());
-
+//       holder.img_Requester_Profile.setImageResource(currentItem.getRequester_image());
+//
+//       holder.txt_Requester_Name.setText(currentItem.getRequester_name());
+//       holder.txt_Service_Name.setText(currentItem.getService_name());
+//
+//       holder.txt_Service_Charges.setText(currentItem.getService_charges());
+//       holder.txt_Address.setText(currentItem.getAddress());
 
 
        if (st_Activtiy.equals("Cancel")){
            holder.img_Accept_Or_Cancel_Sign.setImageResource(R.drawable.ic_cancel_red);
        }
        else {
-           holder.img_Accept_Or_Cancel_Sign.setImageResource(R.drawable.ic_check_circle);
+           holder.img_Accept_Or_Cancel_Sign.setImageResource(R.drawable.ic_check_blue);
        }
 
 }

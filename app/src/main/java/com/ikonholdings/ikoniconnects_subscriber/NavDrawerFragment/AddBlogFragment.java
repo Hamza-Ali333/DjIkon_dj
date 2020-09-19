@@ -431,9 +431,6 @@ public class AddBlogFragment extends Fragment {
             File profileFile = new File(Image_uri.getPath());
             MultipartBody.Part profileImage = MultipartBody.Part.createFormData("photo",profileFile.getName(),
                     RequestBody.create(MediaType.parse("multipart/form-data"), profileFile));
-            String artistName= PreferenceData.getUserName(getContext());
-            RequestBody artist_name = RequestBody.create(MediaType.parse("text/plain"),
-                    artistName);
 
             String name = edt_Title.getText().toString();
             RequestBody title = RequestBody.create(MediaType.parse("text/plain"),
@@ -446,7 +443,6 @@ public class AddBlogFragment extends Fragment {
             Call<SuccessErrorModel> call = jsonApiHolder.AddBlog(
                     profileImage,
                     galleryImages,
-                    artist_name,
                     title,
                     description
             );
