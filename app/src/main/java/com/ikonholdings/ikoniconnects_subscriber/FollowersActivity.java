@@ -28,10 +28,10 @@ public class FollowersActivity extends AppCompatActivity {
 
         ArrayList<FollowerAndBlocked_User_Model> follower_modelArrayList = new ArrayList<>();
 
-        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.woman,"Usama"));
-        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.ic_doctor,"Hamza"));
-        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.woman,"Usama"));
-        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.ic_doctor,"Ahmad"));
+        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.ic_avatar,"Usama"));
+        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.ic_avatar,"Hamza"));
+        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.ic_avatar,"Usama"));
+        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.ic_avatar,"Ahmad"));
 
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this);

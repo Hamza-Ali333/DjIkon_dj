@@ -69,11 +69,9 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
 
     @Override
     public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
-
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_list_layout,parent,false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
-
     }
 
     @Override
@@ -88,7 +86,7 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
             Picasso.get().load(currentItem.getImageUrl())
                     .fit()
                     .centerCrop()
-                    .placeholder(R.drawable.ic_doctor)
+                    .placeholder(R.drawable.ic_avatar)
                     .into(holder.img_msg_Subscriber_Profile, new Callback() {
                         @Override
                         public void onSuccess() {

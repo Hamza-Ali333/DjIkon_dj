@@ -10,16 +10,8 @@
     <string name="Notification">Create Notification</string>
     <string name="UserAdmin">User Admin</string>
 
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-
-    <string-array name="rate_type">
-        <item>Set Charge According too..</item>
-        <item>Fixed Rate</item>
-        <item>Rate Per Hour</item>
-    </string-array>
 
     //facebook
     <string name="facebook_app_id">976806959457745</string>

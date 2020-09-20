@@ -1,7 +1,6 @@
 package com.ikonholdings.ikoniconnects_subscriber;
 
 import android.app.AlertDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -9,20 +8,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
-import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.BookingRequestFetcher;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerBookingRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
-public class BookingRequestsActivity extends AppCompatActivity {
+public class BookingRequestsActivity extends AppCompatActivity implements BookingRequestFetcher.onRequestProcessComplete {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -42,9 +34,7 @@ public class BookingRequestsActivity extends AppCompatActivity {
         txt_Total = findViewById(R.id.txt_total);
 
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);
-        loadingDialog = DialogsUtils.showLoadingDialogue(this);
-        new GetAllbookingFromServer().execute();
-
+        new BookingRequestFetcher(txt_Total,"bookings").execute();
     }
 
     @Override
@@ -62,7 +52,12 @@ public class BookingRequestsActivity extends AppCompatActivity {
 
     }
 
-    private class GetAllbookingFromServer extends AsyncTask<Void,Void,Void> {
+    @Override
+    public void onComplete(List<MyBookingRequests> requestList) {
+        buildRecyclerView(requestList);
+    }
+
+   /* private class GetAllbookingFromServer extends AsyncTask<Void,Void,Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -123,6 +118,6 @@ public class BookingRequestsActivity extends AppCompatActivity {
             });
             return null;
         }
-    }
+    }*/
 
 }

@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.BookingRequestFetcher;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerCancelAndAcceptRequests;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AcceptRequestActivity extends AppCompatActivity {
+public class AcceptRequestActivity extends AppCompatActivity implements BookingRequestFetcher.onRequestProcessComplete {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -29,18 +31,16 @@ public class AcceptRequestActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         txt_total_canceled_request = findViewById(R.id.txt_total);
-        txt_total_canceled_request.setText("You Have 05 Approved Request");
 
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);
 
-
-
+        new BookingRequestFetcher(txt_total_canceled_request,"acceptBookings").execute();
     }
 
-    private void buildRecyclerView(List<CacelAndAcceptRequest_Model> list){
+    private void buildRecyclerView(List<MyBookingRequests> list){
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this);
-       // mAdapter = new RecyclerCancelAndAcceptRequests(cacelAndAcceptRequest_modelArrayList,"Accept");
+       mAdapter = new RecyclerCancelAndAcceptRequests(list,true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -51,4 +51,8 @@ public class AcceptRequestActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onComplete(List<MyBookingRequests> requestList) {
+        buildRecyclerView(requestList);
+    }
 }

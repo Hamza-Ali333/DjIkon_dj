@@ -38,13 +38,13 @@ public class ViewSongRequestFragment extends Fragment {
                 "09-07-2020","10-7-2020","105 William St, Chicago, Us"));
 
 
-        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.ic_doctor, "$20.00","Usama Ali",
+        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.ic_avatar, "$20.00","Usama Ali",
                 "Night Subscriber Service", "Discount",
                 "09-07-2020","10-7-2020","105 William St, Chicago, Us"));
 
 
 
-        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.woman, "$15.00","Bilawal",
+        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.ic_avatar, "$15.00","Bilawal",
                 "Night Subscriber Service", "Discount",
                 "09-07-2020","10-7-2020","105 William St, Chicago, Us"));
 

@@ -104,6 +104,7 @@ public class EditBlogActivity extends AppCompatActivity {
         });
 
     }
+
     private void manageImagePicker() {
         if ( PermissionHelper.checkDefaultPermissions(this)) {
             showImageImportDailog();

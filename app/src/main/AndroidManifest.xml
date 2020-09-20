@@ -77,6 +77,9 @@
         <activity android:name="com.ikonholdings.ikoniconnects_subscriber.UserProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity android:name="com.ikonholdings.ikoniconnects_subscriber.ServiceDetailActivity" />
+        <activity android:name="com.ikonholdings.ikoniconnects_subscriber.BlogDetailActivity" />
+
         <activity
             android:name="com.ikonholdings.ikoniconnects_subscriber.ChatViewerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -86,7 +89,6 @@
         <activity android:name="com.ikonholdings.ikoniconnects_subscriber.BlockedUserActivity" />
         <activity android:name="com.ikonholdings.ikoniconnects_subscriber.PackageActivity" />
         <activity android:name="com.ikonholdings.ikoniconnects_subscriber.AddServiceActivity" />
-        <activity android:name="com.ikonholdings.ikoniconnects_subscriber.ServiceDetailActivity" />
         <activity android:name="com.ikonholdings.ikoniconnects_subscriber.CommnetActivity" />
         <activity android:name="com.ikonholdings.ikoniconnects_subscriber.EditFollwerActivity" />
         <activity android:name="com.ikonholdings.ikoniconnects_subscriber.EditBlogActivity" />

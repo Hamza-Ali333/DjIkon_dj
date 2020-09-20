@@ -14,57 +14,53 @@
         android:padding="10dp">
 
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_img"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:cardCornerRadius="10dp"
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/img_requester"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            app:civ_border_color="@color/colorBlack"
+            app:civ_border_width="2dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_avatar" />
 
-            <ImageView
-                android:id="@+id/img_requester"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/woman"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="61dp" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/progressbar"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/img_requester"
+            app:layout_constraintEnd_toEndOf="@+id/img_requester"
+            app:layout_constraintStart_toStartOf="@+id/img_requester"
+            app:layout_constraintTop_toTopOf="@+id/img_requester" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:indeterminateDrawable="@drawable/progressbar"
-                android:padding="4dp"
-                android:visibility="gone" />
-
-        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/txt_requester_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/montserrat"
             android:text="Esther Berry"
             android:textColor="@color/colorBlack"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/card_img"
-            app:layout_constraintTop_toTopOf="@+id/card_img" />
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/img_requester"
+            app:layout_constraintTop_toTopOf="@+id/img_requester" />
 
         <TextView
             android:id="@+id/txt_sirvice_charges"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:fontFamily="@font/montserrat"
             android:text="$25.00"
             android:textColor="@color/colorBlue"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/txt_requester_name"
             app:layout_constraintTop_toBottomOf="@+id/txt_requester_name" />
@@ -73,7 +69,7 @@
             android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/montserrat"
             android:text="Booking Date and Time"
             android:textSize="12sp"
@@ -104,7 +100,7 @@
             android:id="@+id/textView21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/montserrat"
             android:text="Location"
             android:textSize="12sp"
@@ -185,7 +181,7 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/montserrat"
             android:text="Phone No"
             android:textSize="12sp"
@@ -207,10 +203,10 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="Service Name"
             app:layout_constraintStart_toStartOf="@+id/card_img"
-            app:layout_constraintTop_toBottomOf="@+id/card_img" />
+            app:layout_constraintTop_toBottomOf="@+id/img_requester" />
 
         <TextView
             android:id="@+id/serviceName"
@@ -226,7 +222,7 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="Service Type"
             app:layout_constraintStart_toStartOf="@+id/serviceName"
             app:layout_constraintTop_toBottomOf="@+id/serviceName" />

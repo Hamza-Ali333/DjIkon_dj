@@ -65,19 +65,16 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class AddBlogFragment extends Fragment {
 
     private EditText edt_Title, edt_Discription;
-    private ImageView img_Video, img_Gallery, img_Camera, img_Featured, img_Audio, img_Selected;
+    private ImageView img_Video, img_Gallery, img_Camera, img_Featured, img_Selected;
     private Button btn_Post;
 
     private static final int IMAGE_PICK_GALLERY_REQUEST_CODE = 1000;
     private static final int MULTIPLE_IMAGE_PICK_GALLERY_REQUEST_CODE = 3784;
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 2000;
     private static final int REQUEST_TAKE_GALLERY_VIDEO = 2342;
-    private static final int REQUEST_TAKE_Audio = 1376;
 
-    private String cameraPermission[];
-    private String storagePermission[];
     private Uri Image_uri;
-    private Bitmap bitmap;
+    private Boolean isFeatureImageSelected= false;
 
     private RecyclerView mGalleryRecycler;
     private RecyclerView.Adapter galleryAdapter;
@@ -93,13 +90,6 @@ public class AddBlogFragment extends Fragment {
        createRefrences(v);
 
        GalleryArray = new ArrayList<>();
-
-        img_Audio.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               showImageImportDailog();
-           }
-       });
 
        img_Camera.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -121,7 +111,6 @@ public class AddBlogFragment extends Fragment {
                if ( PermissionHelper.checkDefaultPermissions(getActivity())) {
                    Intent i = new Intent();
                    i.setType("image/*");
-                   //i.setType("video/*");
                    i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                    i.setAction(Intent.ACTION_GET_CONTENT);
                    startActivityForResult(
@@ -142,20 +131,13 @@ public class AddBlogFragment extends Fragment {
            }
        });
 
-       img_Audio.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               Intent intent_upload = new Intent();
-               intent_upload.setType("audio/*");
-               intent_upload.setAction(Intent.ACTION_GET_CONTENT);
-               startActivityForResult(intent_upload,REQUEST_TAKE_Audio);
-           }
-       });
-
        btn_Post.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               new UploadBlogToServer().execute();
+               if(isInfoRight()){
+                   new UploadBlogToServer().execute();
+               }
+
            }
        });
 
@@ -177,13 +159,25 @@ public class AddBlogFragment extends Fragment {
           img_Camera = v.findViewById(R.id.camera);
           img_Featured = v.findViewById(R.id.featuredimg);
           img_Gallery = v.findViewById(R.id.imgGallery);
-          img_Audio = v.findViewById(R.id.imgAudio);
           img_Video = v.findViewById(R.id.imgVideo);
           img_Selected = v.findViewById(R.id.image);
 
-        mGalleryRecycler = v.findViewById(R.id.gallryIamgesRecycler);
+          mGalleryRecycler = v.findViewById(R.id.gallryIamgesRecycler);
 
-        btn_Post = v.findViewById(R.id.btn_publish);
+          btn_Post = v.findViewById(R.id.btn_publish);
+    }
+
+    private Boolean isInfoRight () {
+        Boolean result = true;
+        if(!isFeatureImageSelected){
+            Toast.makeText(getContext(), "Featured image is required", Toast.LENGTH_SHORT).show();
+            result = false;
+        }else if(edt_Title.getText().toString().isEmpty()){
+            edt_Title.setError("Required");
+            edt_Title.requestFocus();
+            result = false;
+        }
+        return result;
     }
 
     //image import
@@ -266,16 +260,7 @@ public class AddBlogFragment extends Fragment {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 Image_uri = result.getUri();
                 img_Featured.setImageURI(Image_uri);
-
-                //Image_uri = data.getData();//data is getting null have to check
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Image_uri);
-                    //new UploadBlogToServer().execute();
-                    //img_Profile.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    Log.i("TAG", "onActivityResult: "+e.getMessage());
-                }
-
+                isFeatureImageSelected = true;
 
             }
 
@@ -297,31 +282,6 @@ public class AddBlogFragment extends Fragment {
                 }
             }
 
-            //audio
-            if (requestCode == REQUEST_TAKE_Audio){
-                Uri uri = data.getData();
-                try {
-                    String uriString = uri.toString();
-                    File myFile = new File(uriString);
-                    //    String path = myFile.getAbsolutePath();
-                    String displayName = null;
-                    String path2 = getAudioPath(uri);
-                    File f = new File(path2);
-                    long fileSizeInBytes = f.length();
-                    long fileSizeInKB = fileSizeInBytes / 1024;
-                    long fileSizeInMB = fileSizeInKB / 1024;
-                    if (fileSizeInMB > 8) {
-                        //customAlterDialog("Can't Upload ", "sorry file size is large");
-                    } else {
-                       // profilePicUrl = path2;
-                        //isPicSelect = true;
-                    }
-                } catch (Exception e) {
-                    //handle exception
-                    Toast.makeText(getContext(), "Unable to process,try again", Toast.LENGTH_SHORT).show();
-                }
-            }
-
                     //Multiple Images For BlogGallery
             if(requestCode == MULTIPLE_IMAGE_PICK_GALLERY_REQUEST_CODE){
 
@@ -336,15 +296,6 @@ public class AddBlogFragment extends Fragment {
                     Toast.makeText(getContext(), "No Image Found", Toast.LENGTH_SHORT).show();
                 }
 
-               //As of now use static position 0 use as per itemcount.
-//                Bitmap bitmap = null;
-//                //Uri selectedImage1 = data.getData();
-//                try {
-//                    bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                System.out.println("+++ clipdate" + selectedImage);
             }
 
         }else {
@@ -366,16 +317,6 @@ public class AddBlogFragment extends Fragment {
             return cursor.getString(column_index);
         } else
             return null;
-    }
-
-   // This function is use for absolute path of audio file
-    private String getAudioPath(Uri uri) {
-        String[] data = {MediaStore.Audio.Media.DATA};
-        CursorLoader loader = new CursorLoader(getApplicationContext(), uri, data, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
     }
 
     private void buildGalleryImagesRecycler(List<GalleryImagesUri> galleryImagesUriList) {

@@ -31,9 +31,9 @@ public class CommnetActivity extends AppCompatActivity {
         ArrayList<Comments_Model> comments_model_array_list = new ArrayList<>();
 
 
-        comments_model_array_list.add(new Comments_Model(R.drawable.woman,"Bilawal","24 spet 2019","This is the first time that i m commeting on something throug android"));
+        comments_model_array_list.add(new Comments_Model(R.drawable.ic_avatar,"Bilawal","24 spet 2019","This is the first time that i m commeting on something throug android"));
         comments_model_array_list.add(new Comments_Model(R.drawable.rectangle2,"Hamza","24 spet 2019","This is the first time that i m commeting on something throug android it's not very hard to do commetn like this if you like it then give a like heart like on youtube we give to the commenter's is it good or bad tell me replay me"));
-        comments_model_array_list.add(new Comments_Model(R.drawable.ic_doctor,"Usama","24 spet 2019","This is the first time that i m commeting on something throug android"));
+        comments_model_array_list.add(new Comments_Model(R.drawable.ic_avatar,"Usama","24 spet 2019","This is the first time that i m commeting on something throug android"));
         comments_model_array_list.add(new Comments_Model(R.drawable.photo2,"Bilawal","24 spet 2019","This is the first time that i m commeting on something throug android"));
 
 

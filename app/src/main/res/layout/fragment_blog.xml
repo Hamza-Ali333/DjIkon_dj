@@ -17,7 +17,7 @@
             android:id="@+id/txt_blog_title"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/edt_shape"
             android:gravity="center_vertical"
             android:hint="Required"
@@ -38,7 +38,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <ImageView
             android:id="@+id/camera"
@@ -54,12 +54,10 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Featured Image Required"
+            android:text="Featured Image Required*"
+            android:textColor="#FBFAFA"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/featuredimg" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imgGallery"
@@ -85,7 +83,7 @@
             android:id="@+id/txt_blog_discription"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/edt_shape"
             android:gravity="top"
             android:hint="Required"
@@ -101,8 +99,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="8dp"
             android:text="Blog Title"
             android:textColor="#FBF9F9"
@@ -133,18 +130,6 @@
             app:layout_constraintStart_toEndOf="@+id/imgGallery"
             app:layout_constraintTop_toTopOf="@+id/imgGallery"
             app:srcCompat="@drawable/ic_play" />
-
-        <ImageView
-            android:id="@+id/imgAudio"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imgVideo"
-            app:layout_constraintStart_toEndOf="@+id/imgVideo"
-            app:layout_constraintTop_toTopOf="@+id/imgVideo"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/ic_music" />
 
         <Button
             android:id="@+id/btn_publish"

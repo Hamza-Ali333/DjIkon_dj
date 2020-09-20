@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
+import com.ikonholdings.ikoniconnects_subscriber.BlogDetailActivity;
 import com.ikonholdings.ikoniconnects_subscriber.CommnetActivity;
 import com.ikonholdings.ikoniconnects_subscriber.EditBlogActivity;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
@@ -130,8 +131,8 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
         //Artist Image
             if (!currentItem.getArtist_image().isEmpty() && !currentItem.getArtist_image().equals("no")) {
                 holder.progressBarProfile.setVisibility(View.VISIBLE);
-                Picasso.get().load((currentItem.getArtist_image()))
-                        .placeholder(R.drawable.ic_doctor)
+                Picasso.get().load(ApiClient.Base_Url+currentItem.getArtist_image())
+                        .placeholder(R.drawable.ic_avatar)
                         .into(holder.img_uploaderProfile, new Callback() {
                             @Override
                             public void onSuccess() {
@@ -186,6 +187,15 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
                 }
             });
 
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(view.getContext(), BlogDetailActivity.class);
+                        i.putExtra("url",currentItem.getId());
+                        i.putExtra("featured_image",currentItem.getPhoto());
+                        view.getContext().startActivity(i);
+                    }
+                });
 
             holder.img_Chat.setOnClickListener(new View.OnClickListener() {
                 @Override

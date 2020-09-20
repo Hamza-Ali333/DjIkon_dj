@@ -34,14 +34,14 @@ public class NotificationFragment extends Fragment {
 
         ArrayList<Notification_Model> subscribeToArtistArrayList = new ArrayList<>();
 
-        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.woman,"Usama","cold play Ghost Stiries"));
-        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_doctor,"Hamza","Adhitia Sofyan Adeialide sky"));
-        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.woman,"Usama","CEO Web Febricant Subscriber"));
-        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_doctor,"Ahmad","Farig Awara Wella wakeel"));
-        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.woman,"Usama","cold play Ghost Stiries"));
-        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_doctor,"Hamza","Adhitia Sofyan Adeialide sky"));
-        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.woman,"Usama","CEO Web Febricant Subscriber"));
-        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_doctor,"Ahmad","Farig Awara Wella wakeel"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_avatar,"Usama","cold play Ghost Stiries"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_avatar,"Hamza","Adhitia Sofyan Adeialide sky"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_avatar,"Usama","CEO Web Febricant Subscriber"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_avatar,"Ahmad","Farig Awara Wella wakeel"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_avatar,"Usama","cold play Ghost Stiries"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_avatar,"Hamza","Adhitia Sofyan Adeialide sky"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_avatar,"Usama","CEO Web Febricant Subscriber"));
+        subscribeToArtistArrayList.add(new Notification_Model(R.drawable.ic_avatar,"Ahmad","Farig Awara Wella wakeel"));
 
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this.getContext());

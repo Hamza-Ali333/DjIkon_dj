@@ -75,8 +75,8 @@ public interface JSONApiHolder {
 //    Call<List<FramesModel>>getFrames();
 
     //this will return current UserAll the booking
-    @GET("bookings")
-    Call<List<MyBookingRequests>> getBookings();
+    @GET()
+    Call<List<MyBookingRequests>> getBookings(@Url String id);
 
 
 
