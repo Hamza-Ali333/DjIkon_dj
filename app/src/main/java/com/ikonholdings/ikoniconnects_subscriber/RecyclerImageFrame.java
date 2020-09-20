@@ -24,7 +24,7 @@ public class RecyclerImageFrame extends RecyclerView.Adapter<RecyclerImageFrame.
             super(itemView);
             img_Frame_image = itemView.findViewById(R.id.frame_image);
 
-            txt_Title = itemView.findViewById(R.id.txt_frame_title);
+//            txt_Title = itemView.findViewById(R.id.txt_frame_title);
 
 
         }
@@ -50,7 +50,7 @@ public class RecyclerImageFrame extends RecyclerView.Adapter<RecyclerImageFrame.
         final ImageFrame_Model currentItem = mImageFram_Model.get(position);
 
        holder.img_Frame_image.setImageResource(currentItem.getImage());
-       holder.txt_Title.setText(currentItem.getTitle());
+      // holder.txt_Title.setText(currentItem.getTitle());
 
 }
 

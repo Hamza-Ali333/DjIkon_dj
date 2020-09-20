@@ -7,21 +7,17 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -42,12 +38,10 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bolts.Bolts;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -65,7 +59,7 @@ public class AddServiceActivity extends AppCompatActivity {
     private Button btn_Publish, btn_Gallery;
 
     private String[] rateType = {"Select type", "Fix", "Rate per hour"};//for sippiner adapter
-    private String SelectedGender = "Select Type";
+    private String SelectedPriceType = "Select Type";
 
     private static final int IMAGE_PICK_GALLERY_REQUEST_CODE = 1000;
     private static final int MULTIPLE_IMAGE_PICK_GALLERY_REQUEST_CODE = 3784;
@@ -99,7 +93,7 @@ public class AddServiceActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                SelectedGender = rateType[i];
+                SelectedPriceType = rateType[i];
             }
 
             @Override
@@ -135,7 +129,7 @@ public class AddServiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(isInfoRight()){
-                    new UploadBlogToServer().execute();
+                    new UploadServiceToServer().execute();
                 }
             }
         });
@@ -301,14 +295,14 @@ public class AddServiceActivity extends AppCompatActivity {
             edt_Price.setError("Required");
             edt_Price.requestFocus();
             result = false;
-        }else if(SelectedGender.equals("Select Type")){
+        }else if(SelectedPriceType.equals("Select Type")){
             Toast.makeText(this, "Please select service price charge type", Toast.LENGTH_SHORT).show();
             result = false;
         }
         return result;
     }
 
-    private class UploadBlogToServer extends AsyncTask<Void,Void,Void> {
+    private class UploadServiceToServer extends AsyncTask<Void,Void,Void> {
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
@@ -339,22 +333,28 @@ public class AddServiceActivity extends AppCompatActivity {
             }
 
             File profileFile = new File(Image_uri.getPath());
-            MultipartBody.Part profileImage = MultipartBody.Part.createFormData("photo",profileFile.getName(),
+            MultipartBody.Part profileImage = MultipartBody.Part.createFormData("feature_image",profileFile.getName(),
                     RequestBody.create(MediaType.parse("multipart/form-data"), profileFile));
 
-            String name = edt_Title.getText().toString();
             RequestBody title = RequestBody.create(MediaType.parse("text/plain"),
-                    name);
+                    edt_Title.getText().toString());
 
-            String descript = edt_Description.getText().toString();
             RequestBody description = RequestBody.create(MediaType.parse("text/plain"),
-                    descript);
+                    edt_Description.getText().toString());
 
-            Call<SuccessErrorModel> call = jsonApiHolder.AddBlog(
+            RequestBody price = RequestBody.create(MediaType.parse("text/plain"),
+                    edt_Price.getText().toString());
+
+            RequestBody priceType = RequestBody.create(MediaType.parse("text/plain"),
+                    SelectedPriceType);
+
+            Call<SuccessErrorModel> call = jsonApiHolder.uploadService(
                     profileImage,
                     galleryImages,
                     title,
-                    description
+                    description,
+                    priceType,
+                    price
             );
 
             call.enqueue(new Callback<SuccessErrorModel>() {
@@ -368,8 +368,8 @@ public class AddServiceActivity extends AppCompatActivity {
                                         "Uploaded Successfully","Your blog is uploaded successfully");
                             } else {
                                 DialogsUtils.showAlertDialog(AddServiceActivity.this,false,
-                                        "Uploaded Failed","Please try again. Blog uploading is failed\n" +
-                                                "And make sure you have strong internet connection");
+                                        "Uploaded Failed","Please try again. uploading is failed\n" +
+                                                "And make sure you have strong internet connection"+response.code());
                             }
                             progressDialog.dismiss();
                         }

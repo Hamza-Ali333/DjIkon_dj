@@ -1,9 +1,10 @@
 package com.ikonholdings.ikoniconnects_subscriber;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.RecyclerServiceR
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleServiceModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleServiceReviews;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SliderModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -120,6 +122,34 @@ public class ServiceDetailActivity extends AppCompatActivity {
         new GetServiceDataAndReviews().execute(String.valueOf(serviceId));
 
         singleServiceModleArrayList = new ArrayList<>();
+
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDeleteAlertDialog();
+            }
+        });
+    }
+
+    private void showDeleteAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Confirmation");
+        builder.setMessage("Are you Sure You Want to delete this Service");
+        builder.setCancelable(true);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                new DeleteService(serviceId).execute();
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+        builder.setIcon(R.drawable.ic_alert);
+        builder.show();
     }
 
     @Override
@@ -284,6 +314,66 @@ public class ServiceDetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+        }
+    }
+
+    private class DeleteService extends AsyncTask<Void,Void,Void> {
+        ProgressDialog progressDialog;
+        int ServiceId;
+
+        public DeleteService( int ServiceId) {
+            this.ServiceId = ServiceId;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = DialogsUtils.showProgressDialog(ServiceDetailActivity.this,
+                    "Working...",
+                    "Please wait. While connecting with the server.");
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Retrofit retrofit = ApiClient.retrofit(ServiceDetailActivity.this);
+            JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
+            Call<SuccessErrorModel> call = jsonApiHolder.deleteService(
+                    ServiceId
+            );
+            call.enqueue(new retrofit2.Callback<SuccessErrorModel>() {
+                @Override
+                public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
+                    if(response.isSuccessful()){
+                        progressDialog.dismiss();
+                    }else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.dismiss();
+                                DialogsUtils.showAlertDialog(ServiceDetailActivity.this,
+                                        false,
+                                        "Error",
+                                        "Please try again and check your internet connection");
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SuccessErrorModel> call, Throwable t) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                            DialogsUtils.showAlertDialog(ServiceDetailActivity.this,
+                                    false,
+                                    "No Server Connection",
+                                    t.getMessage());
+                        }
+                    });
+                }
+            });
+            return null;
         }
     }
 

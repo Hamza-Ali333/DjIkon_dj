@@ -8,11 +8,14 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -48,6 +51,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,15 +61,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
+    private View navHeaderView;
 
     private Toolbar toolbar;
 
     private ProgressDialog progressDialog;
-    private AlertDialog alertDialog;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
 
@@ -73,11 +77,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
 
+    private CircularImageView currentUserProfile;
+    private ImageView UserProfileHeader;
+    private TextView UserName;
+
     private String currentUserEmail;
     private String currentUserPassword;
     private Boolean isComeFromRegistrationActivity;
-
-    private Boolean LoginResult = false;
 
     private Retrofit retrofit;
     private JSONApiHolder jsonApiHolder;
@@ -89,7 +95,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-         retrofit = ApiClient.retrofit(this);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
+        PreferenceData.registerPref(this,this);
+
         //if User in not Register on FireBase then Register him
         try {
             mFirebaseAuth = FirebaseAuth.getInstance();
@@ -98,14 +107,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (mFirebaseUser == null) {
                 Intent i = getIntent();
                 isComeFromRegistrationActivity = i.getBooleanExtra("come_from_registration", false);
-                currentUserEmail = i.getStringExtra("email");
-                currentUserPassword = i.getStringExtra("password");
-                if (currentUserEmail != null && currentUserPassword != null)
+                currentUserEmail = PreferenceData.getUserEmail(this);
+                currentUserPassword = PreferenceData.getUserPassword(this);
+                if (currentUserEmail != null && currentUserEmail != null)
                     new RegisteringUserAlsoOnFirebase().execute(isComeFromRegistrationActivity);
             }
         } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.i("TAG", "onStart: "+e.getMessage());
         }
+
+        retrofit = ApiClient.retrofit(this);
 
     }
 
@@ -113,21 +124,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        createRefrencer();
+        createReferences();
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
-        toolbar = findViewById(R.id.toolbar);
+        UserName.setText(PreferenceData.getUserName(MainActivity.this));
+
+        getCurrentUserImage();
+
         setSupportActionBar(toolbar);
-
-        CircularImageView img = findViewById(R.id.loginUser);
-
-        img.setOnClickListener(new View.OnClickListener() {
+        //tool bar image
+        currentUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, UserProfileActivity.class);
-                startActivity(i);
+                startActivity( new Intent(MainActivity.this, UserProfileActivity.class));
             }
         });
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -136,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 // what do you want here
-
             }
         });
 
@@ -150,19 +160,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         //if the activity luch for the first time and saveInstante null then it set the fragment
-        if (savedInstanceState == null) {
+        if(savedInstanceState == null) {
             getSupportActionBar().setTitle(R.string.myFeed);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MyFeedFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_MyFeed);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_visa)
-                .setContentTitle("Hamza")
-                .setContentText("textContent")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
+    }
+
+    private void getCurrentUserImage() {
+        String imageName = PreferenceData.getUserImage(this);
+
+        if (!imageName.equals("No Image") && !imageName.equals("no")){
+            Picasso.get().load(ApiClient.Base_Url + imageName)
+                    .placeholder(R.drawable.ic_avatar)
+                    .fit()
+                    .centerCrop()
+                    .into(currentUserProfile, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            //Navigation DrawerPhoto of User
+                            UserProfileHeader.setImageDrawable(currentUserProfile.getDrawable());
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+        }
 
     }
 
@@ -176,10 +204,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void createRefrencer() {
+    private void createReferences(){
+
+        toolbar = findViewById(R.id.toolbar);
+
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_View);
+        navHeaderView =  navigationView.getHeaderView(0);
 
+        currentUserProfile = findViewById(R.id.currentUserProfile);
+        UserProfileHeader = navHeaderView.findViewById(R.id.img_userProfile);
+        UserName = navHeaderView.findViewById(R.id.txt_userName);
     }
 
 
@@ -301,15 +336,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 } else {
                     progressDialog.dismiss();
-                    Toast.makeText(MainActivity.this, "please check Your Network", Toast.LENGTH_SHORT).show();
-                    Log.i("TAG", "onResponse: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<LoginRegistrationModel> call, Throwable t) {
-                Log.i("TAG", "onFailure: " + t.getMessage());
-                alertDialog = DialogsUtils.showAlertDialog(MainActivity.this, false, "No Internet", "Please Check Your Internet Connection");
+
+                 DialogsUtils.showAlertDialog(MainActivity.this, false, "No Internet", "Please Check Your Internet Connection");
 
             }
         });
@@ -393,6 +426,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    //when name change will automatically
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        UserName.setText(PreferenceData.getUserName(this));
+    }
 
     private class RegisteringUserAlsoOnFirebase extends AsyncTask<Boolean, Void, Void> {
         @Override
@@ -407,6 +445,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             return null;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getCurrentUserImage();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(mNetworkChangeReceiver);
+        PreferenceData.unRegisterPref(this, this);
     }
 
 }

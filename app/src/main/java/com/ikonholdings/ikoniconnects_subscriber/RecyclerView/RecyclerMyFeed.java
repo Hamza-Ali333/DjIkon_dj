@@ -48,17 +48,12 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
     private List<MyFeedBlogModel> mBlogs;
     private Context context;
 
-//for custom menu
-    private PopupWindow mDropdown = null;
-    LayoutInflater mInflater;
-
     //view holder class
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView img_uploaderProfile, img_feedImage, img_Chat, img_Likes, img_menu;
 
         public ProgressBar progressBarProfile, progressBarFeed;
-
 
         public TextView txt_BlogTitle, txt_uploadTime, txt_Description, txt_LikesNo, txt_ChatNo;
 
@@ -103,7 +98,7 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         MyFeedBlogModel currentItem = mBlogs.get(position);
 
-        holder.img_feedImage.setImageResource(R.drawable.rectangle2);
+        holder.img_feedImage.setImageResource(R.drawable.ic_avatar);
 
         holder.txt_BlogTitle.setText(currentItem.getTitle());
         holder.txt_uploadTime.setText(currentItem.getCreated_at());
@@ -204,48 +199,8 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
                     v.getContext().startActivity(i);
                 }
             });
-//
-//        holder.img_feedImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(v.getContext(), SubscriberPrpfileActivity.class);
-//                v.getContext().startActivity(i);
-//            }
-//        });
 
         }
-
-//        private PopupWindow initiatePopupWindow (Context context, ViewHolder viewHolder){
-//
-//            try {
-//
-//                mInflater = (LayoutInflater) context.getApplicationContext()
-//                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                View layout = mInflater.inflate(R.layout.menu, null);
-//
-//                //If you want to add any listeners to your textviews, these are two //textviews.
-//                //final TextView itema = (TextView) layout.findViewById(R.id.ItemA);
-//
-//
-//                // final TextView itemb = (TextView) layout.findViewById(R.id.ItemB);
-//
-//
-//                layout.measure(View.MeasureSpec.UNSPECIFIED,
-//                        View.MeasureSpec.UNSPECIFIED);
-//                mDropdown = new PopupWindow(layout, FrameLayout.LayoutParams.WRAP_CONTENT,
-//                        FrameLayout.LayoutParams.WRAP_CONTENT, true);
-//                Drawable background = context.getResources().getDrawable(android.R.drawable.menuitem_background);
-//                mDropdown.setBackgroundDrawable(background);
-////            mDropdown.showAtLocation();
-//                mDropdown.showAsDropDown(viewHolder.img_menu, 0, 0);
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return mDropdown;
-//
-//        }
-
 
     }
 

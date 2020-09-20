@@ -1,7 +1,5 @@
 package com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
@@ -10,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,9 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.loader.content.CursorLoader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +32,6 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PathUtil;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.GalleryImagesUri;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerShowGalleryImages;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
@@ -46,7 +40,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +53,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static android.app.Activity.RESULT_OK;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class AddBlogFragment extends Fragment {
 
@@ -381,7 +373,7 @@ public class AddBlogFragment extends Fragment {
             RequestBody description = RequestBody.create(MediaType.parse("text/plain"),
                     descript);
 
-            Call<SuccessErrorModel> call = jsonApiHolder.AddBlog(
+            Call<SuccessErrorModel> call = jsonApiHolder.uploadBlog(
                     profileImage,
                     galleryImages,
                     title,

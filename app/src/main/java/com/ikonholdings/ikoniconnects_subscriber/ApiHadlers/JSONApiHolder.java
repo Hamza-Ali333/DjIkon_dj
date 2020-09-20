@@ -2,6 +2,7 @@ package com.ikonholdings.ikoniconnects_subscriber.ApiHadlers;
 
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AllArtistModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DjAndUserProfileModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FramesModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
@@ -71,8 +72,8 @@ public interface JSONApiHolder {
 //    @GET("liveArtist")
 //    Call<List<CurrentLiveArtistModel>> getCurrentLiveArtist();
 
-//    @GET("socialFrames")
-//    Call<List<FramesModel>>getFrames();
+    @GET("socialFrames")
+    Call<List<FramesModel>>getFrames();
 
     //this will return current UserAll the booking
     @GET()
@@ -80,12 +81,10 @@ public interface JSONApiHolder {
 
 
 
-
-
     //Post Methods
     @Multipart
     @POST("blog")
-    Call <SuccessErrorModel> AddBlog(
+    Call <SuccessErrorModel> uploadBlog(
             @Part MultipartBody.Part profile,
             @Part List<MultipartBody.Part> gallery,
             @Part("title") RequestBody  title,
@@ -247,5 +246,19 @@ public interface JSONApiHolder {
 
     @DELETE("blog/{id}")
     Call<SuccessErrorModel> deleteBlog(@Path("id") int id);
+
+    @DELETE("products/{id}")
+    Call<SuccessErrorModel> deleteService(@Path("id") int id);
+
+    @Multipart
+    @POST("products")
+    Call <SuccessErrorModel> uploadService(
+            @Part MultipartBody.Part featuredImage,
+            @Part List<MultipartBody.Part> gallery,
+            @Part("name") RequestBody  title,
+            @Part("description") RequestBody description,
+            @Part("price_type") RequestBody priceType,
+            @Part("price") RequestBody price
+    );
 
 }

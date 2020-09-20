@@ -33,7 +33,7 @@ public class ViewSongRequestFragment extends Fragment {
 
         ArrayList<BookingRequest_Model> bookingRequest_modelArrayList = new ArrayList<>();
 
-        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.photo2, "$25.00","Hamza Ali",
+        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.ic_avatar, "$25.00","Hamza Ali",
                 "Night Subscriber Service", "Discount",
                 "09-07-2020","10-7-2020","105 William St, Chicago, Us"));
 
@@ -49,7 +49,7 @@ public class ViewSongRequestFragment extends Fragment {
                 "09-07-2020","10-7-2020","105 William St, Chicago, Us"));
 
 
-        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.photo2, "$25.00","Admad",
+        bookingRequest_modelArrayList.add(new BookingRequest_Model(R.drawable.ic_avatar, "$25.00","Admad",
                 "Night Subscriber Service", "Discount",
                 "09-07-2020","10-7-2020","105 William St, Chicago, Us"));
 
