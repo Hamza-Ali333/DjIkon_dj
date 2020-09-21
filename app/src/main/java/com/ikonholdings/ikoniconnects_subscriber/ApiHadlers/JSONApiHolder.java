@@ -43,6 +43,9 @@ public interface JSONApiHolder {
     @GET("getStart")
     Call<SuccessErrorModel> getBrainTreeToken();
 
+    @GET("api/songRequests")
+    Call<RequestedSongsModel> getSongRequest();
+
     //will return All subscribed Artist  by current User
     @GET ("following")
     Call<List<SubscribeArtistModel>> getSubscribeArtist();
@@ -52,7 +55,7 @@ public interface JSONApiHolder {
     Call<List<AllArtistModel>> getAllArtist();
 
     //will return all the requested Song
-    @GET ("requested_songs")
+    @GET ("songRequests")
     Call<List<RequestedSongsModel>> getRequestedSongs();
 
     //will return detail of a blog
@@ -256,7 +259,18 @@ public interface JSONApiHolder {
             @Part MultipartBody.Part featuredImage,
             @Part List<MultipartBody.Part> gallery,
             @Part("name") RequestBody  title,
-            @Part("description") RequestBody description,
+            @Part("details") RequestBody description,
+            @Part("price_type") RequestBody priceType,
+            @Part("price") RequestBody price
+    );
+
+    @Multipart
+    @POST()
+    Call <SuccessErrorModel> updateService(
+            @Url String Url,
+            @Part MultipartBody.Part featuredImage,
+            @Part("name") RequestBody  title,
+            @Part("details") RequestBody description,
             @Part("price_type") RequestBody priceType,
             @Part("price") RequestBody price
     );

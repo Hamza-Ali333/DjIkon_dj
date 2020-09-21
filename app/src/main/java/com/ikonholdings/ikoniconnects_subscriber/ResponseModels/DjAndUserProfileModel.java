@@ -16,11 +16,37 @@ public class DjAndUserProfileModel {
             gender,
             location,
             rate_per_hour,
-            online_status;
+            refferal,
+            rate_perhour;
+
     private Boolean password;
 
     private int allow_message;
     private int allow_booking;
+    private int online_status;
+    private int account_status;
+    private int allow_payment;
+    private int vallet;
+
+    public String getRefferal() {
+        return refferal;
+    }
+
+    public String getRate_perhour() {
+        return rate_perhour;
+    }
+
+    public int getAccount_status() {
+        return account_status;
+    }
+
+    public int getAllow_payment() {
+        return allow_payment;
+    }
+
+    public int getVallet() {
+        return vallet;
+    }
 
     public int getAllow_message() {
         return allow_message;
@@ -37,7 +63,7 @@ public class DjAndUserProfileModel {
 
     private List<ServicesModel> services;
 
-    public String getOnline_status() {
+    public int getOnline_status() {
         return online_status;
     }
 

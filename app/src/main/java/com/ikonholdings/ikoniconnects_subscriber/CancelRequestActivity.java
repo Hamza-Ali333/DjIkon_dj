@@ -20,7 +20,7 @@ public class CancelRequestActivity extends AppCompatActivity implements BookingR
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    TextView txt_total_canceled_request;
+    private TextView txt_total_canceled_request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class CancelRequestActivity extends AppCompatActivity implements BookingR
         txt_total_canceled_request = findViewById(R.id.txt_total);
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);
 
-        new BookingRequestFetcher(txt_total_canceled_request,"rejectBookings");
+        new BookingRequestFetcher(txt_total_canceled_request,"rejectBookings").execute();
     }
 
     private void buildRecyclerView(List<MyBookingRequests> list){

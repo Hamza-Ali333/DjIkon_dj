@@ -109,21 +109,11 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
        holder.txt_Email.setText(currentItem.getEmail());
        holder.txt_PhoneNo.setText(currentItem.getPhone());
        holder.txt_Address.setText(currentItem.getAddress());
-
-//        if (st_Activity_Name.equals("Song")) {
-//            holder.txt_Accept.setVisibility(View.GONE);
-//            holder.txt_Service_Charges.setVisibility(View.GONE);
-//            holder.img_accept.setVisibility(View.GONE);
-//        } else {
-//            holder.txt_Accept.setVisibility(View.VISIBLE);
-//            holder.txt_Service_Charges.setVisibility(View.VISIBLE);
-//            holder.img_accept.setVisibility(View.VISIBLE);
-//        }
        
        holder.btn_Accept.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               new GetAllBookingFromServer(1,
+               new AcceptRejectRequest(1,
                        position,
                        currentItem.getId()).execute();
            }
@@ -132,7 +122,7 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
         holder.btn_Reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new GetAllBookingFromServer(2,
+                new AcceptRejectRequest(2,
                         position,
                         currentItem.getId()).execute();
             }
@@ -145,14 +135,14 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
     }
 
 
-    private class GetAllBookingFromServer extends AsyncTask<Void,Void,Void> {
+    private class AcceptRejectRequest extends AsyncTask<Void,Void,Void> {
         ProgressDialog progressDialog;
         int status;
         int position;
         int bookingId;
 
 
-        public GetAllBookingFromServer(int status,int position,int bookingId) {
+        public AcceptRejectRequest(int status, int position, int bookingId) {
             this.status = status;
             this.position = position;
             this.bookingId = bookingId;

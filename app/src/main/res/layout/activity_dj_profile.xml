@@ -211,23 +211,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/edt_about" />
 
 
-                <Switch
-                    android:id="@+id/swt_subscribeState"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/montserrat"
-                    android:padding="0dp"
-                    android:text="Subscribe to a email list from the artist"
-                    android:textColor="@color/Graycolor"
-                    android:textSize="14sp"
-                    android:theme="@style/SCBSwitch"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline9"
-                    app:layout_constraintStart_toStartOf="@+id/guideline8"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_UpdateProfile" />
-
-
                 <View
                     android:id="@+id/view6"
                     android:layout_width="0dp"
@@ -254,7 +237,7 @@
 
                 <ImageView
                     android:id="@+id/about_aero"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
@@ -273,6 +256,7 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline8"
                     app:layout_constraintTop_toBottomOf="@+id/about" />
 
+
                 <TextView
                     android:id="@+id/disclosure"
                     android:layout_width="wrap_content"
@@ -283,14 +267,13 @@
                     android:fontFamily="@font/montserrat"
                     android:text="Disclosures"
                     android:textColor="@color/Graycolor"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@+id/guideline8"
-                    app:layout_constraintTop_toBottomOf="@+id/view2" />
-
+                    app:layout_constraintTop_toTopOf="@+id/view223" />
 
                 <ImageView
                     android:id="@+id/setting_aero"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
@@ -325,7 +308,7 @@
 
                 <ImageView
                     android:id="@+id/disclusor_aero"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
@@ -343,7 +326,7 @@
                     android:background="@color/Graycolor"
                     app:layout_constraintEnd_toStartOf="@+id/guideline9"
                     app:layout_constraintStart_toStartOf="@+id/guideline8"
-                    app:layout_constraintTop_toBottomOf="@+id/swt_subscribeState" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/layout"
@@ -390,13 +373,64 @@
                     android:fontFamily="@font/montserrat"
                     android:gravity="start"
                     android:hint="About"
-                    android:inputType="textPersonName"
-                    android:paddingLeft="8dp"
+                    android:padding="4dp"
                     android:textColor="#fff"
                     android:textColorHint="#ACACAC"
                     app:layout_constraintEnd_toStartOf="@+id/guideline9"
                     app:layout_constraintStart_toStartOf="@+id/guideline8"
                     app:layout_constraintTop_toBottomOf="@+id/edt_rph" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Change Paymet Method"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/Graycolor"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_UpdateProfile" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView16"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline9"
+                    app:layout_constraintTop_toTopOf="@+id/textView16"
+                    app:srcCompat="@drawable/ic_arrow_forward" />
+
+                <TextView
+                    android:id="@+id/referral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="View Referral Code"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/Graycolor"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+                <View
+                    android:id="@+id/view223"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/Graycolor"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline9"
+                    app:layout_constraintStart_toStartOf="@+id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@+id/referral" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/referral"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline9"
+                    app:layout_constraintTop_toTopOf="@+id/referral"
+                    app:srcCompat="@drawable/ic_arrow_forward" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </RelativeLayout>

@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerShowGalleryImages;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.GalleryImagesUri;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -67,6 +69,7 @@ public class AddServiceActivity extends AppCompatActivity {
 
     private Uri Image_uri;
     private Boolean isFeatureImageSelected = false;
+    private ProgressBar progressBar;
 
     private RecyclerView mGalleryRecycler;
     private RecyclerView.Adapter galleryAdapter;
@@ -74,6 +77,9 @@ public class AddServiceActivity extends AppCompatActivity {
 
     //here Store All
     private  List<GalleryImagesUri> GalleryArray;
+
+    private Boolean edit;
+    private int ServiceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +90,47 @@ public class AddServiceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         createReferences();
         GalleryArray = new ArrayList<>();
+
+        Intent i = getIntent();
+        edit = i.getBooleanExtra("edit",false);
+
+        if(edit){
+            isFeatureImageSelected = true;
+            btn_Gallery.setVisibility(View.GONE);
+
+            ServiceId = i.getIntExtra("id",0);
+            edt_Title.setText(i.getStringExtra("title"));
+            edt_Description.setText(i.getStringExtra("description"));
+            edt_Price.setText(i.getStringExtra("price"));
+
+
+            if(i.getStringExtra("price_type").equals("Fix")){
+                priceType.setSelection(1);
+            }else {
+                priceType.setSelection(2);
+            }
+
+            if(i.getStringExtra("image") != null){
+                progressBar.setVisibility(View.VISIBLE);
+                Picasso.get().load(ApiClient.Base_Url + i.getStringExtra("image"))
+                        .fit()
+                        .centerCrop()
+                        .into(Featured_Image, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                progressBar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+            }//if service is not equal to null
+
+        }else {
+            btn_Gallery.setVisibility(View.VISIBLE);
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.item_gender_spinner, R.id.genders, rateType);
@@ -129,7 +176,10 @@ public class AddServiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(isInfoRight()){
-                    new UploadServiceToServer().execute();
+                        new UploadServiceToServer(edt_Title.getText().toString().trim(),
+                                edt_Description.getText().toString().trim(),
+                                edt_Price.getText().toString().trim())
+                                .execute();
                 }
             }
         });
@@ -144,6 +194,7 @@ public class AddServiceActivity extends AppCompatActivity {
     }
 
     private void createReferences () {
+        progressBar = findViewById(R.id.progressBarProfile);
         btn_Publish = findViewById(R.id.btn_publish);
         btn_Gallery = findViewById(R.id.btn_add_event_images);
         Featured_Image = findViewById(R.id.feature_img);
@@ -238,8 +289,6 @@ public class AddServiceActivity extends AppCompatActivity {
                 isFeatureImageSelected = true;
             }
 
-
-
             //Multiple Images For BlogGallery
             if(requestCode == MULTIPLE_IMAGE_PICK_GALLERY_REQUEST_CODE){
 
@@ -304,11 +353,20 @@ public class AddServiceActivity extends AppCompatActivity {
 
     private class UploadServiceToServer extends AsyncTask<Void,Void,Void> {
         ProgressDialog progressDialog;
+        String Title, Description, Price;
+
+        public UploadServiceToServer(String Title, String Description,String Price) {
+            this.Price = Price;
+            this.Title = Title;
+            this.Description = Description;
+
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = DialogsUtils.showProgressDialog(AddServiceActivity.this,
-                    "Uploading","Please wait. While uploading blog on Server");
+                    "Uploading","Please wait. While uploading service on Server");
         }
 
         @Override
@@ -332,30 +390,45 @@ public class AddServiceActivity extends AppCompatActivity {
 
             }
 
-            File profileFile = new File(Image_uri.getPath());
-            MultipartBody.Part profileImage = MultipartBody.Part.createFormData("feature_image",profileFile.getName(),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), profileFile));
+            MultipartBody.Part profileImage = null;
+            if(Image_uri != null){
+                File profileFile = new File(Image_uri.getPath());
+                profileImage = MultipartBody.Part.createFormData("feature_image",profileFile.getName(),
+                        RequestBody.create(MediaType.parse("multipart/form-data"), profileFile));
+            }
 
             RequestBody title = RequestBody.create(MediaType.parse("text/plain"),
-                    edt_Title.getText().toString());
+                    Title);
 
             RequestBody description = RequestBody.create(MediaType.parse("text/plain"),
-                    edt_Description.getText().toString());
+                    Description);
 
             RequestBody price = RequestBody.create(MediaType.parse("text/plain"),
-                    edt_Price.getText().toString());
+                    Price);
 
             RequestBody priceType = RequestBody.create(MediaType.parse("text/plain"),
                     SelectedPriceType);
+            Call<SuccessErrorModel> call= null;
 
-            Call<SuccessErrorModel> call = jsonApiHolder.uploadService(
-                    profileImage,
-                    galleryImages,
-                    title,
-                    description,
-                    priceType,
-                    price
-            );
+            if(edit){
+                call = jsonApiHolder.updateService(
+                        "updateService/"+String.valueOf(ServiceId),
+                        profileImage,
+                        title,
+                        description,
+                        priceType,
+                        price
+                );
+            }else {
+                call = jsonApiHolder.uploadService(
+                        profileImage,
+                        galleryImages,
+                        title,
+                        description,
+                        priceType,
+                        price
+                );
+            }
 
             call.enqueue(new Callback<SuccessErrorModel>() {
                 @Override
@@ -365,11 +438,11 @@ public class AddServiceActivity extends AppCompatActivity {
                         public void run() {
                             if (response.isSuccessful()) {
                                 DialogsUtils.showSuccessDialog(AddServiceActivity.this,
-                                        "Uploaded Successfully","Your blog is uploaded successfully");
+                                        "Uploaded Successfully","Your Service is uploaded successfully");
                             } else {
                                 DialogsUtils.showAlertDialog(AddServiceActivity.this,false,
                                         "Uploaded Failed","Please try again. uploading is failed\n" +
-                                                "And make sure you have strong internet connection"+response.code());
+                                                "And make sure you have strong internet connection");
                             }
                             progressDialog.dismiss();
                         }

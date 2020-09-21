@@ -129,6 +129,21 @@ public class ServiceDetailActivity extends AppCompatActivity {
                 showDeleteAlertDialog();
             }
         });
+
+        btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ServiceDetailActivity.this, AddServiceActivity.class);
+                i.putExtra("edit",true);
+                i.putExtra("id",serviceId);
+                i.putExtra("image",serviceImage);
+                i.putExtra("title",serviceName);
+                i.putExtra("description",description);
+                i.putExtra("price",price);
+                i.putExtra("price_type",price_type);
+                startActivity(i);
+            }
+        });
     }
 
     private void showDeleteAlertDialog() {
@@ -179,7 +194,6 @@ public class ServiceDetailActivity extends AppCompatActivity {
                         @Override
                         public void onError(Exception e) {
                             progressBarProfile.setVisibility(View.GONE);
-                            Toast.makeText(ServiceDetailActivity.this, "Something Happend Wrong feed image", Toast.LENGTH_SHORT).show();
                         }
                     });
         }//if service is not equal to null

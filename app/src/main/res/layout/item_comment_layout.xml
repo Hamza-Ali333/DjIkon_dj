@@ -11,7 +11,7 @@
 
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/img_commenter"
+        android:id="@+id/img_profile"
         android:layout_width="70dp"
         android:layout_height="70dp"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
@@ -28,21 +28,21 @@
         android:text="Hamza Ali"
         android:textColor="#fff"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/img_commenter"
-        app:layout_constraintStart_toEndOf="@+id/img_commenter"
-        app:layout_constraintTop_toTopOf="@+id/img_commenter" />
+        app:layout_constraintBottom_toBottomOf="@+id/img_profile"
+        app:layout_constraintStart_toEndOf="@+id/img_profile"
+        app:layout_constraintTop_toTopOf="@+id/img_profile" />
 
     <TextView
-        android:id="@+id/txt_comment_date"
+        android:id="@+id/txt_request_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="24 sept 2019"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
-        app:layout_constraintTop_toTopOf="@+id/img_commenter" />
+        app:layout_constraintTop_toTopOf="@+id/img_profile" />
 
     <TextView
-        android:id="@+id/txt_comment"
+        android:id="@+id/txt_song"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -50,7 +50,7 @@
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/img_commenter" />
+        app:layout_constraintTop_toBottomOf="@+id/img_profile" />
 
     <TextView
         android:id="@+id/txt_replay"
@@ -65,7 +65,7 @@
         android:text="Reply"
         android:textColor="@color/colorBlue"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
-        app:layout_constraintTop_toBottomOf="@+id/txt_comment" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_song" />
 
     <View
         android:id="@+id/divider2"

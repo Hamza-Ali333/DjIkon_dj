@@ -16,11 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileSettingActivity extends AppCompatActivity {
 
-
     RelativeLayout rlt_LiveStreaming, rlt_FaceId, rlt_Biometrics, rlt_ChangePassword, rlt_ChangePin, rlt_BookingHistory,
     rlt_ConnectSocial, rlt_ReferralCode;
 
-    Switch swt_FaceId_State, swt_Biometric_State;
+    Switch swt_FaceId_State, swt_Biometric_State, swt_AllowMessage, swt_AllowBookings, swt_AllowSongRequest;
+    private int allowBookings;
+    private int allowMessage;
+    private int allowSongRequest;
 
 
     @Override
@@ -30,7 +32,14 @@ public class ProfileSettingActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Setting");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        createRefrences();
+        createReferences();
+
+        Intent i = getIntent();
+        allowBookings = i.getIntExtra("allowBookings",0);
+        allowMessage = i.getIntExtra("allowMessage",0);
+        allowSongRequest = i.getIntExtra("allowSongRequest",0);
+        manageActiveDeActive();
+
 
         rlt_ChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +87,23 @@ public class ProfileSettingActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void manageActiveDeActive(){
+        if(allowBookings == 1)
+            swt_AllowBookings.setChecked(true);
+        else
+            swt_AllowBookings.setChecked(false);
+
+        if(allowMessage == 1)
+            swt_AllowMessage.setChecked(true);
+        else
+            swt_AllowMessage.setChecked(false);
+
+        if(allowSongRequest == 1)
+            swt_AllowSongRequest.setChecked(true);
+        else
+            swt_AllowSongRequest.setChecked(false);
     }
 
 
@@ -223,7 +249,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
 
 
 
-    private void createRefrences(){
+    private void createReferences(){
           rlt_ChangePassword = findViewById(R.id.rlt_ChangePassowrd);
           rlt_ChangePin = findViewById(R.id.rlt_ChangePin);
           rlt_Biometrics = findViewById(R.id.rlt_biometrics);
@@ -232,6 +258,10 @@ public class ProfileSettingActivity extends AppCompatActivity {
           rlt_ConnectSocial = findViewById(R.id.rlt_socialmedia);
           rlt_LiveStreaming = findViewById(R.id.rlt_liveStreaming);
           rlt_ReferralCode = findViewById(R.id.rlt_view_refrell_code);
+
+          swt_AllowBookings = findViewById(R.id.swt_allow_booking);
+          swt_AllowMessage = findViewById(R.id.swt_allow_messaging);
+          swt_AllowSongRequest = findViewById(R.id.swt_allow_song_request);
 
     }
 

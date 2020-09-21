@@ -11,9 +11,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.Selection;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -64,7 +60,7 @@ import retrofit2.Retrofit;
 
 public class UserProfileActivity extends AppCompatActivity  {
 
-    private EditText edt_FirstName, edt_LastName, edt_Email, edt_Phone_No, edt_Address,edt_RPH,edt_About;
+    private EditText edt_FirstName, edt_LastName, edt_Email, edt_Phone_No, edt_Address, edt_RPH, edt_About;
     private AutoCompleteTextView edt_Location;
     private Button btn_Update_Profile;
     private Spinner mSpinner;
@@ -76,7 +72,6 @@ public class UserProfileActivity extends AppCompatActivity  {
     private Switch swt_Profile;
 
     private ConstraintLayout rlt_Parent;
-    private Switch swt_subcribeState;
 
     private Retrofit retrofit;
     private JSONApiHolder jsonApiHolder;
@@ -89,6 +84,8 @@ public class UserProfileActivity extends AppCompatActivity  {
     private String PhoneNo = "no";
     private String Address = "no";
     private String Profile;
+
+    DjAndUserProfileModel data;
     private static boolean isHavePassword;
 
     private String[] serverData;
@@ -134,7 +131,7 @@ public class UserProfileActivity extends AppCompatActivity  {
 
         mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
-        getUserDataFromServer();
+        getSubscriberDataFromServer();
 
         swt_Profile = findViewById(R.id.profile_swt);
         swt_Profile.setOnClickListener(new View.OnClickListener() {
@@ -242,6 +239,9 @@ public class UserProfileActivity extends AppCompatActivity  {
     private void lunchSettingActivity () {
         Intent i = new Intent(UserProfileActivity.this, ProfileSettingActivity.class);
         i.putExtra("password",isHavePassword);
+        i.putExtra("allowMessage",data.getAllow_message());
+        i.putExtra("allowBookings",data.getAllow_message());
+        i.putExtra("allowSongRequest",data.getAllow_message());
         startActivity(i);
     }
 
@@ -256,7 +256,6 @@ public class UserProfileActivity extends AppCompatActivity  {
         builder.setView(view);
         builder.setCancelable(false);
 
-
         final AlertDialog alertDialog =  builder.show();
 
         img_close.setOnClickListener(new View.OnClickListener() {
@@ -268,7 +267,7 @@ public class UserProfileActivity extends AppCompatActivity  {
 
     }
 
-    private void getUserDataFromServer() {
+    private void getSubscriberDataFromServer() {
         retrofit = ApiClient.retrofit(this);
         jsonApiHolder = retrofit.create(JSONApiHolder.class);
         String relativeURL = "user/" + PreferenceData.getUserId(this);
@@ -278,7 +277,7 @@ public class UserProfileActivity extends AppCompatActivity  {
             @Override
             public void onResponse(Call<DjAndUserProfileModel> call, Response<DjAndUserProfileModel> response) {
                 if (response.isSuccessful()) {
-                    DjAndUserProfileModel data = response.body();
+                    data = response.body();
                     FirstName = data.getFirstname();
                     LastName = data.getLastname();
                     edt_Email.setText(data.getEmail());
@@ -293,9 +292,10 @@ public class UserProfileActivity extends AppCompatActivity  {
                             mSpinner.setSelection(j);
                         }
                     }
+
                     rlt_Parent.setVisibility(View.VISIBLE);
                     loadingDialog.dismiss();
-                    setDataInToViews();
+                    setDataInToViews(data);
                 } else {
                     rlt_Parent.setVisibility(View.VISIBLE);
                     loadingDialog.dismiss();
@@ -432,10 +432,10 @@ public class UserProfileActivity extends AppCompatActivity  {
         return result;
     }
 
-    private void setDataInToViews() {
+    private void setDataInToViews(DjAndUserProfileModel model) {
         serverData = new String[]{FirstName, LastName, PhoneNo, SelectedGender, Address};
 
-        if(!Profile.equals("no") && Profile != null){
+        if(!Profile.equals("no") && Profile != null) {
             progressBarProfile.setVisibility(View.VISIBLE);
             Picasso.get().load(ApiClient.Base_Url + Profile)
                     .fit()
@@ -465,6 +465,20 @@ public class UserProfileActivity extends AppCompatActivity  {
         if (!Address.equals("no")) {
             edt_Location.setText(Address);
             PreferenceData.setUserAddress(UserProfileActivity.this,Address);
+        }
+
+        if(model.getRate_per_hour() != null){
+            edt_RPH.setText(model.getRate_per_hour());
+        }
+
+        if(model.getAbout() != null) {
+            edt_About.setText(model.getAbout());
+        }
+
+        if(model.getOnline_status() == 1){
+            swt_Profile.setChecked(true);
+        }else {
+            swt_Profile.setChecked(false);
         }
     }
 
@@ -603,7 +617,7 @@ public class UserProfileActivity extends AppCompatActivity  {
 
         btn_Update_Profile = findViewById(R.id.btn_UpdateProfile);
 
-        swt_subcribeState = findViewById(R.id.swt_subscribeState);
+
         rlt_Parent = findViewById(R.id.parent);
         progressBarProfile = findViewById(R.id.progressBarProfile);
 

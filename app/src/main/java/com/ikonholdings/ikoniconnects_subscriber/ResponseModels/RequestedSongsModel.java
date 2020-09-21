@@ -1,16 +1,23 @@
 package com.ikonholdings.ikoniconnects_subscriber.ResponseModels;
 
 public class RequestedSongsModel {
-    private int id;
+    private int user_id;
     private String firstname,
-    lastname,
-    profile_image;
+            lastname,
+            profile_image,
+            request_date,
+            song_name;
 
-    //Date is remaing
-    //Song Name also remaing
+    public int getUser_id() {
+        return user_id;
+    }
 
-    public int getId() {
-        return id;
+    public String getRequest_date() {
+        return request_date;
+    }
+
+    public String getSong_name() {
+        return song_name;
     }
 
     public String getFirstname() {

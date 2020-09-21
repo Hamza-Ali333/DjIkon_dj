@@ -25,10 +25,10 @@ public class RecyclerCommnets extends RecyclerView.Adapter<RecyclerCommnets.View
 
         public ViewHolder(View itemView){
             super(itemView);
-            img_CommenterProfile = itemView.findViewById(R.id.img_commenter);
+            img_CommenterProfile = itemView.findViewById(R.id.img_profile);
             txt_Commenter_Name = itemView.findViewById(R.id.txt_user_name);
-            txt_comment = itemView.findViewById(R.id.txt_comment);
-            txt_Comment_Date = itemView.findViewById(R.id.txt_comment_date);
+            txt_comment = itemView.findViewById(R.id.txt_song);
+            txt_Comment_Date = itemView.findViewById(R.id.txt_request_date);
             txt_Replay = itemView.findViewById(R.id.txt_replay);
 ;
 
