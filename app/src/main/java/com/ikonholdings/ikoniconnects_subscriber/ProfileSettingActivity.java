@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -16,10 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileSettingActivity extends AppCompatActivity {
 
-    RelativeLayout rlt_LiveStreaming, rlt_FaceId, rlt_Biometrics, rlt_ChangePassword, rlt_ChangePin, rlt_BookingHistory,
-    rlt_ConnectSocial, rlt_ReferralCode;
-
-    Switch swt_FaceId_State, swt_Biometric_State, swt_AllowMessage, swt_AllowBookings, swt_AllowSongRequest;
+    private Switch swt_Biometric_State, swt_AllowMessage, swt_AllowBookings, swt_AllowSongRequest;
+    private TextView txt_LiveStreaming, txt_ChangePassword, txt_SocialMedia, txt_StreamNetwork;
+    private ImageView img_changePassword, img_SocialMedia;
     private int allowBookings;
     private int allowMessage;
     private int allowSongRequest;
@@ -41,51 +41,26 @@ public class ProfileSettingActivity extends AppCompatActivity {
         manageActiveDeActive();
 
 
-        rlt_ChangePassword.setOnClickListener(new View.OnClickListener() {
+        txt_ChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
              openChangePasswordDialogue();
             }
         });
 
-        rlt_LiveStreaming.setOnClickListener(new View.OnClickListener() {
+        txt_LiveStreaming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openLiveStreaming();
             }
         });
 
-        rlt_BookingHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(ProfileSettingActivity.this,BookingHistoryActivity.class);
-                startActivity(i);
-            }
-        });
-
-
-        rlt_ChangePin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openChangePinDialogue();
-            }
-        });
-
-        rlt_ConnectSocial.setOnClickListener(new View.OnClickListener() {
+        txt_SocialMedia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openSocialMedia();
             }
         });
-
-        rlt_ReferralCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openReferralCode();
-            }
-        });
-
-
 
     }
 
@@ -128,63 +103,6 @@ public class ProfileSettingActivity extends AppCompatActivity {
         final AlertDialog alertDialog =  builder.show();
 
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-
-    }
-
-    private void openChangePinDialogue() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.dailogue_change_pin, null);
-
-        EditText edt_oldPin, edt_newPin, edt_pin;
-        Button btnResetPin;
-
-        edt_oldPin = view.findViewById(R.id.edt_old_pin);
-        edt_oldPin = view.findViewById(R.id.edt_new_pin);
-        edt_oldPin = view.findViewById(R.id.edt_ConfirmPin);
-        btnResetPin = view.findViewById(R.id.btn_Reset_Pin);
-
-        builder.setView(view);
-        builder.setCancelable(true);
-
-        final AlertDialog alertDialog =  builder.show();
-
-        btnResetPin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-
-    }
-
-
-    private void openReferralCode() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.dailogue_referrel_code, null);
-
-        TextView txt_Code;
-        Button btn_Ok;
-
-        txt_Code = view.findViewById(R.id.txt_code);
-        btn_Ok = view.findViewById(R.id.btn_ok);
-
-        builder.setView(view);
-        builder.setCancelable(true);
-
-        final AlertDialog alertDialog =  builder.show();
-
-        btn_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
@@ -250,14 +168,16 @@ public class ProfileSettingActivity extends AppCompatActivity {
 
 
     private void createReferences(){
-          rlt_ChangePassword = findViewById(R.id.rlt_ChangePassowrd);
-          rlt_ChangePin = findViewById(R.id.rlt_ChangePin);
-          rlt_Biometrics = findViewById(R.id.rlt_biometrics);
-          rlt_BookingHistory = findViewById(R.id.rlt_bookingHistory);
-          rlt_FaceId = findViewById(R.id.rlt_faceId);
-          rlt_ConnectSocial = findViewById(R.id.rlt_socialmedia);
-          rlt_LiveStreaming = findViewById(R.id.rlt_liveStreaming);
-          rlt_ReferralCode = findViewById(R.id.rlt_view_refrell_code);
+
+        txt_LiveStreaming = findViewById(R.id.txt_liveStreaming);
+        txt_SocialMedia = findViewById(R.id.txt_social);
+        txt_ChangePassword = findViewById(R.id.txt_change_password);
+        txt_StreamNetwork = findViewById(R.id.txt_stream);
+
+        img_changePassword = findViewById(R.id.img_change);
+        img_SocialMedia = findViewById(R.id.img_social);
+
+
 
           swt_AllowBookings = findViewById(R.id.swt_allow_booking);
           swt_AllowMessage = findViewById(R.id.swt_allow_messaging);

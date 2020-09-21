@@ -26,6 +26,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.GetSubscriberDrawerData;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.BookingsFragment;
@@ -117,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         retrofit = ApiClient.retrofit(this);
-
     }
 
     @Override
@@ -166,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new MyFeedFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_MyFeed);
         }
-
 
     }
 
@@ -430,6 +429,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         UserName.setText(PreferenceData.getUserName(this));
+        getCurrentUserImage();
     }
 
     private class RegisteringUserAlsoOnFirebase extends AsyncTask<Boolean, Void, Void> {
@@ -445,12 +445,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             return null;
         }
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getCurrentUserImage();
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            // getting user profile image and for showing in drawer and tool bar
+            new GetSubscriberDrawerData(MainActivity.this).execute();
+        }
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.ikonholdings.ikoniconnects_subscriber.ApiHadlers;
 
+import com.ikonholdings.ikoniconnects_subscriber.MainActivity;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AllArtistModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DjAndUserProfileModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FramesModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MainActivityResponseModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.RequestedSongsModel;
@@ -35,6 +37,10 @@ public interface JSONApiHolder {
     //will return all the blogs
     @GET ("artist_blogs")
     Call<List<MyFeedBlogModel>> getBlogs();
+
+    //this will return current image and name of current d
+    @GET ("mainActivityResponse")
+    Call<MainActivityResponseModel> getResponse();
 
     //Will return all services of current Subscriber
     @GET("products")

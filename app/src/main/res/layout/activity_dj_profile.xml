@@ -226,7 +226,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat"
                     android:text="About App"
                     android:textColor="@color/Graycolor"
@@ -263,13 +263,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat"
                     android:text="Disclosures"
                     android:textColor="@color/Graycolor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@+id/guideline8"
-                    app:layout_constraintTop_toTopOf="@+id/view223" />
+                    app:layout_constraintTop_toBottomOf="@+id/view2" />
 
                 <ImageView
                     android:id="@+id/setting_aero"
@@ -298,7 +298,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat"
                     android:text="Setting"
                     android:textColor="@color/Graycolor"
@@ -384,13 +384,13 @@
                     android:id="@+id/textView16"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Change Paymet Method"
+                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat"
+                    android:text="Change Paymet Method"
                     android:textColor="@color/Graycolor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@+id/guideline8"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_UpdateProfile" />
+                    app:layout_constraintTop_toBottomOf="@+id/view223" />
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -405,13 +405,13 @@
                     android:id="@+id/referral"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="View Referral Code"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/montserrat"
+                    android:text="Referral Code"
                     android:textColor="@color/Graycolor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@+id/guideline8"
-                    app:layout_constraintTop_toBottomOf="@+id/textView16" />
+                    app:layout_constraintTop_toBottomOf="@+id/btn_UpdateProfile" />
 
                 <View
                     android:id="@+id/view223"
@@ -423,14 +423,15 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline8"
                     app:layout_constraintTop_toBottomOf="@+id/referral" />
 
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:text="Bilawal12345"
+                    android:textColor="#ffff"
                     app:layout_constraintBottom_toBottomOf="@+id/referral"
                     app:layout_constraintEnd_toStartOf="@+id/guideline9"
-                    app:layout_constraintTop_toTopOf="@+id/referral"
-                    app:srcCompat="@drawable/ic_arrow_forward" />
+                    app:layout_constraintTop_toTopOf="@+id/referral" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </RelativeLayout>

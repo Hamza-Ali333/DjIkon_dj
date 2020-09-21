@@ -65,7 +65,7 @@ public class UserProfileActivity extends AppCompatActivity  {
     private Button btn_Update_Profile;
     private Spinner mSpinner;
     private ImageView img_Profile;
-    private TextView txt_Disclosure, txt_About, txt_Setting;
+    private TextView txt_Disclosure, txt_About, txt_Setting, txt_ReferralCode;
     private ImageView img_Disclosure, img_About, img_Setting;
     private ProgressBar progressBarProfile;
 
@@ -278,6 +278,7 @@ public class UserProfileActivity extends AppCompatActivity  {
             public void onResponse(Call<DjAndUserProfileModel> call, Response<DjAndUserProfileModel> response) {
                 if (response.isSuccessful()) {
                     data = response.body();
+
                     FirstName = data.getFirstname();
                     LastName = data.getLastname();
                     edt_Email.setText(data.getEmail());
@@ -295,7 +296,7 @@ public class UserProfileActivity extends AppCompatActivity  {
 
                     rlt_Parent.setVisibility(View.VISIBLE);
                     loadingDialog.dismiss();
-                    setDataInToViews(data);
+                    setDataInToViews();
                 } else {
                     rlt_Parent.setVisibility(View.VISIBLE);
                     loadingDialog.dismiss();
@@ -432,7 +433,7 @@ public class UserProfileActivity extends AppCompatActivity  {
         return result;
     }
 
-    private void setDataInToViews(DjAndUserProfileModel model) {
+    private void setDataInToViews() {
         serverData = new String[]{FirstName, LastName, PhoneNo, SelectedGender, Address};
 
         if(!Profile.equals("no") && Profile != null) {
@@ -456,6 +457,8 @@ public class UserProfileActivity extends AppCompatActivity  {
 
         edt_FirstName.setText(FirstName);
         edt_LastName.setText(LastName);
+        txt_ReferralCode.setText(data.getRefferal());
+
 
         if (!PhoneNo.equals("no")){
             edt_Phone_No.setText(PhoneNo);
@@ -467,15 +470,15 @@ public class UserProfileActivity extends AppCompatActivity  {
             PreferenceData.setUserAddress(UserProfileActivity.this,Address);
         }
 
-        if(model.getRate_per_hour() != null){
-            edt_RPH.setText(model.getRate_per_hour());
+        if(data.getRate_per_hour() != null){
+            edt_RPH.setText(data.getRate_per_hour());
         }
 
-        if(model.getAbout() != null) {
-            edt_About.setText(model.getAbout());
+        if(data.getAbout() != null) {
+            edt_About.setText(data.getAbout());
         }
 
-        if(model.getOnline_status() == 1){
+        if(data.getOnline_status() == 1){
             swt_Profile.setChecked(true);
         }else {
             swt_Profile.setChecked(false);
@@ -603,6 +606,7 @@ public class UserProfileActivity extends AppCompatActivity  {
 
 
     public void createRefrences(){
+        txt_ReferralCode = findViewById(R.id.code);
         edt_FirstName = findViewById(R.id.edt_User_First_Name);
         edt_LastName = findViewById(R.id.edt_User_LastName);
         edt_Email = findViewById(R.id.edt_UserEmail);
@@ -617,15 +621,12 @@ public class UserProfileActivity extends AppCompatActivity  {
 
         btn_Update_Profile = findViewById(R.id.btn_UpdateProfile);
 
-
         rlt_Parent = findViewById(R.id.parent);
         progressBarProfile = findViewById(R.id.progressBarProfile);
-
 
         txt_Disclosure = findViewById(R.id.disclosure);
         txt_About = findViewById(R.id.about);
         txt_Setting = findViewById(R.id.setting);
-
 
         img_Disclosure = findViewById(R.id.disclusor_aero);
         img_About = findViewById(R.id.about_aero);
