@@ -92,10 +92,7 @@ public class BookingRequestFetcher extends AsyncTask<Void,Void,Void> {
                     ((Activity)context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            DialogsUtils.showAlertDialog(context,
-                                    false,
-                                    "No Server Connection",
-                                    t.getMessage());
+                            DialogsUtils.showResponseMsg(context,true);
                             loadingDialog.dismiss();
                         }
                     });

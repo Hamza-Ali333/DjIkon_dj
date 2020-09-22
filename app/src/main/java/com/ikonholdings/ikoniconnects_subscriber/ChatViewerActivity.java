@@ -112,7 +112,7 @@ public class ChatViewerActivity extends AppCompatActivity {
         currentUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ChatViewerActivity.this, UserProfileActivity.class);
+                Intent i = new Intent(ChatViewerActivity.this, SubscriberProfileActivity.class);
                 i.putExtra("id", userId);
                 startActivity(i);
             }

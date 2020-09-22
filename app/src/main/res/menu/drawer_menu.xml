@@ -45,6 +45,14 @@
             android:icon="@drawable/delivery"
             android:title="My Services"/>
 
+        <item android:id="@+id/nav_BankDetail"
+            android:icon="@drawable/ic_online_payment"
+            android:title="My Bank Details"/>
+
+        <item android:id="@+id/nav_PaymentHistory"
+            android:icon="@drawable/ic_withdraw"
+            android:title="My Withdraw History"/>
+
         <item android:id="@+id/nav_Logout"
             android:icon="@drawable/logout"
             android:title="Logout"/>

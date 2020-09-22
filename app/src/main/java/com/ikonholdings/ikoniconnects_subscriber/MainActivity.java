@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -16,10 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -29,6 +26,7 @@ import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.GetSubscriberDrawerData;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
+import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.BankDetailFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.BookingsFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.LiveFeedToggleFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.NotificationFragment;
@@ -36,6 +34,7 @@ import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ServicesFragm
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.SocialMediaFrameFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.UserAdminFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ViewSongRequestFragment;
+import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.WithDrawHistoryFragment;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.AddBlogFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ChatListFragment;
@@ -136,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         currentUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity( new Intent(MainActivity.this, UserProfileActivity.class));
+                startActivity( new Intent(MainActivity.this, SubscriberProfileActivity.class));
             }
         });
 
@@ -193,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -222,21 +220,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (menuItem.getItemId()) {
 
             case R.id.nav_MyFeed:
-
                 getSupportActionBar().setTitle(R.string.myFeed);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyFeedFragment()).commit();
                 break;
 
             case R.id.nav_BookingRequest:
-
                 getSupportActionBar().setTitle(R.string.bookingRequest);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new BookingsFragment()).commit();
                 break;
 
             case R.id.nav_ChatRoom:
-
                 getSupportActionBar().setTitle(R.string.ChatArea);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ChatListFragment()).commit();
@@ -244,37 +239,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
             case R.id.nav_Notifications:
-
                 getSupportActionBar().setTitle(R.string.Notification);
-
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new NotificationFragment()).commit();
-
                 break;
 
             case R.id.nav_SocialMediaFrame:
-
                 getSupportActionBar().setTitle(R.string.SocialMediaFram);
-
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new SocialMediaFrameFragment()).commit();
-
                 break;
 
 
             case R.id.nav_LiveFeedToggle:
-
                 getSupportActionBar().setTitle(R.string.SocialMediaFram);
-
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new LiveFeedToggleFragment()).commit();
-
                 break;
 
             case R.id.nav_ViewSongRequest:
-
                 getSupportActionBar().setTitle(R.string.ViewSong);
-
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ViewSongRequestFragment()).commit();
 
@@ -282,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
             case R.id.nav_Blog:
-
                 getSupportActionBar().setTitle(R.string.Services);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new AddBlogFragment()).commit();
@@ -290,25 +273,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
             case R.id.nav_UserAdmin:
-
                 getSupportActionBar().setTitle(R.string.UserAdmin);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new UserAdminFragment()).commit();
-
                 break;
 
 
             case R.id.nav_MyServices:
-
                 getSupportActionBar().setTitle(R.string.Services);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ServicesFragment()).commit();
-
                 break;
 
+            case R.id.nav_BankDetail:
+                getSupportActionBar().setTitle(R.string.Bank);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new BankDetailFragment()).commit();
+                break;
+
+            case R.id.nav_PaymentHistory:
+                getSupportActionBar().setTitle(R.string.WithDraw);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new WithDrawHistoryFragment()).commit();
+                break;
 
             case R.id.nav_Logout:
-
                 progressDialog = DialogsUtils.showProgressDialog(this, "LogingOut", "Please wait...");
                 userLogOut();
                 break;

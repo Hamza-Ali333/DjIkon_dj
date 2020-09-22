@@ -1,7 +1,9 @@
 package com.ikonholdings.ikoniconnects_subscriber.ApiHadlers;
 
 import com.ikonholdings.ikoniconnects_subscriber.MainActivity;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AboutModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AllArtistModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DisclosureModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DjAndUserProfileModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FramesModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
@@ -13,6 +15,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleBlogDetail
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleServiceModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SubscribeArtistModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.WithDrawModel;
 import com.ikonholdings.ikoniconnects_subscriber.ServicesModel;
 
 import java.util.List;
@@ -88,6 +91,17 @@ public interface JSONApiHolder {
     @GET()
     Call<List<MyBookingRequests>> getBookings(@Url String id);
 
+    //this will return current About of App
+    @GET("about")
+    Call<AboutModel> getAbout();
+
+    //this will return current Disclosure of App
+    @GET("disclosure")
+    Call<DisclosureModel> getDisclosure();
+
+    //this will return current Disclosure of App
+    @GET("paymentDetails")
+    Call<List<WithDrawModel>> getPaymentDetails();
 
 
     //Post Methods
@@ -279,6 +293,25 @@ public interface JSONApiHolder {
             @Part("details") RequestBody description,
             @Part("price_type") RequestBody priceType,
             @Part("price") RequestBody price
+    );
+
+    @FormUrlEncoded
+    @POST()
+    Call<SuccessErrorModel> changeStatus(
+            @Url String Url,
+            @Field("status") String status
+            );
+
+    @FormUrlEncoded
+    @POST("addBankDetails")
+    Call<SuccessErrorModel> postBankDetail(
+            @Field("paymemnt_method") String method,
+            @Field("email") String email,
+            @Field("iban") String iban,
+            @Field("account_name") String account_name,
+            @Field("address") String address,
+            @Field("swift_code") String swift_code,
+            @Field("reference") String reference
     );
 
 }

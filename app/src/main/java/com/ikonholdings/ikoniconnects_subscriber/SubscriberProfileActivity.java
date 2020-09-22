@@ -36,6 +36,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.CountriesList;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.GetAppAboutAndDisclosure;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
@@ -58,7 +59,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class UserProfileActivity extends AppCompatActivity  {
+public class SubscriberProfileActivity extends AppCompatActivity implements GetAppAboutAndDisclosure.onGetAbout  {
 
     private EditText edt_FirstName, edt_LastName, edt_Email, edt_Phone_No, edt_Address, edt_RPH, edt_About;
     private AutoCompleteTextView edt_Location;
@@ -138,9 +139,9 @@ public class UserProfileActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
              if(swt_Profile.isChecked()){
-                 Toast.makeText(UserProfileActivity.this, "Profile Status Active Now", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(SubscriberProfileActivity.this, "Profile Status Active Now", Toast.LENGTH_SHORT).show();
              } else {
-                 Toast.makeText(UserProfileActivity.this, "Turn Off Profile", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(SubscriberProfileActivity.this, "Turn Off Profile", Toast.LENGTH_SHORT).show();
              }
             }
         });
@@ -165,14 +166,14 @@ public class UserProfileActivity extends AppCompatActivity  {
         txt_About.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAboutAppDialoue();
+                new GetAppAboutAndDisclosure(SubscriberProfileActivity.this).execute();
             }
         });
 
         txt_Disclosure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDisclusoreDialogue();
+                openDisclosureDialog();
             }
         });
 
@@ -186,14 +187,14 @@ public class UserProfileActivity extends AppCompatActivity  {
         img_About.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openAboutAppDialoue();
+                new GetAppAboutAndDisclosure(SubscriberProfileActivity.this).execute();
             }
         });
 
         img_Disclosure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDisclusoreDialogue();
+                openDisclosureDialog();
             }
         });
 
@@ -211,7 +212,7 @@ public class UserProfileActivity extends AppCompatActivity  {
                     if(isDataChange()){
                         updateProfile();
                     }else {
-                        Toast.makeText(UserProfileActivity.this, "Already Updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SubscriberProfileActivity.this, "Already Updated", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -221,10 +222,10 @@ public class UserProfileActivity extends AppCompatActivity  {
         img_Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ( PermissionHelper.checkDefaultPermissions(UserProfileActivity.this)) {
+                if ( PermissionHelper.checkDefaultPermissions(SubscriberProfileActivity.this)) {
                     showImageImportDailog();
                 }else {
-                    PermissionHelper.managePermissions(UserProfileActivity.this);
+                    PermissionHelper.managePermissions(SubscriberProfileActivity.this);
                 }
             }
         });
@@ -237,24 +238,28 @@ public class UserProfileActivity extends AppCompatActivity  {
     }
 
     private void lunchSettingActivity () {
-        Intent i = new Intent(UserProfileActivity.this, ProfileSettingActivity.class);
+        Intent i = new Intent(SubscriberProfileActivity.this, ProfileSettingActivity.class);
         i.putExtra("password",isHavePassword);
         i.putExtra("allowMessage",data.getAllow_message());
         i.putExtra("allowBookings",data.getAllow_message());
         i.putExtra("allowSongRequest",data.getAllow_message());
+        i.putExtra("id",data.getId());
         startActivity(i);
     }
 
-    private void openAboutAppDialoue() {
+    private void openAboutAppDialoue(String about) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.dialogue_about_app, null);
 
         ImageView img_close = view.findViewById(R.id.close);
+        TextView text = view.findViewById(R.id.txt_aboutapp);
 
         builder.setView(view);
         builder.setCancelable(false);
+
+        txt_About.setText(about);
 
         final AlertDialog alertDialog =  builder.show();
 
@@ -300,23 +305,23 @@ public class UserProfileActivity extends AppCompatActivity  {
                 } else {
                     rlt_Parent.setVisibility(View.VISIBLE);
                     loadingDialog.dismiss();
-                    DialogsUtils.showResponseMsg(UserProfileActivity.this,false);
+                    DialogsUtils.showResponseMsg(SubscriberProfileActivity.this,false);
                 }
             }
 
             @Override
             public void onFailure(Call<DjAndUserProfileModel> call, Throwable t) {
                 loadingDialog.dismiss();
-                DialogsUtils.showResponseMsg(UserProfileActivity.this,false);
+                DialogsUtils.showResponseMsg(SubscriberProfileActivity.this,false);
             }
         });
     }
 
     private void updateProfile() {
-        progressDialog = DialogsUtils.showProgressDialog(UserProfileActivity.this,
+        progressDialog = DialogsUtils.showProgressDialog(SubscriberProfileActivity.this,
                 "Uploading",
                 "Please Wait...");
-        String userId = PreferenceData.getUserId(UserProfileActivity.this);
+        String userId = PreferenceData.getUserId(SubscriberProfileActivity.this);
         retrofit = ApiClient.retrofit(this);
         MultipartBody.Part filePart = null;
 
@@ -357,27 +362,27 @@ public class UserProfileActivity extends AppCompatActivity  {
                 if (response.isSuccessful()) {
                     progressDialog.dismiss();
                     //save new image name in to the preferences
-                    PreferenceData.setUserAddress(UserProfileActivity.this,edt_Address.getText().toString());
-                    PreferenceData.setUserPhoneNo(UserProfileActivity.this,edt_Phone_No.getText().toString());
-                    PreferenceData.setUserName(UserProfileActivity.this,
+                    PreferenceData.setUserAddress(SubscriberProfileActivity.this,edt_Address.getText().toString());
+                    PreferenceData.setUserPhoneNo(SubscriberProfileActivity.this,edt_Phone_No.getText().toString());
+                    PreferenceData.setUserName(SubscriberProfileActivity.this,
                             edt_FirstName.getText().toString()+" "+edt_LastName.getText().toString());
 
                     if(response.body().getSuccess() != null){
-                        PreferenceData.setUserImage(UserProfileActivity.this,response.body().getSuccess());
+                        PreferenceData.setUserImage(SubscriberProfileActivity.this,response.body().getSuccess());
                     }
 
-                    DialogsUtils.showSuccessDialog(UserProfileActivity.this,"Successful",
+                    DialogsUtils.showSuccessDialog(SubscriberProfileActivity.this,"Successful",
                             "Profile Successfully Updated");
                 } else {
                     progressDialog.dismiss();
-                    DialogsUtils.showResponseMsg(UserProfileActivity.this,false);
+                    DialogsUtils.showResponseMsg(SubscriberProfileActivity.this,false);
                 }
             }
 
             @Override
             public void onFailure(Call<SuccessErrorModel> call, Throwable t) {
                 progressDialog.dismiss();
-                DialogsUtils.showResponseMsg(UserProfileActivity.this,true);
+                DialogsUtils.showResponseMsg(SubscriberProfileActivity.this,true);
             }
         });
     }
@@ -462,12 +467,12 @@ public class UserProfileActivity extends AppCompatActivity  {
 
         if (!PhoneNo.equals("no")){
             edt_Phone_No.setText(PhoneNo);
-            PreferenceData.setUserPhoneNo(UserProfileActivity.this,PhoneNo);
+            PreferenceData.setUserPhoneNo(SubscriberProfileActivity.this,PhoneNo);
         }
 
         if (!Address.equals("no")) {
             edt_Location.setText(Address);
-            PreferenceData.setUserAddress(UserProfileActivity.this,Address);
+            PreferenceData.setUserAddress(SubscriberProfileActivity.this,Address);
         }
 
         if(data.getRate_per_hour() != null){
@@ -485,8 +490,7 @@ public class UserProfileActivity extends AppCompatActivity  {
         }
     }
 
-    private void openDisclusoreDialogue() {
-
+    private void openDisclosureDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -512,7 +516,7 @@ public class UserProfileActivity extends AppCompatActivity  {
     //image import
     private void showImageImportDailog() {
         String[] items = {"Camera", "Gallary"};
-        AlertDialog.Builder dailog = new AlertDialog.Builder(UserProfileActivity.this);
+        AlertDialog.Builder dailog = new AlertDialog.Builder(SubscriberProfileActivity.this);
         dailog.setTitle("Select Image");
         dailog.setItems(items, new DialogInterface.OnClickListener() {
             @Override
@@ -559,7 +563,7 @@ public class UserProfileActivity extends AppCompatActivity  {
                 boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
 
                 if (!cameraAccepted || !storageAccepted) {
-                    PermissionHelper.showPermissionAlert(UserProfileActivity.this);
+                    PermissionHelper.showPermissionAlert(SubscriberProfileActivity.this);
                 }
             }
         }
@@ -574,7 +578,7 @@ public class UserProfileActivity extends AppCompatActivity  {
             if (requestCode == IMAGE_PICK_CAMERA_REQUEST_CODE) {
                 CropImage.activity(Image_uri)
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .start(UserProfileActivity.this);
+                        .start(SubscriberProfileActivity.this);
             }
             //from gallary
             if (requestCode == IMAGE_PICK_GALLARY_REQUEST_CODE) {
@@ -642,5 +646,9 @@ public class UserProfileActivity extends AppCompatActivity  {
     }
 
 
+    @Override
+    public void onGetAbout(String about) {
+        openAboutAppDialoue(about);
     }
+}
 

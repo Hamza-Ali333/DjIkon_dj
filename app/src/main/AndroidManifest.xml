@@ -74,7 +74,7 @@
         <activity android:name="com.ikonholdings.ikoniconnects_subscriber.CancelRequestActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             />
-        <activity android:name="com.ikonholdings.ikoniconnects_subscriber.UserProfileActivity"
+        <activity android:name="com.ikonholdings.ikoniconnects_subscriber.SubscriberProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name="com.ikonholdings.ikoniconnects_subscriber.ServiceDetailActivity" />

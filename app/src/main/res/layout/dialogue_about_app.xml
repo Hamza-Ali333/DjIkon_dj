@@ -6,7 +6,7 @@
     android:background="@android:color/transparent"
     app:cardBackgroundColor="#5856D6"
     app:cardElevation="0dp"
-    app:cardCornerRadius="0dp">
+    app:cardCornerRadius="10dp">
 
     <ImageView
         android:layout_width="70dp"
@@ -41,8 +41,6 @@
         android:id="@+id/txt_aboutapp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Most mobile devices are sold with several apps bundled as pre-installed software, such as a web browser, email client, calendar, mapping program, and an app for buying music, other media, or more apps. Some pre-installed apps can be removed by an ordinary uninstall process, thus leaving more storage space for desired ones. Where the software does not allow this, some devices can be rooted to eliminate the undesired apps.
-Apps that are not preinstalled are usually available through distribution platforms called app stores. They began appearing in 2008 and are typically operated by the owner of the mobile operating system, such as the Apple App Store, Google Play, Windows Phone Store, and BlackBerry App World. However, there are independent app stores, such as Cydia, GetJar and F-Droid. Some apps are free, while others must be bought."
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="120dp"
