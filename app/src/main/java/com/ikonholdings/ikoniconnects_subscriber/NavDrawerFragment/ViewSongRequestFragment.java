@@ -55,7 +55,7 @@ public class ViewSongRequestFragment extends Fragment {
     private void buildRecyclerView(List<RequestedSongsModel> list) {
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new RecyclerSongsRequest(list);
+        mAdapter = new RecyclerSongsRequest(list,getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }

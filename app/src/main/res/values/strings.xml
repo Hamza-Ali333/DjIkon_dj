@@ -7,8 +7,8 @@
     <string name="SocialMediaFram">Social Media Fram</string>
     <string name="ViewSong">All Song Requests</string>
     <string name="Services">My Services</string>
-    <string name="Bank">My Bank Details</string>
-    <string name="WithDraw">My Withdraw History</string>
+    <string name="Bank">Bank Details</string>
+    <string name="WithDraw">Withdraw History</string>
     <string name="Notification">Create Notification</string>
     <string name="UserAdmin">User Admin</string>
 

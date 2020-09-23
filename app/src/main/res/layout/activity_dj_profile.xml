@@ -425,10 +425,14 @@
 
                 <TextView
                     android:id="@+id/code"
+                    style="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:text="Bilawal12345"
+                    android:layout_marginEnd="4dp"
+                    android:text="Bilawal"
                     android:textColor="#ffff"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/referral"
                     app:layout_constraintEnd_toStartOf="@+id/guideline9"
                     app:layout_constraintTop_toTopOf="@+id/referral" />

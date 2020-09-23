@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,7 +16,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.R;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.RequestedSongsModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.NotificationModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Callback;
@@ -29,54 +28,53 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class RecyclerSongsRequest extends RecyclerView.Adapter<RecyclerSongsRequest.ViewHolder>{
+public class RecyclerNotification extends RecyclerView.Adapter<RecyclerNotification.ViewHolder>{
 
-    private List<RequestedSongsModel> requestedSongsModels;
+    private List<NotificationModel> notificationModelList;
+
     private Context context;
 
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
 
         public CircularImageView img_msg_Subscriber_Profile;
-        public TextView txt_Requester_Name;
-        public TextView  txt_SongName;
-        public TextView  txt_Date;
+        public TextView txt_Name;
+        public TextView txt_Notification;
+        public TextView txt_Time;
         public ProgressBar progressBar;
-        public Button btn_Remove;
 
         public ViewHolder(View itemView){
             super(itemView);
             progressBar = itemView.findViewById(R.id.progressBarProfile);
             img_msg_Subscriber_Profile = itemView.findViewById(R.id.img_profile);
 
-            txt_Requester_Name = itemView.findViewById(R.id.txt_user_name);
-            txt_SongName = itemView.findViewById(R.id.txt_song);
-            txt_Date = itemView.findViewById(R.id.txt_request_date);
-            btn_Remove = itemView.findViewById(R.id.remove);
+            txt_Name = itemView.findViewById(R.id.txt_User_name);
+            txt_Notification = itemView.findViewById(R.id.notification);
+            txt_Time = itemView.findViewById(R.id.time);
         }
 
     }
 
 //constructor
-    public RecyclerSongsRequest(List<RequestedSongsModel> requestedSongsModels,Context context) {
-        this.requestedSongsModels = requestedSongsModels;
+    public RecyclerNotification(List<NotificationModel> notificationModelList, Context context) {
+        this.notificationModelList = notificationModelList;
         this.context = context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_song_requests,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notification_layout,parent,false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-       final RequestedSongsModel currentItem = requestedSongsModels.get(position);
+       final NotificationModel currentItem = notificationModelList.get(position);
 
-       holder.txt_Requester_Name.setText(currentItem.getFirstname()+" "+currentItem.getLastname());
-       holder.txt_SongName.setText(currentItem.getSong_name());
-       holder.txt_Date.setText(currentItem.getRequest_date());
+       holder.txt_Name.setText(currentItem.getFirstname()+" "+currentItem.getLastname());
+       holder.txt_Notification.setText(currentItem.getNotification());
+       holder.txt_Time.setText(currentItem.getTime());
 
         if (!currentItem.getProfile_image().equals("no")) {
             holder.progressBar.setVisibility(View.VISIBLE);
@@ -96,19 +94,11 @@ public class RecyclerSongsRequest extends RecyclerView.Adapter<RecyclerSongsRequ
                         }
                     });
         }
-
-        holder.btn_Remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DeleteRequest(position,currentItem.getId()).execute();
-            }
-        });
-
 }
 
     @Override
     public int getItemCount() {
-        return requestedSongsModels.size();
+        return notificationModelList.size();
     }
 
 
@@ -143,9 +133,9 @@ public class RecyclerSongsRequest extends RecyclerView.Adapter<RecyclerSongsRequ
                 public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
                     if(response.isSuccessful()){
                         progressDialog.dismiss();
-                        requestedSongsModels.remove(position);
+                        notificationModelList.remove(position);
                         notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, requestedSongsModels.size());
+                        notifyItemRangeChanged(position, notificationModelList.size());
                     }else {
                         ((Activity)context).runOnUiThread(new Runnable() {
                             @Override

@@ -1,7 +1,6 @@
 package com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +14,8 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 
@@ -22,10 +23,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.R;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,12 +44,13 @@ public class BankDetailFragment extends Fragment {
     private String[] MethodArray = {"Select Your Payment Method", "Paypal", "Bank Transfer"};//for sippiner adapter
 
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
        View v =  inflater.inflate(R.layout.activity_bank_details,container,false);
-       createRefrences(v);
+       createReferences(v);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 R.layout.item_gender_spinner, R.id.genders, MethodArray);
@@ -78,6 +77,7 @@ public class BankDetailFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
+
         });
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +94,7 @@ public class BankDetailFragment extends Fragment {
 
     private boolean isInfoRight() {
         boolean result = true;
-        if(SelectedMethod.equals("Paypal")) {
+        if(!SelectedMethod.equals("Paypal")) {
             if (edt_IBAN_NO.getText().toString().trim().isEmpty()) {
                 edt_IBAN_NO.setError("Required");
                 edt_IBAN_NO.requestFocus();
@@ -145,7 +145,6 @@ public class BankDetailFragment extends Fragment {
         builder.show();
     }
 
-
     private void sendDetailToServer(){
         AlertDialog progressDialog = DialogsUtils.showProgressDialog(
                 getContext(),
@@ -173,7 +172,12 @@ public class BankDetailFragment extends Fragment {
                             "Congratulation your withdraw method detail sumbited.\n" +
                                     "Now you can withdraw you amount by your added method\n" +
                                     "Keep in mind you can't change this method in feature.Thank You.!");
-                }else {
+                }else if(response.code() == 400){
+                    DialogsUtils.showAlertDialog(getContext(),
+                            false,
+                            "Already Submitted", "Your account details is already submitted.");
+                }
+                else {
                     DialogsUtils.showResponseMsg(getContext(),false);
                 }
                 progressDialog.dismiss();
@@ -188,7 +192,7 @@ public class BankDetailFragment extends Fragment {
 
     }
 
-    private void createRefrences (View v) {
+    private void createReferences(View v) {
         mSpinner = v.findViewById(R.id.spinner);
         bankTransfer = v.findViewById(R.id.bank_transfer);
         paypal = v.findViewById(R.id.paypal);

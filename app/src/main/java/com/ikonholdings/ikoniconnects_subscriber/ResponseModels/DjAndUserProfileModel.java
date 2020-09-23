@@ -25,8 +25,12 @@ public class DjAndUserProfileModel {
     private int allow_booking;
     private int online_status;
     private int account_status;
-    private int allow_payment;
+    private int song_request;
     private int vallet;
+
+    public int getSong_request() {
+        return song_request;
+    }
 
     public String getRefferal() {
         return refferal;
@@ -38,10 +42,6 @@ public class DjAndUserProfileModel {
 
     public int getAccount_status() {
         return account_status;
-    }
-
-    public int getAllow_payment() {
-        return allow_payment;
     }
 
     public int getVallet() {

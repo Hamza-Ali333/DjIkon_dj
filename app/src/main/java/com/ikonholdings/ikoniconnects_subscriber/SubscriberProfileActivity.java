@@ -85,12 +85,13 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
     private String PhoneNo = "no";
     private String Address = "no";
     private String Profile;
+    private String ReferralCode;
 
-    DjAndUserProfileModel data;
     private static boolean isHavePassword;
 
     private String[] serverData;
     private String[] newData;
+    public Integer allowBooking, allowMessage, allowSongRequest, OnlineStatus;
 
     private static final int IMAGE_PICK_GALLARY_REQUEST_CODE = 1000;
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 2000;
@@ -109,7 +110,6 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-
     }
 
     private Toolbar toolbar;
@@ -240,10 +240,10 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
     private void lunchSettingActivity () {
         Intent i = new Intent(SubscriberProfileActivity.this, ProfileSettingActivity.class);
         i.putExtra("password",isHavePassword);
-        i.putExtra("allowMessage",data.getAllow_message());
-        i.putExtra("allowBookings",data.getAllow_message());
-        i.putExtra("allowSongRequest",data.getAllow_message());
-        i.putExtra("id",data.getId());
+        i.putExtra("allowMessage",allowMessage);
+        i.putExtra("allowBookings",allowBooking);
+        i.putExtra("allowSongRequest",allowSongRequest);
+        i.putExtra("id",PreferenceData.getUserId(this));
         startActivity(i);
     }
 
@@ -275,14 +275,14 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
     private void getSubscriberDataFromServer() {
         retrofit = ApiClient.retrofit(this);
         jsonApiHolder = retrofit.create(JSONApiHolder.class);
-        String relativeURL = "user/" + PreferenceData.getUserId(this);
-        Call<DjAndUserProfileModel> call = jsonApiHolder.getSubscriberOrUserProfile(relativeURL);
+        Call<DjAndUserProfileModel> call = jsonApiHolder.getSubscriberOrUserProfile("artistProfile/"+PreferenceData.getUserId(this));
 
         call.enqueue(new Callback<DjAndUserProfileModel>() {
             @Override
             public void onResponse(Call<DjAndUserProfileModel> call, Response<DjAndUserProfileModel> response) {
                 if (response.isSuccessful()) {
-                    data = response.body();
+                    DjAndUserProfileModel data = response.body();
+
 
                     FirstName = data.getFirstname();
                     LastName = data.getLastname();
@@ -290,8 +290,17 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
                     Address = data.getLocation();
                     PhoneNo = data.getContact();
                     SelectedGender =data.getGender();
+                    ReferralCode = data.getRefferal();
                     Profile = data.getProfile_image();
                     isHavePassword = data.getPassword();
+
+                    allowMessage = data.getAllow_message();
+                    allowBooking = data.getAllow_booking();
+                    allowSongRequest = data.getSong_request();
+                    OnlineStatus = data.getOnline_status();
+
+
+                    Toast.makeText(SubscriberProfileActivity.this, String.valueOf(data.getAllow_booking()), Toast.LENGTH_SHORT).show();
 
                     for (int j = 0; j < genderArray.length - 1; j++) {
                         if (genderArray[j].equals(SelectedGender)) {
@@ -462,7 +471,7 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
 
         edt_FirstName.setText(FirstName);
         edt_LastName.setText(LastName);
-        txt_ReferralCode.setText(data.getRefferal());
+        txt_ReferralCode.setText(ReferralCode);
 
 
         if (!PhoneNo.equals("no")){
@@ -475,19 +484,19 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
             PreferenceData.setUserAddress(SubscriberProfileActivity.this,Address);
         }
 
-        if(data.getRate_per_hour() != null){
-            edt_RPH.setText(data.getRate_per_hour());
-        }
-
-        if(data.getAbout() != null) {
-            edt_About.setText(data.getAbout());
-        }
-
-        if(data.getOnline_status() == 1){
-            swt_Profile.setChecked(true);
-        }else {
-            swt_Profile.setChecked(false);
-        }
+//        if(data.getRate_per_hour() != null){
+//            edt_RPH.setText(data.getRate_per_hour());
+//        }
+//
+//        if(data.getAbout() != null) {
+//            edt_About.setText(data.getAbout());
+//        }
+//
+//        if(data.getOnline_status() == 1){
+//            swt_Profile.setChecked(true);
+//        }else {
+//            swt_Profile.setChecked(false);
+//        }
     }
 
     private void openDisclosureDialog() {

@@ -1,6 +1,5 @@
 package com.ikonholdings.ikoniconnects_subscriber.ApiHadlers;
 
-import com.ikonholdings.ikoniconnects_subscriber.MainActivity;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AboutModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AllArtistModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DisclosureModel;
@@ -10,6 +9,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistratio
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MainActivityResponseModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.NotificationModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.RequestedSongsModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleBlogDetailModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleServiceModel;
@@ -73,12 +73,16 @@ public interface JSONApiHolder {
 
     //this will return full detail subscriber profile
     //same for  current user profile
-    @GET
+    @GET()
     Call<DjAndUserProfileModel> getSubscriberOrUserProfile(@Url String id);
 
     //this will return full detail of a service
     @GET
     Call<SingleServiceModel> getSingleServiceData(@Url String id);
+
+    //this will return full detail of a service
+    @GET("notifications")
+    Call<List<NotificationModel>> getNotification();
 
 
 //    @GET("liveArtist")
@@ -270,6 +274,9 @@ public interface JSONApiHolder {
     @DELETE("blog/{id}")
     Call<SuccessErrorModel> deleteBlog(@Path("id") int id);
 
+    @POST("removeRequest/{id}")
+    Call<SuccessErrorModel> deleteSongRequest(@Path("id") int id);
+
     @DELETE("products/{id}")
     Call<SuccessErrorModel> deleteService(@Path("id") int id);
 
@@ -303,7 +310,7 @@ public interface JSONApiHolder {
             );
 
     @FormUrlEncoded
-    @POST("addBankDetails")
+    @POST("paymentDetails")
     Call<SuccessErrorModel> postBankDetail(
             @Field("paymemnt_method") String method,
             @Field("email") String email,

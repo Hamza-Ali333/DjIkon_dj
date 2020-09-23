@@ -47,11 +47,11 @@
 
         <item android:id="@+id/nav_BankDetail"
             android:icon="@drawable/ic_online_payment"
-            android:title="My Bank Details"/>
+            android:title="Bank Details"/>
 
         <item android:id="@+id/nav_PaymentHistory"
             android:icon="@drawable/ic_withdraw"
-            android:title="My Withdraw History"/>
+            android:title="Withdraw History"/>
 
         <item android:id="@+id/nav_Logout"
             android:icon="@drawable/logout"

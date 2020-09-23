@@ -406,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
                         //if failed to send token on server then run Again
-                        sendFCMToken();
+
                     }
                 });
 
