@@ -214,7 +214,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         UserName = navHeaderView.findViewById(R.id.txt_userName);
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {

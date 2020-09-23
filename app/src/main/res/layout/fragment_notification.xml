@@ -8,11 +8,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSubscribeArtist"
-        android:padding="12dp"
-        android:layout_weight="9.5"
+        android:background="#1C1C1C"
         android:layout_width="match_parent"
-        android:scrollbars="vertical"
-        android:background="#000000"
         android:layout_height="wrap_content"/>
 
     <Button

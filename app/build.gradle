@@ -88,4 +88,7 @@ dependencies {
     //imageslider
     implementation 'com.github.smarteist:autoimageslider:1.3.9-appcompat'
 
+    //RecyclerView Swipe Decorator
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
+
 }

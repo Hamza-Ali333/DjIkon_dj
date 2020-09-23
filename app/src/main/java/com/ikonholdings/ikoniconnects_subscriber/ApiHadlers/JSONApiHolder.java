@@ -277,6 +277,9 @@ public interface JSONApiHolder {
     @POST("removeRequest/{id}")
     Call<SuccessErrorModel> deleteSongRequest(@Path("id") int id);
 
+    @POST("removeRequest/{id}")
+    Call<SuccessErrorModel> deleteNotification(@Path("id") int id);
+
     @DELETE("products/{id}")
     Call<SuccessErrorModel> deleteService(@Path("id") int id);
 
