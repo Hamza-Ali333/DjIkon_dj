@@ -42,6 +42,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             },2000);
         }
+    //   startActivity( new Intent(this,PackageActivity.class));
+
     }
 
     //handle Request for permission

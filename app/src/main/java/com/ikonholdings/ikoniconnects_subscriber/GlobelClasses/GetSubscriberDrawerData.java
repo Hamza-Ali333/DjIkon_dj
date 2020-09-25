@@ -6,9 +6,6 @@ import android.os.AsyncTask;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MainActivityResponseModel;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +31,7 @@ public class GetSubscriberDrawerData extends AsyncTask<Boolean, Void, Void> {
                     return;
                 }
                 MainActivityResponseModel data = response.body();
-                PreferenceData.setUserName(mContext, data.getFirst_name()+" "+ data.getLast_name());
+                PreferenceData.setUserName(mContext, data.getFirstname()+" "+ data.getLastname());
                 if (data.getProfile_image() != null){
                     PreferenceData.setUserImage(mContext,data.getProfile_image());
                 }

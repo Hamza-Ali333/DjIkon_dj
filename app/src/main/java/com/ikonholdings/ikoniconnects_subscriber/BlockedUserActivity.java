@@ -32,7 +32,7 @@ public class BlockedUserActivity extends AppCompatActivity {
 
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new RecyclerFollowerAndBlockedUser(follower_modelArrayList,"BlockedUsers");
+    //  mAdapter = new RecyclerFollowerAndBlockedUser(follower_modelArrayList,"BlockedUsers");
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);

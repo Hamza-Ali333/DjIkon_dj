@@ -19,7 +19,6 @@ public class BookingRequestsActivity extends AppCompatActivity implements Bookin
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private AlertDialog loadingDialog;
 
     private TextView txt_Total;
 

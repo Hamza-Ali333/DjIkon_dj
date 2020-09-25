@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         UserName.setText(PreferenceData.getUserName(MainActivity.this));
 
         getCurrentUserImage();
+        new GetSubscriberDrawerData(MainActivity.this).execute();
 
         setSupportActionBar(toolbar);
         //tool bar image
@@ -438,7 +439,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             // getting user profile image and for showing in drawer and tool bar
-            new GetSubscriberDrawerData(MainActivity.this).execute();
         }
     }
 

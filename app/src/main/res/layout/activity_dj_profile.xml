@@ -60,8 +60,8 @@
                     android:scaleType="centerCrop"
                     app:civ_border="true"
                     app:civ_border_width="2dp"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline9"
-                    app:layout_constraintStart_toStartOf="@+id/guideline8"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_avatar" />
 

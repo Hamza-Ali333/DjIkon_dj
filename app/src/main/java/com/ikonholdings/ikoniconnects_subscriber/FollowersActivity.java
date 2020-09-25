@@ -1,20 +1,26 @@
 package com.ikonholdings.ikoniconnects_subscriber;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.GetUsers;
+import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerFollowerAndBlockedUser;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FollowersModel;
 
+import java.util.List;
 
-public class FollowersActivity extends AppCompatActivity {
+public class FollowersActivity extends AppCompatActivity implements GetUsers.onServerResponse {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private TextView total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,32 +29,41 @@ public class FollowersActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Followers");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        Intent i = getIntent();
+        Boolean referralUser = i.getBooleanExtra("referralUser",false);
         mRecyclerView = findViewById(R.id.recyclerViewFollwer);
+        total = findViewById(R.id.total);
+        String Url;
 
-        ArrayList<FollowerAndBlocked_User_Model> follower_modelArrayList = new ArrayList<>();
+        if(referralUser){
+            Url = "referralFollowers";
+            total.setVisibility(View.GONE);
+        }
+        else{
+            Url = "followers";
+            total.setVisibility(View.VISIBLE);
+        }
 
-        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.ic_avatar,"Usama"));
-        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.ic_avatar,"Hamza"));
-        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.ic_avatar,"Usama"));
-        follower_modelArrayList.add(new FollowerAndBlocked_User_Model(R.drawable.ic_avatar,"Ahmad"));
+        new GetUsers(total,Url).execute();
+    }
 
+    private void buildRecyclerView(List<FollowersModel> followersList){
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new RecyclerFollowerAndBlockedUser(follower_modelArrayList,"Followers");
+        mAdapter = new RecyclerFollowerAndBlockedUser(followersList,"Followers");
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
-
     }
-
-
-
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onResponse(List<FollowersModel> followersList) {
+        buildRecyclerView(followersList);
     }
 }

@@ -4,6 +4,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AboutModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AllArtistModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DisclosureModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DjAndUserProfileModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FollowersModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FramesModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MainActivityResponseModel;
@@ -106,6 +107,10 @@ public interface JSONApiHolder {
     //this will return current Disclosure of App
     @GET("paymentDetails")
     Call<List<WithDrawModel>> getPaymentDetails();
+
+    //this will return current UserAll the booking
+    @GET()
+    Call<List<FollowersModel>> getFollowers(@Url String url);
 
 
     //Post Methods
@@ -274,14 +279,23 @@ public interface JSONApiHolder {
     @DELETE("blog/{id}")
     Call<SuccessErrorModel> deleteBlog(@Path("id") int id);
 
+    @DELETE("products/{id}")
+    Call<SuccessErrorModel> deleteService(@Path("id") int id);
+
     @POST("removeRequest/{id}")
     Call<SuccessErrorModel> deleteSongRequest(@Path("id") int id);
 
     @POST("removeRequest/{id}")
     Call<SuccessErrorModel> deleteNotification(@Path("id") int id);
 
-    @DELETE("products/{id}")
-    Call<SuccessErrorModel> deleteService(@Path("id") int id);
+    @POST()
+    Call<SuccessErrorModel> deleteEntry(@Url String Url);
+
+    @FormUrlEncoded
+    @POST()
+    Call<SuccessErrorModel> blockUser(
+            @Url String Url,
+            @Field("status") int status);
 
     @Multipart
     @POST("products")

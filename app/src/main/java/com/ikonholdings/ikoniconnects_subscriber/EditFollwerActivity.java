@@ -7,9 +7,12 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DeleteEntityOnServer;
+
 public class EditFollwerActivity extends AppCompatActivity {
 
     Button btn_delete_User, btn_Block_User, btn_Block_User_IP, btn_Block_User_Access;
+    String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,11 +22,35 @@ public class EditFollwerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         createRefrence();
 
+        Intent i = getIntent();
+        id = i.getStringExtra("id");
+
 
         btn_Block_User.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(view.getContext(),BlockedUserActivity.class));
+            }
+        });
+
+        btn_delete_User.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DeleteEntityOnServer("deleteReferralUser/"+id,
+                        EditFollwerActivity.this)
+                        .execute();
+            }
+        });
+
+        btn_Block_User.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //2 for block User 1 for unblock user
+                new DeleteEntityOnServer(
+                        2,
+                        "deleteReferralUser/"+id,
+                        EditFollwerActivity.this)
+                        .execute();
             }
         });
 

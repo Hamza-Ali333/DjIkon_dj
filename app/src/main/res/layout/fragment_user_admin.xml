@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:paddingLeft="10dp"
-        android:background="#fff">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/edt_shape">
         <ImageView
             android:id="@+id/img_eye"
             android:layout_width="40dp"
@@ -23,10 +25,49 @@
             android:layout_height="wrap_content"
             android:text="Followers"
             android:textSize="20sp"
+            android:fontFamily="@font/montserrat"
             android:layout_marginLeft="16dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/img_eye"
-            android:textColor="@color/colorBlack"/>
+            android:textColor="@color/colorWhite"/>
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            app:srcCompat="@drawable/ic_arrow_forward"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlt_referraluser"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/edt_shape">
+        <ImageView
+            android:id="@+id/img_eye2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_verified_user"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ReferralUser"
+            android:textSize="20sp"
+            android:fontFamily="@font/montserrat"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/img_eye2"
+            android:textColor="@color/colorWhite"/>
 
         <ImageView
             android:layout_centerVertical="true"
@@ -45,7 +86,9 @@
         android:layout_height="70dp"
         android:paddingLeft="10dp"
         android:layout_marginTop="8dp"
-        android:background="#fff">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/edt_shape">
         <ImageView
             android:id="@+id/img_done"
             android:layout_width="40dp"
@@ -59,10 +102,11 @@
             android:layout_height="wrap_content"
             android:text="Blocked Users"
             android:textSize="20sp"
+            android:fontFamily="@font/montserrat"
             android:layout_marginLeft="16dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/img_done"
-            android:textColor="@color/colorBlack"/>
+            android:textColor="@color/colorWhite"/>
 
 
         <ImageView
@@ -81,11 +125,14 @@
         android:layout_height="70dp"
         android:paddingLeft="10dp"
         android:layout_marginTop="8dp"
-        android:background="#fff">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/edt_shape">
         <ImageView
             android:id="@+id/img_block_a"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:fontFamily="@font/montserrat"
             android:layout_centerVertical="true"
             app:srcCompat="@drawable/ic_hidden"/>
 
@@ -97,8 +144,9 @@
             android:textSize="20sp"
             android:layout_marginLeft="16dp"
             android:layout_centerVertical="true"
+            android:fontFamily="@font/montserrat"
             android:layout_toRightOf="@+id/img_block_a"
-            android:textColor="@color/colorBlack"/>
+            android:textColor="@color/colorWhite"/>
 
 
         <ImageView
@@ -118,7 +166,9 @@
         android:layout_height="70dp"
         android:paddingLeft="10dp"
         android:layout_marginTop="8dp"
-        android:background="#fff">
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/edt_shape">
         <ImageView
             android:id="@+id/img_ip_a"
             android:layout_width="40dp"
@@ -135,7 +185,8 @@
             android:layout_marginLeft="16dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/img_ip_a"
-            android:textColor="@color/colorBlack"/>
+            android:fontFamily="@font/montserrat"
+            android:textColor="@color/colorWhite"/>
 
 
         <ImageView

@@ -1,13 +1,14 @@
 package com.ikonholdings.ikoniconnects_subscriber.ResponseModels;
 
-public class MainActivityResponseModel {
+public class FollowersModel {
+    private int id;
     private String firstname,
-            lastname,
-            profile_image;
-    private int account_status;
+    lastname,
+    profile_image,
+    location;
 
-    public int getAccount_status() {
-        return account_status;
+    public int getId() {
+        return id;
     }
 
     public String getFirstname() {
@@ -20,5 +21,9 @@ public class MainActivityResponseModel {
 
     public String getProfile_image() {
         return profile_image;
+    }
+
+    public String getLocation() {
+        return location;
     }
 }
