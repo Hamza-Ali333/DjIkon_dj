@@ -1,23 +1,14 @@
 package com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,11 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
-import com.ikonholdings.ikoniconnects_subscriber.MainActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
-import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerMyFeed;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerNotification;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.NotificationModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 
@@ -45,9 +33,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static android.content.ContentValues.TAG;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class NotificationFragment extends Fragment{
@@ -226,8 +211,5 @@ public class NotificationFragment extends Fragment{
             return null;
         }
     }
-
-
-
 
 }

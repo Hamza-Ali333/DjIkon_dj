@@ -130,7 +130,6 @@ public interface JSONApiHolder {
             @Field("lastname") String lastname,
             @Field("email") String email,
             @Field("password") String password,
-            @Field("refferal") String refferal,
             @Field("role") int role
     );
 

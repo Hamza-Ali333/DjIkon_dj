@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.HideKeyBoard;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
@@ -42,7 +43,7 @@ import retrofit2.Retrofit;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private EditText edt_Name, edt_LastName, edt_Email, edt_Password, edt_C_Password, edt_Referal_Code;
+    private EditText edt_Name, edt_LastName, edt_Email, edt_Password, edt_C_Password;
 
     private Button btn_SignUp, btn_SignIn;
 
@@ -135,6 +136,7 @@ public class RegistrationActivity extends AppCompatActivity {
         btn_SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HideKeyBoard.hideKeyboard(RegistrationActivity.this);
                 if (isInfoRight()) {
                     EmailForOTP = edt_Email.getText().toString().trim();
                     Password = edt_Password.getText().toString().trim();
@@ -190,10 +192,6 @@ public class RegistrationActivity extends AppCompatActivity {
             edt_Password.setError("Password Not Matched");
             edt_Password.requestFocus();
             result = false;
-        } else if (edt_Referal_Code.getText().toString().trim().isEmpty()) {
-            edt_Referal_Code.setError("Please Enter Referal Code");
-            edt_Referal_Code.requestFocus();
-            result = false;
         } else if (!radioButton.isChecked()) {
             Toast.makeText(this, "You are not Agree with Terms And Condition", Toast.LENGTH_SHORT).show();
             result = false;
@@ -227,7 +225,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     lastName,
                     email,
                     Password,
-                    edt_Referal_Code.getText().toString().trim(),
                     1);
         }
 
@@ -265,13 +262,6 @@ public class RegistrationActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         edt_Email.requestFocus();
                         edt_Email.setError("Email Already Exit");
-                    }
-                } else if (response.code() == 400) {
-                    //reffral
-                    if(!isSignUpWithSocialMedia){
-                        progressDialog.dismiss();
-                        edt_Referal_Code.requestFocus();
-                        edt_Referal_Code.setError("Refferal not found");
                     }
                 } else {
                     progressDialog.dismiss();
@@ -565,7 +555,6 @@ public class RegistrationActivity extends AppCompatActivity {
         edt_Email = findViewById(R.id.edt_email);
         edt_Password = findViewById(R.id.edt_password);
         edt_C_Password = findViewById(R.id.edt_c_password);
-        edt_Referal_Code = findViewById(R.id.edt_refrel_code);
         btn_SignUp = findViewById(R.id.btn_sign_up);
         btn_SignIn = findViewById(R.id.btn_sign_in);
 

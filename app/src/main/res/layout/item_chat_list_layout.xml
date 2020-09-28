@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="2dp"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/img_msg_sender"
             android:background="@color/Graycolor"
             />
 

@@ -26,7 +26,6 @@ public class PaymentMethodActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
     }
 
     private void createRefrences () {

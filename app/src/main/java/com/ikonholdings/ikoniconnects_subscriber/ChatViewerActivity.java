@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.ChatModel;
@@ -135,7 +136,7 @@ public class ChatViewerActivity extends AppCompatActivity {
 
         CurrentSubscriberId = PreferenceData.getUserId(this);
 
-        chatNodeName = "djId_" +CurrentSubscriberId  + "_userId_" +userId;
+        chatNodeName = "subscriberId_" +CurrentSubscriberId  + "_userId_" +userId;
         checkHaveChatOrNot();
 
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -161,7 +162,6 @@ public class ChatViewerActivity extends AppCompatActivity {
                 if(!edt_Massage.getText().toString().isEmpty()){
                     if(!alreadyHaveChat){
                         //MAke Node for this new User if they are texting first time
-                        // UserChatListModel userChatListModel = new UserChatListModel(String.valueOf(djId), djName, imgProfileUrl);
                         new CreateChatListOfUserAndSubscriber().execute();
                     }
 
@@ -229,9 +229,9 @@ public class ChatViewerActivity extends AppCompatActivity {
     }
 
     private void setSubscriberProfile(String imageUrl){
-        if (!imageUrl.equals("No Image") && !imageUrl.equals("no")){
+        if (imageUrl != null && !imageUrl.equals("No Image") && !imageUrl.equals("no") ){
 
-            Picasso.get().load(imageUrl)
+            Picasso.get().load(ApiClient.Base_Url+imageUrl)
                     .placeholder(R.drawable.ic_avatar)
                     .fit()
                     .centerCrop()
@@ -418,9 +418,9 @@ public class ChatViewerActivity extends AppCompatActivity {
 
             //Saving this Subscriber into User Node for make list of chat with
             Map<String, String> userData = new HashMap<>();
-            userData.put("dj_Id", CurrentSubscriberId);
-            userData.put("dj_Name",userName);
-            userData.put("dj_Uid", fuser.getUid());
+            userData.put("subscriber_Id", CurrentSubscriberId);
+            userData.put("subscriber_Name",userName);
+            userData.put("subscriber_Uid", fuser.getUid());
             userData.put("imageUrl",imgProfileUrl);
             myRef.child("chatListOfUser").child(String.valueOf(userId)).push().setValue(userData);
 

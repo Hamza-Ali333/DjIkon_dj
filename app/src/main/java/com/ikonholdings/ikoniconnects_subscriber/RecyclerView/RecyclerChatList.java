@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ChatViewerActivity;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.UserChatListModel;
 import com.ikonholdings.ikoniconnects_subscriber.R;
@@ -81,9 +82,9 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
 
        holder.txt_msg_Sender_Name.setText(currentItem.getUser_Name());
 
-        if (!currentItem.getImageUrl().equals("no")) {
+        if (currentItem.getImageUrl() != null && !currentItem.getImageUrl().equals("no")) {
 
-            Picasso.get().load(currentItem.getImageUrl())
+            Picasso.get().load(ApiClient.Base_Url+currentItem.getImageUrl())
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.ic_avatar)
@@ -115,7 +116,6 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
                i.putExtra("user_Name",currentItem.getUser_Name());
                i.putExtra("imgProfileUrl",currentItem.getImageUrl());
                view.getContext().startActivity(i);
-               Log.i("Recycler", "onClick: id "+currentItem.getUser_Name());
            }
        });
 

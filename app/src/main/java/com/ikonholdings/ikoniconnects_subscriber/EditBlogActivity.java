@@ -67,7 +67,7 @@ public class EditBlogActivity extends AppCompatActivity {
         String Url = i.getStringExtra("url");
         blogId = i.getStringExtra("id");
 
-        Picasso.get().load(ApiClient.Base_Url+ Url)
+        Picasso.get().load(ApiClient.Base_Url + Url)
                 .fit()
                 .centerCrop()
                 .into(img_Featured, new com.squareup.picasso.Callback() {
@@ -75,6 +75,7 @@ public class EditBlogActivity extends AppCompatActivity {
                     public void onSuccess() {
                         progressBarFeed.setVisibility(View.GONE);
                     }
+
                     @Override
                     public void onError(Exception e) {
                         progressBarFeed.setVisibility(View.GONE);
@@ -94,9 +95,9 @@ public class EditBlogActivity extends AppCompatActivity {
         btn_UpDatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edt_Discription.getText().toString().equals(Description) && edt_Title.getText().toString().equals(Title) && profileChange == false){
+                if (edt_Discription.getText().toString().equals(Description) && edt_Title.getText().toString().equals(Title) && profileChange == false) {
                     Toast.makeText(EditBlogActivity.this, "Already Update", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     new UploadBlogToServer(edt_Title.getText().toString().trim(),
                             edt_Discription.getText().toString().trim()).execute();
                 }
@@ -106,9 +107,9 @@ public class EditBlogActivity extends AppCompatActivity {
     }
 
     private void manageImagePicker() {
-        if ( PermissionHelper.checkDefaultPermissions(this)) {
+        if (PermissionHelper.checkDefaultPermissions(this)) {
             showImageImportDailog();
-        }else {
+        } else {
             PermissionHelper.managePermissions(this);
         }
     }
@@ -134,20 +135,20 @@ public class EditBlogActivity extends AppCompatActivity {
         dailog.create().show();
     }
 
-    private void pickCamera(){
+    private void pickCamera() {
         //Intent to take Image for camera
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE,"New Pic");//title of the picture
-        values.put(MediaStore.Images.Media.DESCRIPTION,"Image To Text");//discription of the picture
+        values.put(MediaStore.Images.Media.TITLE, "New Pic");//title of the picture
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Image To Text");//discription of the picture
         Image_uri = this.getContentResolver()
                 .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,Image_uri);
-        startActivityForResult(cameraIntent,IMAGE_PICK_CAMERA_REQUEST_CODE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Image_uri);
+        startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_REQUEST_CODE);
     }
 
-    private void pickGallary(){
+    private void pickGallary() {
         //  intent for the Image from Gallary
         Intent gallery = new Intent(Intent.ACTION_PICK);
         gallery.setType("image/*");
@@ -155,7 +156,7 @@ public class EditBlogActivity extends AppCompatActivity {
     }
 
     private void createReferences() {
-        edt_Title= findViewById(R.id.txt_blog_title);
+        edt_Title = findViewById(R.id.txt_blog_title);
         edt_Discription = findViewById(R.id.txt_blog_discription);
 
         btn_UpDatePost = findViewById(R.id.btn_publish);
@@ -168,23 +169,23 @@ public class EditBlogActivity extends AppCompatActivity {
     //Handle Image Result
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
         //get selected image Image
-        if(resultCode ==RESULT_OK) {
-            if(requestCode == IMAGE_PICK_CAMERA_REQUEST_CODE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == IMAGE_PICK_CAMERA_REQUEST_CODE) {
                 CropImage.activity(Image_uri)
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .start( this);
+                        .start(this);
             }
             //from gallary
-            if(requestCode == IMAGE_PICK_GALLERY_REQUEST_CODE){
+            if (requestCode == IMAGE_PICK_GALLERY_REQUEST_CODE) {
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .start( this);
+                        .start(this);
             }
 
             //getcroped Image
-            if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 Image_uri = result.getUri();
@@ -192,15 +193,16 @@ public class EditBlogActivity extends AppCompatActivity {
                 profileChange = true;
 
             }
-        }else {
+        } else {
             Toast.makeText(this, "Image is not Selected", Toast.LENGTH_SHORT).show();
         }
 
     }//onActivity Result
 
-    private class UploadBlogToServer extends AsyncTask<Void,Void,Void> {
+    private class UploadBlogToServer extends AsyncTask<Void, Void, Void> {
         ProgressDialog progressDialog;
         String Title, Description;
+
         public UploadBlogToServer(String Title, String Description) {
             this.Title = Title;
             this.Description = Description;
@@ -210,7 +212,7 @@ public class EditBlogActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = DialogsUtils.showProgressDialog(EditBlogActivity.this,
-                    "Uploading","Please wait. While uploading blog on Server");
+                    "Uploading", "Please wait. While uploading blog on Server");
         }
 
         @Override
@@ -219,9 +221,9 @@ public class EditBlogActivity extends AppCompatActivity {
             JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
             MultipartBody.Part profileImage = null;
 
-            if(Image_uri != null){
+            if (Image_uri != null) {
                 File profileFile = new File(Image_uri.getPath());
-                 profileImage = MultipartBody.Part.createFormData("photo",profileFile.getName(),
+                profileImage = MultipartBody.Part.createFormData("photo", profileFile.getName(),
                         RequestBody.create(MediaType.parse("multipart/form-data"), profileFile));
             }
 
@@ -231,8 +233,8 @@ public class EditBlogActivity extends AppCompatActivity {
                     Description);
 
             Call<SuccessErrorModel> call = jsonApiHolder.updateBlog(
-                   "updateBlog/"+ blogId,
-                   profileImage,
+                    "updateBlog/" + blogId,
+                    profileImage,
                     title,
                     description
             );
@@ -245,22 +247,23 @@ public class EditBlogActivity extends AppCompatActivity {
                         public void run() {
                             if (response.isSuccessful()) {
                                 DialogsUtils.showSuccessDialog(EditBlogActivity.this,
-                                        "Uploaded Successfully","Your blog is uploaded successfully");
+                                        "Uploaded Successfully", "Your blog is uploaded successfully");
                             } else {
-                                DialogsUtils.showAlertDialog(EditBlogActivity.this,false,
-                                        "Uploaded Failed","Please try again. Blog uploading is failed\n" +
+                                DialogsUtils.showAlertDialog(EditBlogActivity.this, false,
+                                        "Uploaded Failed", "Please try again. Blog uploading is failed\n" +
                                                 "And make sure you have strong internet connection");
                             }
                             progressDialog.dismiss();
                         }
                     });
                 }
+
                 @Override
                 public void onFailure(Call<SuccessErrorModel> call, Throwable t) {
-                   runOnUiThread(new Runnable() {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            DialogsUtils.showResponseMsg(EditBlogActivity.this,true);
+                            DialogsUtils.showResponseMsg(EditBlogActivity.this, true);
                         }
                     });
                 }

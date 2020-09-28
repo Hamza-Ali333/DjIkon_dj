@@ -360,7 +360,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (!task.isSuccessful()) {
                     //if user is not exit in data base but successfully Sign in ON server then should create also on firebase
                     creatingUserOnFirebase(Email, Password);
-                    Log.i("TAG", "onComplete: SignIn Done");
                 }else {
                     saveUserIDAndUIDOnFirebase();
                     sendFCMToken();
@@ -434,12 +433,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             return null;
         }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            // getting user profile image and for showing in drawer and tool bar
-        }
     }
 
     @Override
@@ -447,6 +440,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStop();
         unregisterReceiver(mNetworkChangeReceiver);
         PreferenceData.unRegisterPref(this, this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getCurrentUserImage();
+        new GetSubscriberDrawerData(MainActivity.this).execute();
     }
 
 }

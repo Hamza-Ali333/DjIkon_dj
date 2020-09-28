@@ -1,6 +1,7 @@
 package com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +34,8 @@ import retrofit2.Retrofit;
 import static android.content.ContentValues.TAG;
 
 
-public class MyFeedFragment extends Fragment {
+public class
+MyFeedFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -44,6 +46,18 @@ public class MyFeedFragment extends Fragment {
 
     private FloatingActionButton AddNewBlog;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        loadingDialog = DialogsUtils.showLoadingDialogue(context);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new DownloadThisArtistBlogs().execute();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,8 +66,6 @@ public class MyFeedFragment extends Fragment {
         createReferences(v);
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(getContext());
-        loadingDialog = DialogsUtils.showLoadingDialogue(getContext());
-        new DownloadThisArtistBlogs().execute();
 
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -135,5 +147,4 @@ public class MyFeedFragment extends Fragment {
             super.onPostExecute(aVoid);
         }
     }
-
 }

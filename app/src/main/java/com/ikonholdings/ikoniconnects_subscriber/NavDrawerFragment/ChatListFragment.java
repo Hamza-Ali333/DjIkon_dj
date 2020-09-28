@@ -40,8 +40,7 @@ public class ChatListFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private ProgressBar mProgressBar;
-    private TextView txt_progressMsg;
+
     private SwipeRefreshLayout pullToRefresh;
 
     DatabaseReference myRef;
@@ -49,7 +48,7 @@ public class ChatListFragment extends Fragment {
 
     String currentUserId;
 
-    AlertDialog mAlertDialog;
+    AlertDialog loadingDialog;
 
     private FirebaseUser fuser;
 
@@ -66,7 +65,7 @@ public class ChatListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_chat_area,container,false);
         createReferences(v);
 
-        showHideProgressBar();//show progressbar while downloading
+        loadingDialog = DialogsUtils.showLoadingDialogue(getContext());
 
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this.getContext());
@@ -86,7 +85,6 @@ public class ChatListFragment extends Fragment {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                showHideProgressBar();
                 getChatList();
                 pullToRefresh.setRefreshing(false);
             }
@@ -126,16 +124,24 @@ public class ChatListFragment extends Fragment {
 
                         mAdapter = new RecyclerChatList(mUserChatList,currentUserId);
                         mRecyclerView.setAdapter(mAdapter);
-                        showHideProgressBar();
+                        loadingDialog.dismiss();
 
                     }else {
-                        mAlertDialog = DialogsUtils.showAlertDialog(getContext(),false,"Note","It's seems like you didn't have conversation with any User");
+                         DialogsUtils.showAlertDialog(getContext(),
+                                 false,
+                                 "Note",
+                                 "It's seems like you didn't have conversation with any User");
+                        loadingDialog.dismiss();
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    mAlertDialog = DialogsUtils.showAlertDialog(getContext(),false,"Error","It's seems like you didn't have conversation with any Subscriber");
+                    DialogsUtils.showAlertDialog(getContext(),
+                            false,
+                            "Error",
+                            "It's seems like you didn't have conversation with any Subscriber");
+                    loadingDialog.dismiss();
                 }
             });
         }
@@ -143,22 +149,10 @@ public class ChatListFragment extends Fragment {
 
     private void createReferences(View v) {
 
-        mProgressBar = v.findViewById(R.id.progress_circular);
-        txt_progressMsg = v.findViewById(R.id.progress_msg);
         mRecyclerView = v.findViewById(R.id.recyclerView_Chat);
         pullToRefresh =v.findViewById(R.id.pullToRefresh);
     }
 
-    private void showHideProgressBar(){
-        if (mProgressBar.getVisibility()== View.VISIBLE) {
-            mProgressBar.setVisibility(View.GONE);
-            txt_progressMsg.setVisibility(View.GONE);
-        }else
-        {
-            mProgressBar.setVisibility(View.VISIBLE);
-            txt_progressMsg.setVisibility(View.VISIBLE);
-        }
-    }
 
 
 
