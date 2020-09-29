@@ -1,22 +1,16 @@
 package com.ikonholdings.ikoniconnects_subscriber.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.R;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.WithDrawModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.PaymentHistoryModel;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -25,7 +19,7 @@ import java.util.List;
 
 public class RecyclerWithDrawHistory extends RecyclerView.Adapter<RecyclerWithDrawHistory.ViewHolder>{
 
-    private List<WithDrawModel> mWithDrawModels;
+    private List<PaymentHistoryModel> mPaymentHistoryModels;
 
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
@@ -52,8 +46,8 @@ public class RecyclerWithDrawHistory extends RecyclerView.Adapter<RecyclerWithDr
     }
 
 //constructor
-    public RecyclerWithDrawHistory(List<WithDrawModel> mWithDrawModels) {
-        this.mWithDrawModels = mWithDrawModels;
+    public RecyclerWithDrawHistory(List<PaymentHistoryModel> mPaymentHistoryModels) {
+        this.mPaymentHistoryModels = mPaymentHistoryModels;
     }
 
 
@@ -66,7 +60,7 @@ public class RecyclerWithDrawHistory extends RecyclerView.Adapter<RecyclerWithDr
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-       final WithDrawModel currentItem = mWithDrawModels.get(position);
+       final PaymentHistoryModel currentItem = mPaymentHistoryModels.get(position);
 
        holder.txt_Sender_Name.setText(currentItem.getSender_firstname()+" "+currentItem.getSender_lastname());
        holder.txt_Amount.setText("$"+currentItem.getAmount());
@@ -94,7 +88,7 @@ public class RecyclerWithDrawHistory extends RecyclerView.Adapter<RecyclerWithDr
 
     @Override
     public int getItemCount() {
-        return mWithDrawModels.size();
+        return mPaymentHistoryModels.size();
     }
 
 }

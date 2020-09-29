@@ -17,7 +17,8 @@
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Request Your Favourite Song To This Dj"
+            android:fontFamily="@font/montserrat"
+            android:text="Enter Your Amount For Withdraw"
             android:textColor="@color/colorBlack"
             android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,14 +30,13 @@
             android:layout_width="0dp"
             android:layout_height="40sp"
             android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
             android:background="@drawable/blueround_stroke"
             android:ems="10"
-            android:hint="Song Name"
-            android:inputType="textPersonName"
+            android:fontFamily="@font/montserrat"
+            android:hint="Withdraw Amount"
+            android:inputType="number"
             android:paddingLeft="8dp"
             android:textColor="@color/colorBlue"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,37 +44,18 @@
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
 
-        <EditText
-            android:id="@+id/edt_requester_Name"
-            android:layout_width="0dp"
-            android:layout_height="40sp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/blueround_stroke"
-
-            android:ems="10"
-            android:hint="Your  Name"
-            android:inputType="textPersonName"
-            android:paddingLeft="8dp"
-            android:textColor="@color/colorBlue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_Amount" />
-
         <Button
             android:id="@+id/btn_submit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/roundshape"
+            android:fontFamily="@font/montserrat"
             android:text="Submit"
             android:textColor="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_requester_Name" />
+            app:layout_constraintTop_toBottomOf="@+id/edt_Amount" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,7 +34,8 @@ import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ServicesFragm
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.SocialMediaFrameFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.UserAdminFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ViewSongRequestFragment;
-import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.WithDrawHistoryFragment;
+import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.WithDrawFragment;
+import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.PaymentHistoryFragment;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.AddBlogFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ChatListFragment;
@@ -271,13 +272,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new AddBlogFragment()).commit();
                 break;
 
-
             case R.id.nav_UserAdmin:
                 getSupportActionBar().setTitle(R.string.UserAdmin);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new UserAdminFragment()).commit();
                 break;
-
 
             case R.id.nav_MyServices:
                 getSupportActionBar().setTitle(R.string.Services);
@@ -291,10 +290,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new BankDetailFragment()).commit();
                 break;
 
-            case R.id.nav_PaymentHistory:
+            case R.id.nav_WithDraw:
                 getSupportActionBar().setTitle(R.string.WithDraw);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new WithDrawHistoryFragment()).commit();
+                        new WithDrawFragment()).commit();
+                break;
+
+            case R.id.nav_PaymentHistory:
+                getSupportActionBar().setTitle(R.string.PaymentHistory);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new PaymentHistoryFragment()).commit();
                 break;
 
             case R.id.nav_Logout:

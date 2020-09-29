@@ -16,6 +16,8 @@ import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleBlogDetail
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleServiceModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SubscribeArtistModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.PaymentHistoryModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.Transaction;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.WithDrawModel;
 import com.ikonholdings.ikoniconnects_subscriber.ServicesModel;
 
@@ -36,8 +38,9 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Url;
 
-public interface JSONApiHolder {
+public interface JSONApiHolder
 
+{
     //will return all the blogs
     @GET ("artist_blogs")
     Call<List<MyFeedBlogModel>> getBlogs();
@@ -52,9 +55,6 @@ public interface JSONApiHolder {
 
     @GET("getStart")
     Call<SuccessErrorModel> getBrainTreeToken();
-
-    @GET("api/songRequests")
-    Call<RequestedSongsModel> getSongRequest();
 
     //will return All subscribed Artist  by current User
     @GET ("following")
@@ -85,6 +85,14 @@ public interface JSONApiHolder {
     @GET("notifications")
     Call<List<NotificationModel>> getNotification();
 
+    //this will wallet detial
+    @GET("totalEarning")
+    Call <WithDrawModel> getWalletDetail();
+
+    //this will wallet detial
+    @GET("withdrawDetails")
+    Call <List<Transaction>> getTransaction();
+
 
 //    @GET("liveArtist")
 //    Call<List<CurrentLiveArtistModel>> getCurrentLiveArtist();
@@ -106,7 +114,7 @@ public interface JSONApiHolder {
 
     //this will return current Disclosure of App
     @GET("paymentDetails")
-    Call<List<WithDrawModel>> getPaymentDetails();
+    Call<List<PaymentHistoryModel>> getPaymentDetails();
 
     //this will return current UserAll the booking
     @GET()
@@ -335,6 +343,12 @@ public interface JSONApiHolder {
             @Field("address") String address,
             @Field("swift_code") String swift_code,
             @Field("reference") String reference
+    );
+
+    @FormUrlEncoded
+    @POST("withdrawRequest")
+    Call <SuccessErrorModel> postPaymentRequest(
+            @Field("amount") String amount
     );
 
 }

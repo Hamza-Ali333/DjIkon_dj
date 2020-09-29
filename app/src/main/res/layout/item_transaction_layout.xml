@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    app:cardCornerRadius="10dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#000">
+    android:background="@color/colorWhite">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/follwer_layout"
         android:padding="6dp"
-        android:background="#000"
+        android:background="@color/colorWhite"
         android:paddingBottom="6dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,59 +23,55 @@
             app:civ_border_width="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_avatar" />
+             />
 
+        <ProgressBar
+            android:id="@+id/progressBarProfile"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="4dp"
+            android:indeterminateDrawable="@drawable/progressbar"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/img_profile"
+            app:layout_constraintEnd_toEndOf="@+id/img_profile"
+            app:layout_constraintStart_toStartOf="@+id/img_profile"
+            app:layout_constraintTop_toTopOf="@+id/img_profile" />
 
         <TextView
             android:id="@+id/txt_User_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_toRightOf="@+id/img_profile"
             android:fontFamily="@font/montserrat"
             android:text="Jhon Ibrahim"
-            android:textColor="#fff"
+            android:textColor="@color/colorBlack"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/img_profile"
             app:layout_constraintTop_toTopOf="@+id/img_profile" />
 
 
         <TextView
-            android:id="@+id/notification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_User_name"
-            android:layout_toRightOf="@+id/img_profile"
-            android:fontFamily="@font/montserrat"
-            android:inputType="textMultiLine"
-            android:text="CEO of WE 6 Band "
-            android:textColor="@color/Graycolor"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/txt_User_name"
-            app:layout_constraintTop_toBottomOf="@+id/txt_User_name" />
-
-        <View
-            android:id="@+id/divider10"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/img_profile"
-            android:layout_marginTop="4dp"
-            android:background="@color/Graycolor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_profile" />
-
-        <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
+            android:maxLength="10"
             android:text="30 mint ago"
             android:textColor="@color/colorBlue"
             android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_profile"
+            app:layout_constraintStart_toStartOf="@+id/txt_User_name"
+            app:layout_constraintTop_toBottomOf="@+id/txt_User_name" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

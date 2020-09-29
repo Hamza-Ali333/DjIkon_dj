@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -78,7 +77,6 @@ public class ChatViewerActivity extends AppCompatActivity {
     private List<ChatModel> mChatModel;
 
     private ProgressDialog mProgressDialog;
-    private AlertDialog alertDialog;
     private Boolean alreadyHaveChat = false;
 
     private String userId;
@@ -119,11 +117,6 @@ public class ChatViewerActivity extends AppCompatActivity {
             }
         });
 
-        toolBarTitle.setText(userName);//set Subscriber Name in tool bar
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         //getting data of the Receiver
         Intent i = getIntent();
         userId =i.getStringExtra("user_Id");
@@ -131,6 +124,11 @@ public class ChatViewerActivity extends AppCompatActivity {
         userName = i.getStringExtra("user_Name");
         imgProfileUrl = i.getStringExtra("imgProfileUrl");
         setSubscriberProfile(imgProfileUrl);
+
+        getSupportActionBar().setTitle("");
+        toolBarTitle.setText(userName);//set Subscriber Name in tool bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         myRef = FirebaseDatabase.getInstance().getReference("Chats");
 
@@ -212,7 +210,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                 }else {
                     //open msg dailog
                     mProgressDialog.dismiss();
-                    alertDialog = DialogsUtils.showAlertDialog(ChatViewerActivity.this,
+                    DialogsUtils.showAlertDialog(ChatViewerActivity.this,
                             false,
                             "No Data Found",
                             "Sorry You Not Have"
@@ -297,6 +295,7 @@ public class ChatViewerActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(ChatViewerActivity.this, "Send", Toast.LENGTH_SHORT).show();
+
                 if(!alreadyHaveChat){
                     checkHaveChatOrNot();
                 }
@@ -395,7 +394,7 @@ public class ChatViewerActivity extends AppCompatActivity {
 
         edt_Massage = findViewById(R.id.edt_sendmsg);
         btn_SendMsg = findViewById(R.id.btn_send_msg);
-        mRecyclerView = findViewById(R.id.chat_viewer_recycler);
+        mRecyclerView = findViewById(R.id.withdraw_recycler);
     }
 
     @Override

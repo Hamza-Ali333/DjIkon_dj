@@ -47,7 +47,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/toolbar"
-        android:id="@+id/chat_viewer_recycler"
+        android:id="@+id/withdraw_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingRight="8dp"

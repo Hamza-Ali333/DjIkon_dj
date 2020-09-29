@@ -9,7 +9,8 @@
     <string name="Services">My Services</string>
     <string name="Bank">Bank Details</string>
     <string name="ReferralUser">Referral Users</string>
-    <string name="WithDraw">Withdraw History</string>
+    <string name="PaymentHistory">Payment History</string>
+    <string name="WithDraw">With History</string>
     <string name="Notification">Create Notification</string>
     <string name="UserAdmin">User Admin</string>
 

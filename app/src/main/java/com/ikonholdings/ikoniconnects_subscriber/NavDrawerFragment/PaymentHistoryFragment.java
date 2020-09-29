@@ -18,7 +18,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerWithDrawHistory;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.WithDrawModel;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.PaymentHistoryModel;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
-public class WithDrawHistoryFragment extends Fragment {
+public class PaymentHistoryFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -49,7 +49,7 @@ public class WithDrawHistoryFragment extends Fragment {
        return v;
     }
 
-    private void buildRecyclerView(List<WithDrawModel> list) {
+    private void buildRecyclerView(List<PaymentHistoryModel> list) {
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(getContext());
         mAdapter = new RecyclerWithDrawHistory(list);
@@ -59,7 +59,7 @@ public class WithDrawHistoryFragment extends Fragment {
 
     private class DownloadPaymentHistory extends AsyncTask<Void,Void,Void> {
 
-        Call<List<WithDrawModel>> call;
+        Call<List<PaymentHistoryModel>> call;
         @Override
         protected void onPreExecute() {
             Retrofit retrofit = ApiClient.retrofit(getContext());
@@ -71,17 +71,18 @@ public class WithDrawHistoryFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            call.enqueue(new Callback<List<WithDrawModel>>() {
+            call.enqueue(new Callback<List<PaymentHistoryModel>>() {
                 @Override
-                public void onResponse(Call<List<WithDrawModel>> call, Response<List<WithDrawModel>> response) {
+                public void onResponse(Call<List<PaymentHistoryModel>> call, Response<List<PaymentHistoryModel>> response) {
 
                     if (!response.isSuccessful()) {
                         DialogsUtils.showAlertDialog(getContext(),
                                 false,"Error","Something happened wrong\nplease try again!");
+                        loadingDialog.dismiss();
                         return;
                     }
 
-                    List<WithDrawModel> requestedSongsModelList = response.body();
+                    List<PaymentHistoryModel> requestedSongsModelList = response.body();
 
                     if(!requestedSongsModelList.isEmpty()){
                         buildRecyclerView(requestedSongsModelList);
@@ -93,7 +94,7 @@ public class WithDrawHistoryFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<List<WithDrawModel>> call, Throwable t) {
+                public void onFailure(Call<List<PaymentHistoryModel>> call, Throwable t) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

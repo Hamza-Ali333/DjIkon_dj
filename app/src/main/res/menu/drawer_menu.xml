@@ -49,9 +49,13 @@
             android:icon="@drawable/ic_online_payment"
             android:title="Bank Details"/>
 
-        <item android:id="@+id/nav_PaymentHistory"
+        <item android:id="@+id/nav_WithDraw"
             android:icon="@drawable/ic_withdraw"
-            android:title="Withdraw History"/>
+            android:title="WithDraw"/>
+
+        <item android:id="@+id/nav_PaymentHistory"
+            android:icon="@drawable/ic_receipt"
+            android:title="Payment History"/>
 
         <item android:id="@+id/nav_Logout"
             android:icon="@drawable/logout"
