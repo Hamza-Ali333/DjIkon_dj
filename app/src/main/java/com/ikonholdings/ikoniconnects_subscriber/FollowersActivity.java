@@ -1,6 +1,7 @@
 package com.ikonholdings.ikoniconnects_subscriber;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.GetUsers;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerFollowerAndBlockedUser;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FollowersModel;
 
@@ -21,6 +23,16 @@ public class FollowersActivity extends AppCompatActivity implements GetUsers.onS
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView total;
+
+    private NetworkChangeReceiver mNetworkChangeReceiver;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(mNetworkChangeReceiver, filter);
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,5 +77,11 @@ public class FollowersActivity extends AppCompatActivity implements GetUsers.onS
     @Override
     public void onResponse(List<FollowersModel> followersList) {
         buildRecyclerView(followersList);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(mNetworkChangeReceiver);
     }
 }

@@ -21,9 +21,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.R;
-import com.ikonholdings.ikoniconnects_subscriber.RecyclerServices;
-import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerMyFeed;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
+import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerServices;
 import com.ikonholdings.ikoniconnects_subscriber.ServicesModel;
 
 import java.util.List;

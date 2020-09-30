@@ -81,7 +81,6 @@
 
 
     <RelativeLayout
-        android:id="@+id/rlt_blocked_users"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:paddingLeft="10dp"
@@ -120,7 +119,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rlt_access_blocked_users"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:paddingLeft="10dp"
@@ -161,7 +159,6 @@
 
 
     <RelativeLayout
-        android:id="@+id/rlt_ip_blocked_users"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:paddingLeft="10dp"

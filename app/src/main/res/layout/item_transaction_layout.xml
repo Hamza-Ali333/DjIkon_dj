@@ -8,7 +8,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/follwer_layout"
         android:padding="6dp"
         android:background="@color/colorWhite"
         android:paddingBottom="6dp"

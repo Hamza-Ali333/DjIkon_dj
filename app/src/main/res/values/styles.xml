@@ -32,10 +32,4 @@
     </style>
 
 
-    <style name="feedoptions" parent="@style/Widget.AppCompat.Toolbar">
-        <item name="android:paddingRight">16dp</item>
-    </style>
-
-
-
 </resources>

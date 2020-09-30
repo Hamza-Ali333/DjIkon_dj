@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.ChatModel;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -31,10 +33,13 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
     private List<ChatModel> mChat_model;
     public  String currentSubscriberUid;
 
-    DatabaseReference myRef;
+    public DatabaseReference myRef;
 
     public static final int MSG_TYPE_RIGHT = 0;
     public static final int MSG_TYPE_LEFT = 1;
+    public Boolean sender = false;
+
+    public String senderImage, receiverImage;
 
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
@@ -55,9 +60,15 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
     }
 
     //constructor
-    public RecyclerChatViewer(List<ChatModel> chat_modelList,String currentSubscriberUid, String chatMainNode) {
+    public RecyclerChatViewer(List<ChatModel> chat_modelList,
+                              String currentSubscriberUid,
+                              String chatMainNode,
+                              String senderimg,
+                              String recieverimg) {
         this.mChat_model = chat_modelList;
         this.currentSubscriberUid = currentSubscriberUid;
+        this.senderImage = senderimg;
+        this.receiverImage = recieverimg;
         myRef = FirebaseDatabase.getInstance().getReference("Chats").child("Massages").child(chatMainNode);
     }
 
@@ -82,9 +93,28 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
 
         holder.txt_msg.setText(currentItem.getMessage());
         holder.txt_Time.setText(currentItem.getTime_stemp());
+        String imageUrl = null;
+        if(sender){
+            imageUrl = senderImage;
+        }else {
+            imageUrl = receiverImage;
+        }
+        if(imageUrl != null){
+            Picasso.get().load((ApiClient.Base_Url+imageUrl))
+                    .into(holder.img_Profile, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            ;
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+        }
 
         //image setting remaining
-
 
 /*       holder.rlt_ChatItem.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -132,8 +162,10 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
     public int getItemViewType(int position) {
 
         if(mChat_model.get(position).getSender().equals(currentSubscriberUid)){
+            sender = true;
             return MSG_TYPE_RIGHT;
         }else {
+            sender = false;
             return MSG_TYPE_LEFT;
         }
     }

@@ -1,10 +1,13 @@
 package com.ikonholdings.ikoniconnects_subscriber;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 
 import java.util.ArrayList;
 
@@ -13,6 +16,16 @@ public class BlockedUserActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private NetworkChangeReceiver mNetworkChangeReceiver;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(mNetworkChangeReceiver, filter);
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,4 +59,9 @@ public class BlockedUserActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(mNetworkChangeReceiver);
+    }
 }

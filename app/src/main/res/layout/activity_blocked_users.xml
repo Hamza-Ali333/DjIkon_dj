@@ -21,7 +21,6 @@
             app:srcCompat="@drawable/ic_search"/>
 
         <EditText
-            android:id="@+id/txt_search"
             android:layout_toRightOf="@+id/icon"
             android:layout_marginLeft="8dp"
             android:text="Search"

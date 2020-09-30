@@ -1,6 +1,7 @@
 package com.ikonholdings.ikoniconnects_subscriber;
 
 import android.app.AlertDialog;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.BookingRequestFetcher;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerBookingRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 
@@ -21,6 +23,16 @@ public class BookingRequestsActivity extends AppCompatActivity implements Bookin
     private RecyclerView.LayoutManager mLayoutManager;
 
     private TextView txt_Total;
+
+    private NetworkChangeReceiver mNetworkChangeReceiver;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(mNetworkChangeReceiver, filter);
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,4 +68,9 @@ public class BookingRequestsActivity extends AppCompatActivity implements Bookin
         buildRecyclerView(requestList);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(mNetworkChangeReceiver);
+    }
 }

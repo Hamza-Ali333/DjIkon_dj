@@ -7,7 +7,6 @@
     android:background="@color/colorBlack"
     >
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/img_follower"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
@@ -16,7 +15,6 @@
 
 
     <TextView
-        android:id="@+id/follower_name"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
@@ -26,7 +24,6 @@
         android:text="Melvin Montgomery"/>
 
     <View
-        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="2dp"

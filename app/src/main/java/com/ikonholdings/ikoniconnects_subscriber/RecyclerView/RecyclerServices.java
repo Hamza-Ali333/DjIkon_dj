@@ -1,7 +1,6 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cardinalcommerce.shared.userinterfaces.ProgressDialog;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
+import com.ikonholdings.ikoniconnects_subscriber.R;
+import com.ikonholdings.ikoniconnects_subscriber.ServiceDetailActivity;
+import com.ikonholdings.ikoniconnects_subscriber.ServicesModel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

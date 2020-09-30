@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ProgressDialog progressDialog;
 
-    private NetworkChangeReceiver mNetworkChangeReceiver;
-
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference myRef;
@@ -89,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Retrofit retrofit;
     private JSONApiHolder jsonApiHolder;
 
+    private NetworkChangeReceiver mNetworkChangeReceiver;
     @Override
     protected void onStart() {
         super.onStart();

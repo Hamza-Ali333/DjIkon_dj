@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.Chat_Model;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;

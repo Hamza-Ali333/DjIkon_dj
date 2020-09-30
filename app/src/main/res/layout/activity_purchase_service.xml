@@ -7,7 +7,6 @@
 
 
     <EditText
-        android:id="@+id/edt_card_number"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:paddingLeft="8dp"
@@ -18,7 +17,6 @@
         android:background="@drawable/edt_shape"/>
 
     <EditText
-        android:id="@+id/edt_card_hodler_name"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -29,7 +27,6 @@
         android:background="@drawable/edt_shape"/>
 
     <EditText
-        android:id="@+id/edt_cvv_code"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -42,7 +39,6 @@
         android:background="@drawable/edt_shape"/>
 
     <EditText
-        android:id="@+id/edt_name"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -66,7 +62,6 @@
         android:background="@drawable/edt_shape"/>
 
     <EditText
-        android:id="@+id/edt_phone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -78,7 +73,6 @@
         android:background="@drawable/edt_shape"/>
 
     <EditText
-        android:id="@+id/edt_address"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginTop="8dp"

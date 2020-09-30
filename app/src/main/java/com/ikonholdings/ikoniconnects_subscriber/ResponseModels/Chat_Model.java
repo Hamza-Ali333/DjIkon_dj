@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.ResponseModels;
 
 public class Chat_Model {
     private int img_msg_sender;
