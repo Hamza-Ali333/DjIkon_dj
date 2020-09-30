@@ -1,10 +1,8 @@
 package com.ikonholdings.ikoniconnects_subscriber.RecyclerView;
 
-import android.renderscript.Type;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,14 +68,16 @@ public class RecyclerTransactionDetail extends RecyclerView.Adapter<RecyclerTran
                     holder.status.setImageResource(R.drawable.ic_cancel_red);
                     holder.txt_Status.setText("Rejected");
                     break;
-
             }
 
 }
+    public void filterList(List<Transaction> list) {
+        transactionList = list;
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
         return transactionList.size();
     }
-
 }

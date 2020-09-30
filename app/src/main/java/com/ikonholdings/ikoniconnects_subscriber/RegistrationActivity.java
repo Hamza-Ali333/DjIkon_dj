@@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.HideKeyBoard;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.KeyBoard;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
@@ -136,7 +136,7 @@ public class RegistrationActivity extends AppCompatActivity {
         btn_SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HideKeyBoard.hideKeyboard(RegistrationActivity.this);
+                KeyBoard.hideKeyboard(RegistrationActivity.this);
                 if (isInfoRight()) {
                     EmailForOTP = edt_Email.getText().toString().trim();
                     Password = edt_Password.getText().toString().trim();

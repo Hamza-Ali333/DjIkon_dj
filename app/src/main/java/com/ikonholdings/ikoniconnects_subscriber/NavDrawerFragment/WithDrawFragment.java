@@ -2,34 +2,39 @@ package com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment;
 
 import android.app.AlertDialog;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.KeyBoard;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerTransactionDetail;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.Transaction;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.WithDrawModel;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,31 +42,73 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-
 public class WithDrawFragment extends Fragment {
-    TextView txt_Total_Earning, txt_CurrentBalance;
-    Button btn_CreateNew;
 
-    ConstraintLayout parentLayout;
+    private TextView txt_Total_Earning, txt_CurrentBalance;
+    private FloatingActionButton btn_CreateNew;
+
+    private ConstraintLayout parentLayout;
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerTransactionDetail mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private ProgressBar recyclerProgressBar;
     private ProgressBar progressBar;
     private Integer currentBalance;
 
+    private String[] filterArray = {"All", "Accepted", "Rejected","In Process"};//for sippiner adapter
+
+    private List<Transaction> transactionList;
+
+    private Spinner mSpinner;
+
+    private Boolean activityAlreadyRuned = false;//this variable for spinner first time code run avoid
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
        View v =  inflater.inflate(R.layout.withdraws_fragment,container,false);
-        mRecyclerView = v.findViewById(R.id.withdraw_recycler);
-        createReferences(v);
+       mRecyclerView = v.findViewById(R.id.withdraw_recycler);
+       createReferences(v);
+
+       transactionList = new ArrayList<>();
 
        new GetWalletCurrentDetail().execute();
        new GetTansactionList().execute();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                R.layout.item_gender_spinner, R.id.genders, filterArray);
+
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int status, long l) {
+
+                if(activityAlreadyRuned){
+                    switch (status){
+                        case 0:
+                            mAdapter.filterList(transactionList);
+                            break;
+                        case 1:
+                        case 2:
+                            filter(status);
+                            break;
+                        case 3:
+                            filter(0);
+                            break;
+                    }
+                }else {
+                    activityAlreadyRuned = true;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
        btn_CreateNew.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -98,6 +145,7 @@ public class WithDrawFragment extends Fragment {
 
         recyclerProgressBar = v.findViewById(R.id.progressRecycler);
         progressBar = v.findViewById(R.id.progressBar);
+        mSpinner = v.findViewById(R.id.spinner);
     }
 
     private void openRequestWithDrawDialog() {
@@ -118,13 +166,32 @@ public class WithDrawFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(Integer.parseInt(edt_Amount.getText().toString()) > currentBalance){
-                    edt_Amount.setError("");
-                }else {
+                    edt_Amount.setError("low balance check your balance");
+                    edt_Amount.requestFocus();
+                }else if(Integer.parseInt(edt_Amount.getText().toString()) < 5){
+                    edt_Amount.setError("Amount should be greater then 5");
+                    edt_Amount.requestFocus();
+                }
+                else {
                     alertDialog.dismiss();
+                    KeyBoard.hideKeyboard(getActivity());
                     new PostWithDrawRequest(edt_Amount.getText().toString()).execute();
                 }
             }
         });
+    }
+
+    private void filter(Integer searchStatus){
+        List<Transaction> transactionList = new ArrayList<>();
+        Integer Status;
+        for(Transaction item: this.transactionList) {
+            Status = item.getStatus();
+            if(Status == searchStatus){
+                transactionList.add(item);
+            }
+        }
+
+        mAdapter.filterList(transactionList);
     }
 
     private class GetWalletCurrentDetail extends AsyncTask<Void,Void,Void> {
@@ -197,7 +264,7 @@ public class WithDrawFragment extends Fragment {
                         return;
                     }
 
-                    List<Transaction> transactionList = response.body();
+                    transactionList = response.body();
                     if(transactionList.isEmpty()){
                         DialogsUtils.showAlertDialog(getContext(),
                                 false,
@@ -228,7 +295,7 @@ public class WithDrawFragment extends Fragment {
         }
     }
 
-    private class PostWithDrawRequest extends AsyncTask<Void,Void,Void> implements com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.PostWithDrawRequest {
+    private class PostWithDrawRequest extends AsyncTask<Void,Void,Void> {
 
         Call<SuccessErrorModel> call;
         String Amount;
@@ -262,12 +329,17 @@ public class WithDrawFragment extends Fragment {
                         loadingDialog.dismiss();
                         return;
                     }
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String currentDate = sdf.format(new Date());
+                    Transaction newTrans = new Transaction(Integer.parseInt(Amount),0,currentDate);
+
+                    transactionList.add(0,newTrans);
                     loadingDialog.dismiss();
-                    Toast.makeText(getContext(),
-                            "You can get your amount in 2 to 3 Business Days.", Toast.LENGTH_LONG).show();
-                    Fragment frag = new WithDrawFragment();
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragment_container, frag).commit();
+                    mAdapter.notifyItemInserted(0);
+                    mRecyclerView.smoothScrollToPosition(0);
+
+                    currentBalance = currentBalance - Integer.parseInt(Amount);
+                    txt_CurrentBalance.setText("$"+currentBalance);
                 }
 
                 @Override
@@ -287,3 +359,4 @@ public class WithDrawFragment extends Fragment {
     }
 
 }
+

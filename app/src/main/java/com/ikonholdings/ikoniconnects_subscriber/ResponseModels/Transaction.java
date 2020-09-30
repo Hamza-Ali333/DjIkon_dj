@@ -6,6 +6,12 @@ public class Transaction {
             status;
      String created_at;
 
+    public Transaction(Integer amount, Integer status, String created_at) {
+        this.amount = amount;
+        this.status = status;
+        this.created_at = created_at;
+    }
+
     public Integer getAmount() {
         return amount;
     }
