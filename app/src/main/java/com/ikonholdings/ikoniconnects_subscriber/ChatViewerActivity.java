@@ -153,11 +153,6 @@ public class ChatViewerActivity extends AppCompatActivity {
             }
         });
 
-        //this function will extract the only ids of user and dJ
-//        String[] str = chatNodeName.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-//        Log.i("TAG", "onCreate: Subscriber "+str[1]);
-//        Log.i("TAG", "onCreate: User "+str[3]);
-
         mProgressDialog = DialogsUtils.showProgressDialog(this,"Getting Massages","Please Wait");
 
         btn_SendMsg.setOnClickListener(new View.OnClickListener() {
@@ -253,7 +248,6 @@ public class ChatViewerActivity extends AppCompatActivity {
                             // Toast.makeText(getC, "Something Happend Wrong feed image", Toast.LENGTH_LONG).show();
                         }
                     });
-
         }
     }
 
@@ -265,11 +259,6 @@ public class ChatViewerActivity extends AppCompatActivity {
                 //Here check Node of this User Email and Subscriber Email is exit or not
                 if (snapshot.hasChild(chatNodeName)) {
 
-                    //when find node in db
-                    //extract email of Subscriber on base of Current User Email
-                    //String receiver = chatNodeName.replace("Hamza","");
-                    //Toast.makeText(ChatViewerActivity.this, receiver, Toast.LENGTH_SHORT).show();
-
                     alreadyHaveChat = true;
                     readMassages();
 
@@ -278,8 +267,6 @@ public class ChatViewerActivity extends AppCompatActivity {
 
                     alreadyHaveChat = false;
                     mProgressDialog.dismiss();
-                    Toast.makeText(ChatViewerActivity.this, "No Massages", Toast.LENGTH_SHORT).show();
-
                 }
             }
 
@@ -421,7 +408,7 @@ public class ChatViewerActivity extends AppCompatActivity {
             userChatListModel.setuser_Uid(userUid);
             userChatListModel.setuser_Name(userName);
             userChatListModel.setImageUrl(imgProfileUrl);
-            myRef.child("chatListOfSubscriber").child(String.valueOf(CurrentSubscriberId)).push().setValue(userChatListModel);
+            myRef.child("chatListOfSubscriber").child(String.valueOf(CurrentSubscriberId)).child(userId).setValue(userChatListModel);
 
             //Saving this Subscriber into User Node for make list of chat with
             Map<String, String> userData = new HashMap<>();
@@ -429,7 +416,7 @@ public class ChatViewerActivity extends AppCompatActivity {
             userData.put("subscriber_Name",userName);
             userData.put("subscriber_Uid", fuser.getUid());
             userData.put("imageUrl",imgProfileUrl);
-            myRef.child("chatListOfUser").child(String.valueOf(userId)).push().setValue(userData);
+            myRef.child("chatListOfUser").child(String.valueOf(userId)).child(CurrentSubscriberId).setValue(userData);
 
             return null;
         }

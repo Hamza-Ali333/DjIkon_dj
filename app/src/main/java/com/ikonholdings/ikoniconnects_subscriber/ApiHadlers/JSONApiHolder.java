@@ -93,10 +93,6 @@ public interface JSONApiHolder
     @GET("withdrawDetails")
     Call <List<Transaction>> getTransaction();
 
-
-//    @GET("liveArtist")
-//    Call<List<CurrentLiveArtistModel>> getCurrentLiveArtist();
-
     @GET("socialFrames")
     Call<List<FramesModel>>getFrames();
 
@@ -160,7 +156,9 @@ public interface JSONApiHolder
                 @Part("lastname") RequestBody lastName,
                 @Part("contact") RequestBody contact,
                 @Part("gender") RequestBody gender,
-                @Part("location") RequestBody location
+                @Part("location") RequestBody location,
+                @Part("rate_per_hour") RequestBody RHP,
+                @Part("about") RequestBody about
         );
 
     @FormUrlEncoded

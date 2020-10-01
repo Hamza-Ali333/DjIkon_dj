@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,7 +43,7 @@ public class EditBlogActivity extends AppCompatActivity {
 
     private Button btn_UpDatePost;
     private ImageView img_Featured;
-    private EditText edt_Title, edt_Discription;
+    private EditText edt_Title, edt_Description;
 
     private Uri Image_uri;
 
@@ -95,7 +94,7 @@ public class EditBlogActivity extends AppCompatActivity {
                 });
 
         edt_Title.setText(Title);
-        edt_Discription.setText(Description);
+        edt_Description.setText(Description);
 
         img_Featured.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,11 +106,11 @@ public class EditBlogActivity extends AppCompatActivity {
         btn_UpDatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edt_Discription.getText().toString().equals(Description) && edt_Title.getText().toString().equals(Title) && profileChange == false) {
+                if (edt_Description.getText().toString().equals(Description) && edt_Title.getText().toString().equals(Title) && profileChange == false) {
                     Toast.makeText(EditBlogActivity.this, "Already Update", Toast.LENGTH_SHORT).show();
                 } else {
                     new UploadBlogToServer(edt_Title.getText().toString().trim(),
-                            edt_Discription.getText().toString().trim()).execute();
+                            edt_Description.getText().toString().trim()).execute();
                 }
             }
         });
@@ -169,7 +168,7 @@ public class EditBlogActivity extends AppCompatActivity {
 
     private void createReferences() {
         edt_Title = findViewById(R.id.txt_blog_title);
-        edt_Discription = findViewById(R.id.txt_blog_discription);
+        edt_Description = findViewById(R.id.txt_blog_discription);
 
         btn_UpDatePost = findViewById(R.id.btn_publish);
         img_Featured = findViewById(R.id.featuredimg);

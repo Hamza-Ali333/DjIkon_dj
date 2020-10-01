@@ -19,8 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
+import com.ikonholdings.ikoniconnects_subscriber.CustomDialogs.CreateNewPasswordDialog;
+import com.ikonholdings.ikoniconnects_subscriber.CustomDialogs.UpdatePasswordDialog;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 
 
@@ -38,6 +41,8 @@ public class ProfileSettingActivity extends AppCompatActivity {
     private int allowMessage;
     private int allowSongRequest;
     private int subscriberId;
+
+    private  Boolean isHavePassword;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
     @Override
@@ -63,7 +68,22 @@ public class ProfileSettingActivity extends AppCompatActivity {
         allowMessage = i.getIntExtra("allowMessage", 0);
         allowSongRequest = i.getIntExtra("allowSongRequest", 0);
         subscriberId = i.getIntExtra("id", 0);
+        isHavePassword = i.getBooleanExtra("password",false);
         manageActiveDeActive();
+
+        txt_ChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               manageChangePassword();
+            }
+        });
+
+        img_changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                manageChangePassword();
+            }
+        });
 
         txt_ChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +125,33 @@ public class ProfileSettingActivity extends AppCompatActivity {
             }
         });
 
+        swt_Biometric_State.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(swt_Biometric_State.isChecked()) {
+                    DialogsUtils.showAlertDialog(ProfileSettingActivity.this,
+                            false,
+                            "Note","Biometric is Enable Now");
+                    PreferenceData.setBiometricLoginState(ProfileSettingActivity.this,true);
+                }else {
+                    DialogsUtils.showAlertDialog(ProfileSettingActivity.this,
+                            false,
+                            "Note","Biometric is Disable Now");
+                    PreferenceData.setBiometricLoginState(ProfileSettingActivity.this,false);
+                }
+            }
+        });
+
+    }
+
+    private void manageChangePassword() {
+        if(isHavePassword){
+            UpdatePasswordDialog.showChangePasswordDialogue(ProfileSettingActivity.this);
+        }else {
+            //openCreate
+            CreateNewPasswordDialog.createNewPassword(ProfileSettingActivity.this,
+                    PreferenceData.getUserEmail(ProfileSettingActivity.this));
+        }
     }
 
     private void manageActiveDeActive() {
@@ -122,6 +169,12 @@ public class ProfileSettingActivity extends AppCompatActivity {
             swt_AllowSongRequest.setChecked(true);
         else
             swt_AllowSongRequest.setChecked(false);
+
+        if(PreferenceData.getBiometricLoginState(ProfileSettingActivity.this))
+            swt_Biometric_State.setChecked(true);
+        else
+            swt_Biometric_State.setChecked(false);
+
     }
 
     private void openChangePasswordDialogue() {
@@ -209,6 +262,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
         swt_AllowBookings = findViewById(R.id.swt_allow_booking);
         swt_AllowMessage = findViewById(R.id.swt_allow_messaging);
         swt_AllowSongRequest = findViewById(R.id.swt_allow_song_request);
+        swt_Biometric_State = findViewById(R.id.swt_biometric_state);
     }
 
     @Override

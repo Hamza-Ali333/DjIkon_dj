@@ -16,20 +16,15 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         app:srcCompat="@drawable/ic_add"
-        android:background="@color/colorBlue"
-        app:backgroundTint="@color/colorBlue"
+        android:background="@color/grey"
+        app:backgroundTint="@color/grey"
         app:fabSize="normal"
         />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/services_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-
-
-
-
+        android:layout_height="match_parent" />
 
 
 </RelativeLayout>

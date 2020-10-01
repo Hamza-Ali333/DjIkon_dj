@@ -40,6 +40,7 @@ import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.GetAppAboutAndDis
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AboutModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DjAndUserProfileModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 import com.squareup.picasso.Picasso;
@@ -86,6 +87,8 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
     private String Address = "no";
     private String Profile;
     private String ReferralCode;
+    private String RPH;//Rate Per Hour
+    private String About;
 
     private static boolean isHavePassword;
 
@@ -210,7 +213,7 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
             public void onClick(View view) {
                 if(isInfoRight()){
                     if(isDataChange()){
-                        updateProfile();
+                       updateProfile();
                     }else {
                         Toast.makeText(SubscriberProfileActivity.this, "Already Updated", Toast.LENGTH_SHORT).show();
                     }
@@ -283,7 +286,6 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
                 if (response.isSuccessful()) {
                     DjAndUserProfileModel data = response.body();
 
-
                     FirstName = data.getFirstname();
                     LastName = data.getLastname();
                     edt_Email.setText(data.getEmail());
@@ -293,14 +295,13 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
                     ReferralCode = data.getRefferal();
                     Profile = data.getProfile_image();
                     isHavePassword = data.getPassword();
+                    RPH = data.getRate_per_hour();
+                    About = data.getAbout();
 
                     allowMessage = data.getAllow_message();
                     allowBooking = data.getAllow_booking();
                     allowSongRequest = data.getSong_request();
                     OnlineStatus = data.getOnline_status();
-
-
-                    Toast.makeText(SubscriberProfileActivity.this, String.valueOf(data.getAllow_booking()), Toast.LENGTH_SHORT).show();
 
                     for (int j = 0; j < genderArray.length - 1; j++) {
                         if (genderArray[j].equals(SelectedGender)) {
@@ -351,6 +352,10 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
                 edt_Location.getText().toString());
         RequestBody gender = RequestBody.create(MediaType.parse("text/plain"),
                 SelectedGender);
+        RequestBody rhp = RequestBody.create(MediaType.parse("text/plain"),
+                edt_RPH.getText().toString());
+        RequestBody about = RequestBody.create(MediaType.parse("text/plain"),
+                edt_About.getText().toString());
 
         jsonApiHolder = retrofit.create(JSONApiHolder.class);
 
@@ -361,7 +366,9 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
                 lastName,
                 phone,
                 gender,
-                location
+                location,
+                rhp,
+                about
         );
 
         uploadCall.enqueue(new Callback<SuccessErrorModel>() {
@@ -421,6 +428,10 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
     private void assainValue() {
         FirstName = edt_FirstName.getText().toString().trim();
         LastName = edt_LastName.getText().toString().trim();
+        if(!edt_RPH.getText().toString().isEmpty())
+        RPH = edt_RPH.getText().toString().trim();
+        if(!edt_About.getText().toString().isEmpty())
+        About = edt_About.getText().toString().trim();
 
         if (!edt_Phone_No.getText().toString().trim().isEmpty()) {
             PhoneNo = edt_Phone_No.getText().toString().trim();
@@ -429,16 +440,15 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
             Address = edt_Location.getText().toString().trim();
         }
 
-        newData = new String[]{FirstName, LastName, PhoneNo, SelectedGender, Address};
+        newData = new String[]{FirstName, LastName, PhoneNo, SelectedGender, Address, RPH, About};
     }
 
     private boolean isDataChange() {
         boolean result = false;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 7; i++) {
             if (!serverData[i].equals(newData[i])) {
                 serverData[i] = newData[i];
                 result = true;
-                break;
             }
         }
         if(isProfileChange){
@@ -448,8 +458,6 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
     }
 
     private void setDataInToViews() {
-        serverData = new String[]{FirstName, LastName, PhoneNo, SelectedGender, Address};
-
         if(!Profile.equals("no") && Profile != null) {
             progressBarProfile.setVisibility(View.VISIBLE);
             Picasso.get().load(ApiClient.Base_Url + Profile)
@@ -473,7 +481,6 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
         edt_LastName.setText(LastName);
         txt_ReferralCode.setText(ReferralCode);
 
-
         if (!PhoneNo.equals("no")){
             edt_Phone_No.setText(PhoneNo);
             PreferenceData.setUserPhoneNo(SubscriberProfileActivity.this,PhoneNo);
@@ -484,19 +491,20 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
             PreferenceData.setUserAddress(SubscriberProfileActivity.this,Address);
         }
 
-//        if(data.getRate_per_hour() != null){
-//            edt_RPH.setText(data.getRate_per_hour());
-//        }
-//
-//        if(data.getAbout() != null) {
-//            edt_About.setText(data.getAbout());
-//        }
-//
-//        if(data.getOnline_status() == 1){
-//            swt_Profile.setChecked(true);
-//        }else {
-//            swt_Profile.setChecked(false);
-//        }
+        if(RPH != null && !RPH.equals("no"))
+            edt_RPH.setText(RPH);
+
+        if(About != null && !About.equals("No Description"))
+            edt_About.setText(About);
+
+
+        if(OnlineStatus == 1)
+            swt_Profile.setChecked(true);
+        else
+            swt_Profile.setChecked(false);
+
+        serverData = new String[] {FirstName, LastName, PhoneNo, SelectedGender, Address, RPH, About};
+
     }
 
     private void openDisclosureDialog() {
@@ -646,14 +654,11 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
         img_Setting = findViewById(R.id.setting_aero);
     }
 
-
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
-
 
     @Override
     public void onGetAbout(String about) {

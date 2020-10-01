@@ -101,6 +101,7 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
         }
         if(imageUrl != null){
             Picasso.get().load((ApiClient.Base_Url+imageUrl))
+                    .placeholder(R.drawable.ic_avatar)
                     .into(holder.img_Profile, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {
