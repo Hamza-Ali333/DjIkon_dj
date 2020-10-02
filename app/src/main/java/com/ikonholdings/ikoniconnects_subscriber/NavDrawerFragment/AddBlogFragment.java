@@ -56,7 +56,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class AddBlogFragment extends Fragment {
 
-    private EditText edt_Title, edt_Discription;
+    private EditText edt_Title, edt_Description;
     private ImageView img_Video, img_Gallery, img_Camera, img_Featured, img_Selected;
     private Button btn_Post;
 
@@ -146,7 +146,7 @@ public class AddBlogFragment extends Fragment {
 
     private void createRefrences(View v){
         edt_Title= v.findViewById(R.id.txt_blog_title);
-        edt_Discription = v.findViewById(R.id.txt_blog_discription);
+        edt_Description = v.findViewById(R.id.txt_blog_discription);
 
           img_Camera = v.findViewById(R.id.camera);
           img_Featured = v.findViewById(R.id.featuredimg);
@@ -369,7 +369,7 @@ public class AddBlogFragment extends Fragment {
             RequestBody title = RequestBody.create(MediaType.parse("text/plain"),
                     name);
 
-            String descript = edt_Discription.getText().toString();
+            String descript = edt_Description.getText().toString();
             RequestBody description = RequestBody.create(MediaType.parse("text/plain"),
                     descript);
 

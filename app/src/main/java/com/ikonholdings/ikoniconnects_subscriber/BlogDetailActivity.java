@@ -69,8 +69,6 @@ public class BlogDetailActivity extends AppCompatActivity {
     private ImageView img_Profile;
     private ProgressBar profileProgressBar;
 
-
-
     private int blogId;
     private String Gallery;
     private String Video;
@@ -84,9 +82,7 @@ public class BlogDetailActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-
     private VideoView videoView;
-
 
     private AlertDialog.Builder builder;
     private AlertDialog alertDialog;
@@ -231,11 +227,6 @@ public class BlogDetailActivity extends AppCompatActivity {
                         initializeImageSlider(null, false);
                     }
 
-
-                    Thread VideoThread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.i("TAG", "thread2: " + Thread.currentThread().getId());
                             if (!Video.equals("no")) {
                                 frameLayout.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.VISIBLE);
@@ -253,10 +244,6 @@ public class BlogDetailActivity extends AppCompatActivity {
                             } else {
                                 frameLayout.setVisibility(View.GONE);
                             }
-                        }
-                    });
-                    VideoThread.start();
-
 
                 } else {
                    DialogsUtils.showResponseMsg(BlogDetailActivity.this,false);
@@ -349,7 +336,7 @@ public class BlogDetailActivity extends AppCompatActivity {
                 mSliderModels.add(new SliderModel(ApiClient.Base_Url+"post_images/" + Gallery[i]));
             }
         } else {
-            mSliderModels.add(new SliderModel(Featured_image));
+            mSliderModels.add(new SliderModel(ApiClient.Base_Url+Featured_image));
         }
 
         RecyclerSliderAdapter adapter = new RecyclerSliderAdapter(mSliderModels, this);
@@ -414,7 +401,7 @@ public class BlogDetailActivity extends AppCompatActivity {
                         finish();
                         startActivity(intent);
                     }else {
-                        alertDialog = DialogsUtils.showResponseMsg(BlogDetailActivity.this,false);
+                         DialogsUtils.showResponseMsg(BlogDetailActivity.this,false);
                     }
                 }
                 @Override
@@ -422,7 +409,7 @@ public class BlogDetailActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            alertDialog = DialogsUtils.showResponseMsg(BlogDetailActivity.this,true);
+                            DialogsUtils.showResponseMsg(BlogDetailActivity.this,true);
                         }
                     });
                 }

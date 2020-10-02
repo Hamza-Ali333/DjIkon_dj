@@ -264,13 +264,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
 
-
-            case R.id.nav_Blog:
-                getSupportActionBar().setTitle(R.string.Services);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new AddBlogFragment()).commit();
-                break;
-
             case R.id.nav_UserAdmin:
                 getSupportActionBar().setTitle(R.string.UserAdmin);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

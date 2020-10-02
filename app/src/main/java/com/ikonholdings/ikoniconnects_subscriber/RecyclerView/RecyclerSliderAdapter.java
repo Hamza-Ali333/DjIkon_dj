@@ -1,6 +1,5 @@
 package com.ikonholdings.ikoniconnects_subscriber.RecyclerView;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +82,7 @@ public class RecyclerSliderAdapter extends
 
                         @Override
                         public void onError(Exception e) {
-                            Toast.makeText(context, "Something Happend With Slider Image", Toast.LENGTH_LONG).show();
+
                         }
                     });
 

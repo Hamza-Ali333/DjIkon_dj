@@ -91,6 +91,8 @@ public class ChatViewerActivity extends AppCompatActivity {
     private FirebaseUser fuser;
     private Boolean notify = false;
 
+    private String Msg;
+
     private NetworkChangeReceiver mNetworkChangeReceiver;
     @Override
     protected void onStart() {
@@ -166,6 +168,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                         new CreateChatListOfUserAndSubscriber().execute();
                     }
 
+                    Msg = edt_Massage.getText().toString();
                     sendMassage(edt_Massage.getText().toString(),fuser.getUid(), userUid,currentDateAndTime);
                 }else{
                     Toast.makeText(ChatViewerActivity.this, "You Can't Send Empty massage", Toast.LENGTH_SHORT).show();
@@ -309,7 +312,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                 //nead to check this line what is the propose of this line
                 // String user= dataSnapshot.getValue(String.class);
                 if(notify){
-                    sendNotification(userUid,"Sender Bilawal",Massage);
+                    sendNotification(userUid,"Sender Bilawal",Msg);
                 }
                 notify = false;
             }

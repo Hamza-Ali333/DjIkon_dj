@@ -73,13 +73,11 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
 
     }
 
-
     //constructor
     public RecyclerMyFeed(List<MyFeedBlogModel> blogs, Context context) {
         this.context = context;
         this.mBlogs = blogs;
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
