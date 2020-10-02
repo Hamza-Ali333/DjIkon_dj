@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +32,6 @@ public class FollowersActivity extends AppCompatActivity implements GetUsers.onS
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
     @Override
@@ -46,6 +46,8 @@ public class FollowersActivity extends AppCompatActivity implements GetUsers.onS
         mRecyclerView = findViewById(R.id.recyclerViewFollwer);
         total = findViewById(R.id.total);
         String Url;
+
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         if(referralUser){
             Url = "referralFollowers";
@@ -82,6 +84,10 @@ public class FollowersActivity extends AppCompatActivity implements GetUsers.onS
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+        try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        }catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

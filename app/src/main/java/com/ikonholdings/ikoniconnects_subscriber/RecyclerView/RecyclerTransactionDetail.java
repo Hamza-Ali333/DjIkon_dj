@@ -61,7 +61,7 @@ public class RecyclerTransactionDetail extends RecyclerView.Adapter<RecyclerTran
                     holder.txt_Status.setText("In Process");
                     break;
                 case 1:
-                    holder.status.setImageResource(R.drawable.ic_check_blue);
+                    holder.status.setImageResource(R.drawable.ic_check);
                     holder.txt_Status.setText("Accepted");
                     break;
                 case 2:
@@ -69,7 +69,6 @@ public class RecyclerTransactionDetail extends RecyclerView.Adapter<RecyclerTran
                     holder.txt_Status.setText("Rejected");
                     break;
             }
-
 }
     public void filterList(List<Transaction> list) {
         transactionList = list;

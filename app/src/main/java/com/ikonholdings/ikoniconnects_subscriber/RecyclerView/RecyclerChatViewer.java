@@ -72,14 +72,11 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
         myRef = FirebaseDatabase.getInstance().getReference("Chats").child("Massages").child(chatMainNode);
     }
 
-
     @Override
     public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
         View v;
         if (viewType == MSG_TYPE_RIGHT) {
-
             v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_right, parent, false);
-
         }else {
             v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_left, parent, false);
         }

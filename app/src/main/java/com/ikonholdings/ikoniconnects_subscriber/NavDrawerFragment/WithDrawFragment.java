@@ -3,6 +3,7 @@ package com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -165,14 +167,17 @@ public class WithDrawFragment extends Fragment {
         btn_Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Integer.parseInt(edt_Amount.getText().toString()) > currentBalance){
-                    edt_Amount.setError("low balance check your balance");
+                if(edt_Amount.getText().toString().isEmpty()){
+                    edt_Amount.setError("Enter some value.");
+                    edt_Amount.requestFocus();
+                }
+                else if(Integer.parseInt(edt_Amount.getText().toString()) > currentBalance){
+                    edt_Amount.setError("low balance check your current balance");
                     edt_Amount.requestFocus();
                 }else if(Integer.parseInt(edt_Amount.getText().toString()) < 5){
                     edt_Amount.setError("Amount should be greater then 5");
                     edt_Amount.requestFocus();
-                }
-                else {
+                } else {
                     alertDialog.dismiss();
                     KeyBoard.hideKeyboard(getActivity());
                     new PostWithDrawRequest(edt_Amount.getText().toString()).execute();
@@ -219,10 +224,12 @@ public class WithDrawFragment extends Fragment {
                     }
 
                     WithDrawModel detail = response.body();
-                     currentBalance = detail.getTotalEarning();
+                    currentBalance = detail.getWallet();
                     txt_CurrentBalance.setText("$"+detail.getWallet());
-                    txt_Total_Earning.setText("$"+currentBalance);
+                    txt_Total_Earning.setText("$"+detail.getTotalEarning());
                     progressBar.setVisibility(View.GONE);
+                    Log.i("TAG", "onResponse: current balance " +currentBalance);
+                    Log.i("TAG", "onResponse: wallet" +detail.getWallet());
                 }
 
                 @Override

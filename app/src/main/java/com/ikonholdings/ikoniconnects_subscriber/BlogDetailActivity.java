@@ -197,10 +197,6 @@ public class BlogDetailActivity extends AppCompatActivity {
 
                     alertDialog.dismiss();
                     parentLayout.setVisibility(View.VISIBLE);
-
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
                             
                             //if comment is not Zero build recycler view
                             mRecyclerView.setVisibility(View.GONE);
@@ -208,9 +204,6 @@ public class BlogDetailActivity extends AppCompatActivity {
                                 mRecyclerView.setVisibility(View.VISIBLE);
                                 initializeCommentRecycler(detailModel.mCommentModels);
                             }
-                        }
-                    });
-                    thread.start();
 
                     setDataIntoFields(Name, Profile, Title, Description, Likes, Comments, CreateTime);
 

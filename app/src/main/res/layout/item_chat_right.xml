@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
+        android:id="@+id/text"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_width="300dp"
@@ -38,17 +39,17 @@
         android:textColor="#fff"
         android:background="@drawable/bg_right_chat"
         android:textSize="18sp"/>
-            <TextView
-                android:id="@+id/time"
-                android:layout_below="@+id/msg"
-                android:layout_marginLeft="2dp"
-                android:layout_toRightOf="@+id/msg"
-                android:layout_width="wrap_content"
-                android:text="12:09 28/23/2020"
-                android:textSize="14sp"
-                android:textColor="#f1f1f1"
-                android:layout_height="wrap_content"/>
         </RelativeLayout>
 
     </RelativeLayout>
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:text="12:09 PM"
+        android:layout_marginRight="50dp"
+        android:layout_alignParentRight="true"
+        android:textColor="#f1f1f1"
+        android:textSize="10sp" />
 </RelativeLayout>
