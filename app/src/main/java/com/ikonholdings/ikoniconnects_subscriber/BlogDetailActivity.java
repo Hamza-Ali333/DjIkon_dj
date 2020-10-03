@@ -414,7 +414,15 @@ public class BlogDetailActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+        try {
+             try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -90,7 +90,6 @@ public class AddServiceActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
     @Override
@@ -102,6 +101,8 @@ public class AddServiceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         createReferences();
         GalleryArray = new ArrayList<>();
+
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         Intent i = getIntent();
         edit = i.getBooleanExtra("edit",false);
@@ -483,6 +484,10 @@ public class AddServiceActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+         try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

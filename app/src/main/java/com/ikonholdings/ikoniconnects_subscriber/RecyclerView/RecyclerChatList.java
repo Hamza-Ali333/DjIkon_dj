@@ -33,7 +33,7 @@ import java.util.List;
 
 public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.ViewHolder>{
 
-    private List<UserChatListModel> mChat_Aera;
+    private List<UserChatListModel> mChatList;
     private DatabaseReference myRef;
 
     //view holder class
@@ -63,7 +63,7 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
 
 //constructor
     public RecyclerChatList(List<UserChatListModel> chat_List_modelArrayList, String currentUserId) {
-        this.mChat_Aera = chat_List_modelArrayList;
+        this.mChatList = chat_List_modelArrayList;
         myRef = FirebaseDatabase.getInstance().getReference("Chats").child("chatListOfUser").child(currentUserId);
     }
 
@@ -77,7 +77,7 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-       final UserChatListModel currentItem = mChat_Aera.get(position);
+       final UserChatListModel currentItem = mChatList.get(position);
 
 
        holder.txt_msg_Sender_Name.setText(currentItem.getUser_Name());
@@ -104,8 +104,6 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
 //       holder.txt_Last_msg.setText(currentItem.getMsg_last_send());
 //       holder.txt_UnRead.setText(currentItem.getId());
 //       holder.txt_Recive_Time.setText(currentItem.getMsg_Recieved_Time());
-
-
 
        holder.rlt_ChatItem.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -159,13 +157,18 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
 
     @Override
     public int getItemCount() {
-        return mChat_Aera.size();
+        return mChatList.size();
+    }
+
+    public void filterList(List<UserChatListModel> list) {
+        mChatList = list;
+        notifyDataSetChanged();
     }
 
     private void deleteNode(String Key,int position) {
-        mChat_Aera.remove(position);
+        mChatList.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mChat_Aera.size());
+        notifyItemRangeChanged(position, mChatList.size());
 
         myRef.child(Key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -180,4 +183,6 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
             }
         });
     }
+
+
 }

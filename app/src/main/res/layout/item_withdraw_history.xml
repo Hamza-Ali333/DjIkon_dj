@@ -12,15 +12,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="8dp">
+        android:paddingBottom="4dp">
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/sender_profile"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            app:civ_border_width="2dp"
+            android:layout_marginTop="4dp"
             app:civ_border_color="@color/colorBlack"
+            app:civ_border_width="2dp"
             app:layout_constraintStart_toStartOf="@+id/textView30"
             app:layout_constraintTop_toBottomOf="@+id/textView30"
             app:srcCompat="@drawable/ic_avatar" />
@@ -42,12 +42,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/montserrat"
             android:text="SenderName"
             android:textColor="@color/colorBlue"
-            android:textColorLink="#FFFFFF"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/sender_profile"
             app:layout_constraintStart_toEndOf="@+id/sender_profile"
             app:layout_constraintTop_toTopOf="@+id/sender_profile" />
 
@@ -77,29 +76,30 @@
             android:id="@+id/textView34"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:fontFamily="@font/montserrat"
-            android:text="Transaction ID"
+            android:text="Transaction ID:"
             android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@+id/sender_profile"
-            app:layout_constraintTop_toBottomOf="@+id/sender_profile" />
+            app:layout_constraintStart_toStartOf="@+id/sender_name"
+            app:layout_constraintTop_toBottomOf="@+id/sender_name" />
 
         <TextView
             android:id="@+id/transaction_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:fontFamily="@font/montserrat"
             android:text="82376487236"
             android:textColor="@color/colorBlack"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/textView34"
-            app:layout_constraintTop_toBottomOf="@+id/textView34" />
+            app:layout_constraintBottom_toBottomOf="@+id/textView34"
+            app:layout_constraintStart_toEndOf="@+id/textView34" />
 
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/montserrat"
             android:text="1970-01-01 12:00 AM"
@@ -116,6 +116,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/montserrat"
             android:text="From"
+            android:textColor="#0f0f0f"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

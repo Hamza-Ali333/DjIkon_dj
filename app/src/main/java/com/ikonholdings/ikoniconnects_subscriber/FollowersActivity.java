@@ -85,7 +85,11 @@ public class FollowersActivity extends AppCompatActivity implements GetUsers.onS
     protected void onStop() {
         super.onStop();
         try {
+             try {
             unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         }catch (Exception e){
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }

@@ -24,7 +24,6 @@ public class PurchaseServiceActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
     @Override
@@ -35,6 +34,8 @@ public class PurchaseServiceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         createRefrences();
+
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         btn_Confirm_Payment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +88,10 @@ public class PurchaseServiceActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+         try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

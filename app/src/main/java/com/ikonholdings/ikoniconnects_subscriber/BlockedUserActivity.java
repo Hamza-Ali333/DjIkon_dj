@@ -24,7 +24,6 @@ public class BlockedUserActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
     @Override
@@ -35,6 +34,8 @@ public class BlockedUserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mRecyclerView = findViewById(R.id.recyclerView_blocked_users);
+
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         ArrayList<FollowerAndBlocked_User_Model> follower_modelArrayList = new ArrayList<>();
 
@@ -62,6 +63,10 @@ public class BlockedUserActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+         try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

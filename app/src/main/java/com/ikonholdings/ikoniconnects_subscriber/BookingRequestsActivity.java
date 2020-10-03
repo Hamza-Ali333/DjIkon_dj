@@ -1,6 +1,5 @@
 package com.ikonholdings.ikoniconnects_subscriber;
 
-import android.app.AlertDialog;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -25,13 +24,13 @@ public class BookingRequestsActivity extends AppCompatActivity implements Bookin
     private TextView txt_Total;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
+
     @Override
     protected void onStart() {
         super.onStart();
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
     @Override
@@ -41,6 +40,8 @@ public class BookingRequestsActivity extends AppCompatActivity implements Bookin
         getSupportActionBar().setTitle("All Booking Requests");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         txt_Total = findViewById(R.id.txt_total);
 
@@ -71,6 +72,10 @@ public class BookingRequestsActivity extends AppCompatActivity implements Bookin
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+        try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

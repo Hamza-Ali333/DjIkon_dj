@@ -32,7 +32,6 @@ public class AcceptRequestActivity extends AppCompatActivity implements BookingR
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
     @Override
@@ -42,6 +41,8 @@ public class AcceptRequestActivity extends AppCompatActivity implements BookingR
         getSupportActionBar().setTitle("Approved Requests");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         txt_total_canceled_request = findViewById(R.id.txt_total);
 
@@ -72,7 +73,11 @@ public class AcceptRequestActivity extends AppCompatActivity implements BookingR
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+         try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

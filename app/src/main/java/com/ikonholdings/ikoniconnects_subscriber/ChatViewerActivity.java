@@ -103,7 +103,6 @@ public class ChatViewerActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
     @Override
@@ -112,6 +111,7 @@ public class ChatViewerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_viewer);
         createReferences();
         setSupportActionBar(toolbar);
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         apiService = Client.getClient("https://fcm.googleapis.com").create(APIService.class);
 
@@ -312,7 +312,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                 //nead to check this line what is the propose of this line
                 // String user= dataSnapshot.getValue(String.class);
                 if(notify){
-                    sendNotification(userUid,"Sender Bilawal",Msg);
+                    sendNotification(userUid,PreferenceData.getUserName(ChatViewerActivity.this),Msg);
                 }
                 notify = false;
             }
@@ -342,8 +342,8 @@ public class ChatViewerActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                     if(!response.isSuccessful()){
-                                        if(response.body().success != 1)
-                                        Toast.makeText(ChatViewerActivity.this, "Failed to send Notification", Toast.LENGTH_SHORT).show();
+//                                        if(response.body().success != 1)
+//                                        Toast.makeText(ChatViewerActivity.this, "Failed to send Notification", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                                 @Override
@@ -411,7 +411,7 @@ public class ChatViewerActivity extends AppCompatActivity {
             userChatListModel.setuser_Uid(userUid);
             userChatListModel.setuser_Name(userName);
             userChatListModel.setImageUrl(imgProfileUrl);
-            myRef.child("chatListOfSubscriber").child(String.valueOf(CurrentSubscriberId)).child(userId).setValue(userChatListModel);
+            myRef.child("chatListOfSubscriber").child(String.valueOf(CurrentSubscriberId)).push().setValue(userChatListModel);
 
             //Saving this Subscriber into User Node for make list of chat with
             Map<String, String> userData = new HashMap<>();
@@ -419,7 +419,7 @@ public class ChatViewerActivity extends AppCompatActivity {
             userData.put("subscriber_Name",userName);
             userData.put("subscriber_Uid", fuser.getUid());
             userData.put("imageUrl",imgProfileUrl);
-            myRef.child("chatListOfUser").child(String.valueOf(userId)).child(CurrentSubscriberId).setValue(userData);
+            myRef.child("chatListOfUser").child(String.valueOf(userId)).push().setValue(userData);
 
             return null;
         }
@@ -428,6 +428,10 @@ public class ChatViewerActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+         try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

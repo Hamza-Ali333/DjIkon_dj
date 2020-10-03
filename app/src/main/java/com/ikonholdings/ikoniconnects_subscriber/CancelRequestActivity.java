@@ -31,7 +31,6 @@ public class CancelRequestActivity extends AppCompatActivity implements BookingR
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
     @Override
@@ -41,6 +40,8 @@ public class CancelRequestActivity extends AppCompatActivity implements BookingR
         getSupportActionBar().setTitle("Canceled Requests");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         txt_total_canceled_request = findViewById(R.id.txt_total);
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);
@@ -70,6 +71,10 @@ public class CancelRequestActivity extends AppCompatActivity implements BookingR
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+         try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

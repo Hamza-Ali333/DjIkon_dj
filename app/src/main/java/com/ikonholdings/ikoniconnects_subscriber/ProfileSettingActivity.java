@@ -51,7 +51,6 @@ public class ProfileSettingActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
     @Override
@@ -62,6 +61,8 @@ public class ProfileSettingActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         createReferences();
+
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         Intent i = getIntent();
         allowBookings = i.getIntExtra("allowBookings", 0);
@@ -341,6 +342,10 @@ public class ProfileSettingActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+         try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

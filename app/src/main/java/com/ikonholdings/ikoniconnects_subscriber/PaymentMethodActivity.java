@@ -21,7 +21,6 @@ public class PaymentMethodActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
     @Override
@@ -32,6 +31,7 @@ public class PaymentMethodActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         createRefrences();
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         btn_PayNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +55,10 @@ public class PaymentMethodActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+         try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

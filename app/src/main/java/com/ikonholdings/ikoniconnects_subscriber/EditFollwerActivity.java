@@ -24,7 +24,6 @@ public class EditFollwerActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
     }
 
 
@@ -36,6 +35,8 @@ public class EditFollwerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         createRefrence();
+
+        mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         Intent i = getIntent();
         id = i.getStringExtra("id");
@@ -88,6 +89,10 @@ public class EditFollwerActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mNetworkChangeReceiver);
+         try {
+            unregisterReceiver(mNetworkChangeReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
