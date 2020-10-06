@@ -5,7 +5,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,12 +17,13 @@ import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FollowersModel;
 
 import java.util.List;
 
-public class FollowersActivity extends AppCompatActivity implements GetUsers.onServerResponse {
+public class ShowUserActivity extends AppCompatActivity implements GetUsers.onServerResponse {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView total;
+    private Integer User;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
     @Override
@@ -38,33 +38,47 @@ public class FollowersActivity extends AppCompatActivity implements GetUsers.onS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_followers);
-        getSupportActionBar().setTitle("Followers");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         Intent i = getIntent();
-        Boolean referralUser = i.getBooleanExtra("referralUser",false);
+        User = i.getIntExtra("user",0);
         mRecyclerView = findViewById(R.id.recyclerViewFollwer);
         total = findViewById(R.id.total);
-        String Url;
+        String Url = null;
+        String ToolBarTitle = null;
 
         mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
-        if(referralUser){
-            Url = "referralFollowers";
-            total.setVisibility(View.GONE);
+        switch (User) {
+            case 1:
+                Url = "followers";
+                total.setVisibility(View.VISIBLE);
+                ToolBarTitle = "Followers";
+                break;
+            case 2:
+                Url = "referralFollowers";
+                ToolBarTitle = "Referral User";
+                total.setVisibility(View.GONE);
+                break;
+            case 3:
+                Url = "allBlockUsers";
+                ToolBarTitle = "Blocked User";
+                total.setVisibility(View.GONE);
+                break;
+            case 4:
+                Url = "blockedReferralFollowers";
+                ToolBarTitle = "Access Block";
+                total.setVisibility(View.GONE);
+                break;
         }
-        else{
-            Url = "followers";
-            total.setVisibility(View.VISIBLE);
-        }
-
-        new GetUsers(total,Url).execute();
+        getSupportActionBar().setTitle(ToolBarTitle);
+        if(Url != null) new GetUsers(total,Url).execute();
     }
 
     private void buildRecyclerView(List<FollowersModel> followersList){
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new RecyclerFollowerAndBlockedUser(followersList,"Followers");
+        mAdapter = new RecyclerFollowerAndBlockedUser(followersList,User);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -84,14 +98,10 @@ public class FollowersActivity extends AppCompatActivity implements GetUsers.onS
     @Override
     protected void onStop() {
         super.onStop();
-        try {
              try {
             unregisterReceiver(mNetworkChangeReceiver);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        }catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }

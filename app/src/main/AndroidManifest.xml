@@ -86,9 +86,9 @@
         <activity android:name=".BlockedUserActivity" />
         <activity android:name=".PackageActivity" />
         <activity android:name=".AddServiceActivity" />
-        <activity android:name=".EditFollwerActivity" />
+        <activity android:name=".EditFollowerActivity" />
         <activity android:name=".EditBlogActivity" />
-        <activity android:name=".FollowersActivity" />
+        <activity android:name=".ShowUserActivity" />
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".ProfileSettingActivity" />
         <activity android:name=".PaymentMethodActivity" />

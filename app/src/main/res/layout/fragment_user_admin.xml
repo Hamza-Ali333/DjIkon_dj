@@ -81,6 +81,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/rlt_blokedUser"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:paddingLeft="10dp"
@@ -119,6 +120,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/accessBlock"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:paddingLeft="10dp"

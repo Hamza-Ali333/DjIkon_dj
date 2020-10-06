@@ -157,7 +157,7 @@ public interface JSONApiHolder
                 @Part("contact") RequestBody contact,
                 @Part("gender") RequestBody gender,
                 @Part("location") RequestBody location,
-                @Part("rate_per_hour") RequestBody RHP,
+                @Part("rate_perhour") RequestBody RHP,
                 @Part("about") RequestBody about
         );
 
@@ -347,6 +347,13 @@ public interface JSONApiHolder
     @POST("withdrawRequest")
     Call <SuccessErrorModel> postPaymentRequest(
             @Field("amount") String amount
+    );
+
+    @FormUrlEncoded
+    @POST()
+    Call <Void> blockUnBlock(
+            @Url String url,
+            @Field("status") int amount
     );
 
 }

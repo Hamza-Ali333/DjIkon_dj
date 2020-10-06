@@ -1,98 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorBlack"
-    >
+    android:orientation="vertical">
+
     <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/circularImageView2"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
         android:src="@drawable/ic_avatar"
-        android:layout_gravity="center_horizontal"/>
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"
+        android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="Melvin Montgomery"
         android:textColor="@color/colorBlue"
-        android:text="Melvin Montgomery"/>
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/circularImageView2" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="2dp"
-        />
-
-    <LinearLayout
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
+    <Button
         android:id="@+id/delete_user"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Delete User"
-        android:layout_marginRight="20dp"
+        android:layout_marginStart="8dp"
         android:layout_weight="1"
+        android:background="@drawable/roundshape"
+        android:text="Delete User"
+        android:textAllCaps="false"
         android:textColor="#fff"
-        android:background="@drawable/roundshape"/>
+        app:layout_constraintEnd_toStartOf="@+id/block_user"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/block_user_access"
+        app:layout_constraintTop_toTopOf="@+id/block_user_access" />
 
-        <Button
-            android:id="@+id/block_user"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Block User"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:textColor="#fff"
-            android:background="@drawable/roundshape"/>
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/block_user_access"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/block_user_ip"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Block User IP"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:textColor="#fff"
-            android:background="@drawable/roundshape"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/roundshape"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Block User Access"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        app:layout_constraintEnd_toStartOf="@+id/delete_user"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-        <Button
-            android:id="@+id/block_user_access"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Block User Access"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="1"
-            android:textColor="#fff"
-            android:background="@drawable/roundshape"/>
+    <Button
+        android:id="@+id/block_user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/roundshape"
+        android:text="Block User"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/delete_user"
+        app:layout_constraintTop_toTopOf="@+id/delete_user" />
 
 
-
-    </LinearLayout>
-
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

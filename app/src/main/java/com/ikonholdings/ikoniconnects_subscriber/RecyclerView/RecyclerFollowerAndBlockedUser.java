@@ -5,14 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
-import com.ikonholdings.ikoniconnects_subscriber.EditFollwerActivity;
+import com.ikonholdings.ikoniconnects_subscriber.EditFollowerActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FollowersModel;
+import com.ikonholdings.ikoniconnects_subscriber.UserAdminControrls.BlockOrUnBlockUser;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -21,18 +24,7 @@ import java.util.List;
 public class RecyclerFollowerAndBlockedUser extends RecyclerView.Adapter<RecyclerFollowerAndBlockedUser.ViewHolder>{
 
     private List<FollowersModel> follower_List;
-    private String st_Activity_Name;
-
-    private onItemClickListner onItemClickListner;
-
-    public interface onItemClickListner{
-        void onClick(Integer position);//pass your object types.
-    }
-
-    //initailizing
-    public void setOnItemClickListner(onItemClickListner onItemClickListner) {
-        this.onItemClickListner = onItemClickListner;
-    }
+    private Integer UserType;
 
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
@@ -57,12 +49,10 @@ public class RecyclerFollowerAndBlockedUser extends RecyclerView.Adapter<Recycle
     }
 
 //constructor
-    public RecyclerFollowerAndBlockedUser(List<FollowersModel> follower_List, String activityName) {
+    public RecyclerFollowerAndBlockedUser(List<FollowersModel> follower_List, Integer UserType) {
         this.follower_List = follower_List;
-        this.st_Activity_Name = activityName;
-
+        this.UserType = UserType;
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
@@ -77,6 +67,19 @@ public class RecyclerFollowerAndBlockedUser extends RecyclerView.Adapter<Recycle
 
        holder.txt_Follwer_Name.setText(currentItem.getFirstname()+" "+ currentItem.getLastname());
        holder.txt_Follwer_Location.setText(currentItem.getLocation());
+
+       switch (UserType){
+           case 1:
+           case 2:
+               holder.txt_Action.setText("Unfollow");
+               break;
+           case 3:
+               holder.txt_Action.setText("UnBlock");
+               break;
+           case 4:
+               holder.txt_Action.setText("Give Access");
+               break;
+       }
 
         if(!currentItem.getProfile_image().equals("no") &&
                 currentItem.getProfile_image() != null) {
@@ -96,19 +99,34 @@ public class RecyclerFollowerAndBlockedUser extends RecyclerView.Adapter<Recycle
                     });
         }
 
-       if(st_Activity_Name.equals("BlockedUsers")){
-           holder.txt_Action.setText("UnBlock");
-       }else {
-           holder.txt_Action.setText("UnFollow");
            holder.itemView.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
-                   Intent i = new Intent(view.getContext(), EditFollwerActivity.class);
+                   Intent i = new Intent(view.getContext(), EditFollowerActivity.class);
                    i.putExtra("id",String.valueOf(currentItem.getId()));
                    view.getContext().startActivity(i);
                }
            });
-       }
+
+        holder.txt_Action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(UserType == 1 || UserType == 2){
+                    new BlockOrUnBlockUser("unFollowUser/"+currentItem.getId(),
+                            1,
+                            v.getContext()).execute();
+                }
+                else if(UserType == 3){
+                    new BlockOrUnBlockUser("blockUser/"+currentItem.getId(),
+                            0,
+                            v.getContext()).execute();
+                }else if(UserType == 4){
+                    new BlockOrUnBlockUser("blockReferralUserAccess/"+currentItem.getId(),
+                            1,
+                            v.getContext()).execute();
+                }
+            }
+        });
 
 }
 
@@ -116,6 +134,5 @@ public class RecyclerFollowerAndBlockedUser extends RecyclerView.Adapter<Recycle
     public int getItemCount() {
         return follower_List.size();
     }
-
 
 }

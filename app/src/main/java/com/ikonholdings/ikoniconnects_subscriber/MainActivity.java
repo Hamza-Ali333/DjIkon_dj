@@ -261,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(R.string.ViewSong);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ViewSongRequestFragment()).commit();
-
                 break;
 
             case R.id.nav_UserAdmin:

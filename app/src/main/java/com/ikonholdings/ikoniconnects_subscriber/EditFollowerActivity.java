@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DeleteEntityOnServer;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
+import com.ikonholdings.ikoniconnects_subscriber.UserAdminControrls.BlockOrUnBlockUser;
 
-public class EditFollwerActivity extends AppCompatActivity {
+public class EditFollowerActivity extends AppCompatActivity {
 
-    Button btn_delete_User, btn_Block_User, btn_Block_User_IP, btn_Block_User_Access;
+    Button btn_delete_User, btn_Block_User, btn_Block_User_Access;
     String id;
-
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
     @Override
@@ -31,51 +31,48 @@ public class EditFollwerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_follwer);
-        getSupportActionBar().setTitle("Follower Actions");
+        getSupportActionBar().setTitle("User Actions");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        createRefrence();
+        createReference();
 
         mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         Intent i = getIntent();
         id = i.getStringExtra("id");
 
-
         btn_Block_User.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(),BlockedUserActivity.class));
+                new BlockOrUnBlockUser("blockUser/"+id,1,
+                        EditFollowerActivity.this).execute();
             }
         });
 
         btn_delete_User.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DeleteEntityOnServer("deleteReferralUser/"+id,
-                        EditFollwerActivity.this)
-                        .execute();
+                new BlockOrUnBlockUser("deleteReferralUser/"+id,0,
+                        EditFollowerActivity.this).execute();
+//                new DeleteEntityOnServer("deleteReferralUser/"+id,
+//                        EditFollowerActivity.this)
+//                        .execute();
             }
         });
 
-        btn_Block_User.setOnClickListener(new View.OnClickListener() {
+        btn_Block_User_Access.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //2 for block User 1 for unblock user
-                new DeleteEntityOnServer(
-                        2,
-                        "deleteReferralUser/"+id,
-                        EditFollwerActivity.this)
-                        .execute();
+                new BlockOrUnBlockUser("blockReferralUserAccess/"+id,2,
+                        EditFollowerActivity.this).execute();
             }
         });
 
     }
 
-    private void createRefrence() {
+    private void createReference() {
         btn_delete_User = findViewById(R.id.delete_user);
         btn_Block_User = findViewById(R.id.block_user);
-        btn_Block_User_IP = findViewById(R.id.block_user_ip);
         btn_Block_User_Access = findViewById(R.id.block_user_access);
     }
 

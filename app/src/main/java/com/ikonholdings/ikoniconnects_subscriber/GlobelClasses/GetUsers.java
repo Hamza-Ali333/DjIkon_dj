@@ -58,13 +58,13 @@ public class GetUsers extends AsyncTask<Void,Void,Void> {
                         if(requestList.isEmpty()) {
                                     DialogsUtils.showAlertDialog(context,
                                             false,
-                                            "No Booking",
-                                            "it's seems like you did't get any request yet!");
+                                            "No User",
+                                            "No user found in this category.!");
 
                         }else{
                             onServerResponse.onResponse(requestList);
                         }
-                        mTextView.setText("You have total "+String.valueOf(requestList.size()+"followers."));
+                        mTextView.setText("You have total "+String.valueOf(requestList.size()+" followers."));
                     }else {
                                 DialogsUtils.showAlertDialog(context,
                                         false,

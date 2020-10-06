@@ -153,7 +153,6 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
             }
         });
 
-
     }
 
     @Override
@@ -183,12 +182,11 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 dataSnapshot.getRef().removeValue();
-                Log.i("TAG", "onDataChange: Done ");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.i("TAG", "onDataChange: Cancle ");
+                //note is not deleted
             }
         });
     }
