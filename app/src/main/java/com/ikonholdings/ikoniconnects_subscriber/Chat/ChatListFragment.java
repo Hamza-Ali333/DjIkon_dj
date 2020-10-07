@@ -1,17 +1,12 @@
-package com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment;
+package com.ikonholdings.ikoniconnects_subscriber.Chat;
 
 import android.app.AlertDialog;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,12 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.UserChatListModel;
-import com.ikonholdings.ikoniconnects_subscriber.Notification.Token;
-import com.ikonholdings.ikoniconnects_subscriber.R;
-import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerChatList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Token;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,20 +38,18 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class ChatListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerChatList mAdapter;
+    private RecyclerSingleChatList mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private SwipeRefreshLayout pullToRefresh;
 
     private SearchView mSearchView;
 
-    DatabaseReference myRef;
-    List<UserChatListModel> mUserChatList;
+    private DatabaseReference myRef;
+    private List<UserChatListModel> mUserChatList;
 
-    String currentUserId;
-
-    AlertDialog loadingDialog;
-
+    private String currentUserId;
+    private AlertDialog loadingDialog;
     private FirebaseUser fuser;
 
     @Override
@@ -69,8 +60,7 @@ public class ChatListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.fragment_chat_area,container,false);
+        View v = inflater.inflate(R.layout.fragment_chat_list,container,false);
         createReferences(v);
 
         loadingDialog = DialogsUtils.showLoadingDialogue(getContext());
@@ -112,7 +102,6 @@ public class ChatListFragment extends Fragment {
             }
         });
 
-
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
@@ -121,15 +110,13 @@ public class ChatListFragment extends Fragment {
 
     ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
             ItemTouchHelper.LEFT) {
-        public boolean onMove(RecyclerView recyclerView,
-                              RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
             return false;
         }
 
         @Override
         public void onSwiped(RecyclerView.ViewHolder item, int swipeDir) {
             //Remove swiped item from list and notify the RecyclerView
-
             int position = item.getAdapterPosition();
             mUserChatList.remove(position);
             mAdapter.notifyItemRemoved(position);
@@ -138,7 +125,6 @@ public class ChatListFragment extends Fragment {
 
         @Override
         public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addBackgroundColor(ContextCompat.getColor(getContext(), R.color.print_btn_color))
                     .addActionIcon(R.drawable.ic_delete)
@@ -150,7 +136,6 @@ public class ChatListFragment extends Fragment {
         }
 
     };
-
 
     private void updateToken(String token){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
@@ -187,12 +172,11 @@ public class ChatListFragment extends Fragment {
                                     snapshot.child("user_Uid").getValue(String.class),
                                     snapshot.child("user_Name").getValue(String.class),
                                     snapshot.child("imgProfileUrl").getValue(String.class),
-                                    snapshot.child("status").getValue(String.class),
                                     snapshot.getKey()
                             ));
                         }
 
-                        mAdapter = new RecyclerChatList(mUserChatList,currentUserId);
+                        mAdapter = new RecyclerSingleChatList(mUserChatList,currentUserId);
                         mRecyclerView.setAdapter(mAdapter);
                         loadingDialog.dismiss();
 

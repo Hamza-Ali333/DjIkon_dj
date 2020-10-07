@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.Notification;
+package com.ikonholdings.ikoniconnects_subscriber.Chat.Notification;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

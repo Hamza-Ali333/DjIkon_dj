@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.Notification;
+package com.ikonholdings.ikoniconnects_subscriber.Chat.Notification;
 
 public class Data {
     private String user;

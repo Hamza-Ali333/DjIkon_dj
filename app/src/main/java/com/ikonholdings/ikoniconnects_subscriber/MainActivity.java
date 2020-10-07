@@ -22,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.MessageRoomFragment;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.GetSubscriberDrawerData;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
@@ -37,8 +38,6 @@ import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ViewSongReque
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.WithDrawFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.PaymentHistoryFragment;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
-import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.AddBlogFragment;
-import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ChatListFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.MyFeedFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -234,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_ChatRoom:
                 getSupportActionBar().setTitle(R.string.ChatArea);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ChatListFragment()).commit();
+                        new MessageRoomFragment()).commit();
                 break;
 
 

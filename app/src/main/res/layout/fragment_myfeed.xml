@@ -26,7 +26,6 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             app:srcCompat="@drawable/ic_add"
-            android:background="@color/colorBlue"
             app:backgroundTint="@color/grey"
             app:fabSize="normal"
             />

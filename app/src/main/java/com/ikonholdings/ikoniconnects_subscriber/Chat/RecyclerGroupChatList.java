@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.RecyclerView;
+package com.ikonholdings.ikoniconnects_subscriber.Chat;
 
 import android.content.Intent;
 import android.os.Build;
@@ -9,31 +9,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
-import com.ikonholdings.ikoniconnects_subscriber.ChatViewerActivity;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.UserChatListModel;
-import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.ViewHolder>{
+public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupChatList.ViewHolder>{
 
-    private List<UserChatListModel> mChatList;
+    private List<GroupChatListModel> mChatList;
     private DatabaseReference myRef;
 
     //view holder class
@@ -43,18 +39,12 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
         public TextView txt_msg_Sender_Name;
        // public TextView  txt_Last_msg,txt_Recive_Time;
         public TextView  txt_UnRead;
-        public RelativeLayout rlt_ChatItem;
 
         public ViewHolder(View itemView){
             super(itemView);
             img_msg_Subscriber_Profile = itemView.findViewById(R.id.img_msg_sender);
 
             txt_msg_Sender_Name = itemView.findViewById(R.id.txt_msg_sender_name);
-//            txt_Last_msg = itemView.findViewById(R.id.txt_last_send_msg);
-//            txt_Recive_Time = itemView.findViewById(R.id.txt_recieve_time);
-//            txt_UnRead = itemView.findViewById(R.id.txt_unRead_msgs);
-
-            rlt_ChatItem = itemView.findViewById(R.id.rlt_chatitem);
 
         }
 
@@ -62,7 +52,7 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
     }
 
 //constructor
-    public RecyclerChatList(List<UserChatListModel> chat_List_modelArrayList, String currentUserId) {
+    public RecyclerGroupChatList(List<GroupChatListModel> chat_List_modelArrayList, String currentUserId) {
         this.mChatList = chat_List_modelArrayList;
         myRef = FirebaseDatabase.getInstance().getReference("Chats").child("chatListOfUser").child(currentUserId);
     }
@@ -77,62 +67,38 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-       final UserChatListModel currentItem = mChatList.get(position);
+       final GroupChatListModel currentItem = mChatList.get(position);
 
+       holder.txt_msg_Sender_Name.setText(currentItem.getGroup_Name());
 
-       holder.txt_msg_Sender_Name.setText(currentItem.getUser_Name());
+        if (currentItem.getGroup_Profile() != null && !currentItem.getGroup_Profile().equals("no")) {
 
-        if (currentItem.getImageUrl() != null && !currentItem.getImageUrl().equals("no")) {
-
-            Picasso.get().load(ApiClient.Base_Url+currentItem.getImageUrl())
+            Picasso.get().load(ApiClient.Base_Url+currentItem.getGroup_Profile())
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.ic_avatar)
-                    .into(holder.img_msg_Subscriber_Profile, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            //Toast.makeText(, "Something Happend Wrong Uploader Image", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    .into(holder.img_msg_Subscriber_Profile);
         }
 
-//       holder.txt_Last_msg.setText(currentItem.getMsg_last_send());
-//       holder.txt_UnRead.setText(currentItem.getId());
-//       holder.txt_Recive_Time.setText(currentItem.getMsg_Recieved_Time());
 
-       holder.rlt_ChatItem.setOnClickListener(new View.OnClickListener() {
+       holder.itemView.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               Intent i = new Intent(view.getContext(), ChatViewerActivity.class);
-               i.putExtra("user_Id",currentItem.getUser_Id());
-               i.putExtra("user_Uid",currentItem.getUser_Uid());
-               i.putExtra("user_Name",currentItem.getUser_Name());
-               i.putExtra("imgProfileUrl",currentItem.getImageUrl());
-               view.getContext().startActivity(i);
+             //  Intent i = new Intent(view.getContext(), ChatViewerActivity.class);
+//               i.putExtra("user_Id",currentItem.getUser_Id());
+//               i.putExtra("user_Uid",currentItem.getUser_Uid());
+//               i.putExtra("user_Name",currentItem.getUser_Name());
+//               i.putExtra("imgProfileUrl",currentItem.getImageUrl());
+               //view.getContext().startActivity(i);
            }
        });
 
         //long clicked
-       holder.rlt_ChatItem.setOnLongClickListener(new View.OnLongClickListener() {
+       holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
            @RequiresApi(api = Build.VERSION_CODES.M)
            @Override
            public boolean onLongClick(View view) {
-              // final CharSequence[] items = {"Delete Chat"};
-//               AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-//
-//               builder.setTitle("Select The Action");
-//               builder.setItems(items, new DialogInterface.OnClickListener() {
-//                   @Override
-//                   public void onClick(DialogInterface dialog, int item) {
-//                   }
-//               });
-//               builder.show();
-               PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.rlt_ChatItem);
+               PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.itemView);
                popupMenu.inflate(R.menu.chat_option);
                popupMenu.setGravity(Gravity.END);
                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -160,7 +126,7 @@ public class RecyclerChatList extends RecyclerView.Adapter<RecyclerChatList.View
         return mChatList.size();
     }
 
-    public void filterList(List<UserChatListModel> list) {
+    public void filterList(List<GroupChatListModel> list) {
         mChatList = list;
         notifyDataSetChanged();
     }

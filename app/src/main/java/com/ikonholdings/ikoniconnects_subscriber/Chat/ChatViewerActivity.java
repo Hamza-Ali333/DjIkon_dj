@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,15 +23,14 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.ChatModel;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.UserChatListModel;
-import com.ikonholdings.ikoniconnects_subscriber.Notification.APIService;
-import com.ikonholdings.ikoniconnects_subscriber.Notification.Client;
-import com.ikonholdings.ikoniconnects_subscriber.Notification.Data;
-import com.ikonholdings.ikoniconnects_subscriber.Notification.MyResponse;
-import com.ikonholdings.ikoniconnects_subscriber.Notification.Sender;
-import com.ikonholdings.ikoniconnects_subscriber.Notification.Token;
-import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerChatViewer;
+import com.ikonholdings.ikoniconnects_subscriber.R;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.OneToOneChatModel;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.APIService;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Client;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Data;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.MyResponse;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Sender;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Token;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -43,6 +42,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.ikonholdings.ikoniconnects_subscriber.SubscriberProfileActivity;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -76,7 +76,7 @@ public class ChatViewerActivity extends AppCompatActivity {
     private Button btn_SendMsg;
     private EditText edt_Massage;
 
-    private List<ChatModel> mChatModel;
+    private List<OneToOneChatModel> mOneToOneChatModel;
 
     private ProgressDialog mProgressDialog;
     private Boolean alreadyHaveChat = false;
@@ -180,19 +180,19 @@ public class ChatViewerActivity extends AppCompatActivity {
     }
 
     private void readMassages() {
-        mChatModel = new ArrayList<>();
+        mOneToOneChatModel = new ArrayList<>();
 
         myRef.child("Massages").child(chatNodeName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    mChatModel.clear();
+                    mOneToOneChatModel.clear();
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         // snapshot object is every child of "Restaurant" that match the filter
                         //now here set data in to the field
 
-                        mChatModel.add(new ChatModel(
+                        mOneToOneChatModel.add(new OneToOneChatModel(
                                 snapshot.child("sender").getValue(String.class),
                                 snapshot.child("receiver").getValue(String.class),
                                 snapshot.child("message").getValue(String.class),
@@ -204,7 +204,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                     mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
 
                     mLayoutManager = new LinearLayoutManager(ChatViewerActivity.this);
-                    mAdapter = new RecyclerChatViewer(mChatModel,fuser.getUid(),chatNodeName, PreferenceData.getUserImage(ChatViewerActivity.this),imgProfileUrl);
+                    mAdapter = new RecyclerChatViewer(mOneToOneChatModel,fuser.getUid(),chatNodeName, PreferenceData.getUserImage(ChatViewerActivity.this),imgProfileUrl);
 
                     mRecyclerView.setLayoutManager(mLayoutManager);
                     mRecyclerView.setAdapter(mAdapter);
@@ -284,12 +284,12 @@ public class ChatViewerActivity extends AppCompatActivity {
     private void sendMassage (String Massage, String Sender, String Receiver,String sendTime) {
 
         //ChatModel chatModel = new ChatModel(Sender, Receiver, Massage,sendTime);
-        ChatModel chatModel = new ChatModel();
-        chatModel.setSender(Sender);
-        chatModel.setReceiver(Receiver);
-        chatModel.setMessage(Massage);
-        chatModel.setTime_stemp(sendTime);
-        myRef.child("Massages").child(chatNodeName).push().setValue(chatModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+        OneToOneChatModel oneToOneChatModel = new OneToOneChatModel();
+        oneToOneChatModel.setSender(Sender);
+        oneToOneChatModel.setReceiver(Receiver);
+        oneToOneChatModel.setMessage(Massage);
+        oneToOneChatModel.setTime_stemp(sendTime);
+        myRef.child("Massages").child(chatNodeName).push().setValue(oneToOneChatModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(ChatViewerActivity.this, "Send", Toast.LENGTH_SHORT).show();

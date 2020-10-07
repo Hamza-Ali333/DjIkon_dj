@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.Notification;
+package com.ikonholdings.ikoniconnects_subscriber.Chat.Notification;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -11,14 +11,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
-import com.ikonholdings.ikoniconnects_subscriber.ChatViewerActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.ChatViewerActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;

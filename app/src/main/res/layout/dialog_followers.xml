@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+    <TextView
+        android:id="@+id/total"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:textSize="14sp"
+        android:padding="4dp"
+        android:fontFamily="@font/montserrat"
+        android:gravity="center"
+        android:background="@color/colorBlue"
+        android:textColor="@color/colorWhite"
+        android:text="Select Group Members"/>
+
+    <Button
+        android:id="@+id/createGroup"
+        android:layout_width="60dp"
+        android:layout_height="27dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:textSize="10sp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/fullroundshape"
+        android:textAllCaps="false"
+        android:text="Create"/>
+
+    <EditText
+        android:id="@+id/edt_Name"
+        android:layout_below="@+id/total"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:textSize="14sp"
+        android:maxLines="1"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/colorWhite"
+        android:hint="Group Name"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@drawable/edt_shape"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewFollwer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_Name"
+        android:layout_marginTop="6dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="40dp"
+        android:scrollbars="vertical" />
+
+
+</RelativeLayout>

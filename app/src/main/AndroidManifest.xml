@@ -78,18 +78,16 @@
         <activity android:name=".ServiceDetailActivity" />
         <activity android:name=".BlogDetailActivity" />
         <activity
-            android:name=".ChatViewerActivity"
+            android:name=".Chat.ChatViewerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PurchaseServiceActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
-        <activity android:name=".BlockedUserActivity" />
         <activity android:name=".PackageActivity" />
         <activity android:name=".AddServiceActivity" />
         <activity android:name=".EditFollowerActivity" />
         <activity android:name=".EditBlogActivity" />
         <activity android:name=".ShowUserActivity" />
-        <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".ProfileSettingActivity" />
         <activity android:name=".PaymentMethodActivity" />
         <activity android:name=".SignInActivity" />

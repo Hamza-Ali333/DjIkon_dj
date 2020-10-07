@@ -1,21 +1,19 @@
-package com.ikonholdings.ikoniconnects_subscriber.ResponseModels;
+package com.ikonholdings.ikoniconnects_subscriber.Chat;
 
 public class UserChatListModel {
 
     private  String user_Id, user_Name, user_Uid ,imageUrl,key;
     private  String talkTime,last_send_msg;
 
-    private String status;
     public UserChatListModel() {
     }
 
     //this constructor only for id , dJName, imageUrl
-    public UserChatListModel(String user_Id, String user_Uid, String user_Name, String imageUrl, String status,String key) {
+    public UserChatListModel(String user_Id, String user_Uid, String user_Name, String imageUrl,String key) {
         this.user_Id = user_Id;
         this.user_Uid = user_Uid;
         this.user_Name = user_Name;
         this.imageUrl = imageUrl;
-        this.status = status;
         this.key = key;
     }
 
@@ -33,14 +31,6 @@ public class UserChatListModel {
 
     public void setUser_Uid(String user_Uid) {
         this.user_Uid = user_Uid;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public void setuser_Uid(String user_Uid) {

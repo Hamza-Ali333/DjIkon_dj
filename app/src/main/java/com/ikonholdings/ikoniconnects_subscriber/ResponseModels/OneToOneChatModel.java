@@ -1,6 +1,6 @@
 package com.ikonholdings.ikoniconnects_subscriber.ResponseModels;
 
-public class ChatModel {
+public class OneToOneChatModel {
     public String sender,
     receiver,
     message,
@@ -8,11 +8,11 @@ public class ChatModel {
     key;
 
 
-    public ChatModel() {
+    public OneToOneChatModel() {
         //required for firebase
     }
 
-    public ChatModel(String sender, String receiver, String message, String time_stemp, String key) {
+    public OneToOneChatModel(String sender, String receiver, String message, String time_stemp, String key) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
