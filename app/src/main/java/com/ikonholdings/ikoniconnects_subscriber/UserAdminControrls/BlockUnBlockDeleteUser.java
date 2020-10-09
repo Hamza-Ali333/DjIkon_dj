@@ -15,14 +15,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BlockOrUnBlockDeleteUser extends AsyncTask<Void,Void, Void> {
+public class BlockUnBlockDeleteUser extends AsyncTask<Void,Void, Void> {
     Retrofit  retrofit;
      Context context;
     String Url;
     Integer StatusCode;
     ProgressDialog progressDialog;
 
-    public BlockOrUnBlockDeleteUser(String url, Integer statusCode, Context context) {
+    public BlockUnBlockDeleteUser(String url, Integer statusCode, Context context) {
         this.context = context;
         Url = url;
         StatusCode = statusCode;

@@ -9,7 +9,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
-import com.ikonholdings.ikoniconnects_subscriber.UserAdminControrls.BlockOrUnBlockDeleteUser;
+import com.ikonholdings.ikoniconnects_subscriber.UserAdminControrls.BlockUnBlockDeleteUser;
 
 public class EditFollowerActivity extends AppCompatActivity {
 
@@ -43,7 +43,7 @@ public class EditFollowerActivity extends AppCompatActivity {
         btn_Block_User.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new BlockOrUnBlockDeleteUser("blockUser/"+id,1,
+                new BlockUnBlockDeleteUser("blockUser/"+id,1,
                         EditFollowerActivity.this).execute();
             }
         });
@@ -51,7 +51,7 @@ public class EditFollowerActivity extends AppCompatActivity {
         btn_delete_User.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new BlockOrUnBlockDeleteUser("deleteReferralUser/"+id,0,
+                new BlockUnBlockDeleteUser("deleteReferralUser/"+id,0,
                         EditFollowerActivity.this).execute();
             }
         });
@@ -59,7 +59,7 @@ public class EditFollowerActivity extends AppCompatActivity {
         btn_Block_User_Access.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new BlockOrUnBlockDeleteUser("blockReferralUserAccess/"+id,2,
+                new BlockUnBlockDeleteUser("blockReferralUserAccess/"+id,2,
                         EditFollowerActivity.this).execute();
             }
         });

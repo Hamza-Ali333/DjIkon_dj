@@ -13,7 +13,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.EditFollowerActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FollowersModel;
-import com.ikonholdings.ikoniconnects_subscriber.UserAdminControrls.BlockOrUnBlockDeleteUser;
+import com.ikonholdings.ikoniconnects_subscriber.UserAdminControrls.BlockUnBlockDeleteUser;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -110,16 +110,16 @@ public class RecyclerFollowerAndBlockedUser extends RecyclerView.Adapter<Recycle
             @Override
             public void onClick(View v) {
                 if(UserType == 1 || UserType == 2){
-                    new BlockOrUnBlockDeleteUser("unFollowUser/"+currentItem.getId(),
+                    new BlockUnBlockDeleteUser("unFollowUser/"+currentItem.getId(),
                             1,
                             v.getContext()).execute();
                 }
                 else if(UserType == 3){
-                    new BlockOrUnBlockDeleteUser("blockUser/"+currentItem.getId(),
+                    new BlockUnBlockDeleteUser("blockUser/"+currentItem.getId(),
                             0,
                             v.getContext()).execute();
                 }else if(UserType == 4){
-                    new BlockOrUnBlockDeleteUser("blockReferralUserAccess/"+currentItem.getId(),
+                    new BlockUnBlockDeleteUser("blockReferralUserAccess/"+currentItem.getId(),
                             1,
                             v.getContext()).execute();
                 }
