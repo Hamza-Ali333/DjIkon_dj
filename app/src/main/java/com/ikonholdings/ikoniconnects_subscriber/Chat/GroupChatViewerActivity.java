@@ -3,9 +3,9 @@ package com.ikonholdings.ikoniconnects_subscriber.Chat;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +41,6 @@ import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.R;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.OneToOneChatModel;
 import com.ikonholdings.ikoniconnects_subscriber.SubscriberProfileActivity;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
@@ -49,10 +48,8 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,20 +67,20 @@ public class GroupChatViewerActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private String chatNodeName;
     private DatabaseReference myRef;
 
     private Button btn_SendMsg;
     private EditText edt_Massage;
 
-    private List<OneToOneChatModel> mOneToOneChatModel;
+    private List<ManytoManyChatModel> mOneToOneChatModel;
 
     private ProgressDialog mProgressDialog;
     private Boolean alreadyHaveChat = false;
 
-    private String userId;
-    private String userUid;
-    private String userName, imgProfileUrl;
+
+    private String groupName, imgProfileUrl, groupKey;
+    private String[] ReceiverList;
+
     private String CurrentSubscriberId;
     private String CurrentSubscriberName;
 
@@ -122,21 +119,34 @@ public class GroupChatViewerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(GroupChatViewerActivity.this, SubscriberProfileActivity.class);
-                i.putExtra("id", userId);
-                startActivity(i);
+              //  i.putExtra("id",);
+             //   startActivity(i);
             }
         });
 
         //getting data of the Receiver
         Intent i = getIntent();
-        userId =i.getStringExtra("user_Id");
-        userUid = i.getStringExtra("user_Uid");
-        userName = i.getStringExtra("user_Name");
-        imgProfileUrl = i.getStringExtra("imgProfileUrl");
+        groupName = i.getStringExtra("groupName");
+        groupKey = i.getStringExtra("groupKey");
+        imgProfileUrl = i.getStringExtra("groupImage");
+        String userlist = i.getStringExtra("userList");
         setSubscriberProfile(imgProfileUrl);
 
+        userlist = userlist.replaceAll("\\[", "").replaceAll("\\]", "").replace("\"", "");
+        String[] list = userlist.split(",");
+        Log.i("TAG", "onCreate: "+list);
+
+        if(list != null){
+//            for (int j = 0; j < list.length-1 ; j++) {
+//                if(!list[j].equals(PreferenceData.getUserId(this))){
+//                    ReceiverList[j] = list[j];
+//                }
+//            }
+        }
+
+
         getSupportActionBar().setTitle("");
-        toolBarTitle.setText(userName);//set Subscriber Name in tool bar
+        toolBarTitle.setText(groupName);//set Subscriber Name in tool bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -144,7 +154,6 @@ public class GroupChatViewerActivity extends AppCompatActivity {
 
         CurrentSubscriberId = PreferenceData.getUserId(this);
 
-        chatNodeName = "subscriberId_" +CurrentSubscriberId  + "_userId_" +userId;
         checkHaveChatOrNot();
 
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -165,11 +174,14 @@ public class GroupChatViewerActivity extends AppCompatActivity {
                 if(!edt_Massage.getText().toString().isEmpty()){
                     if(!alreadyHaveChat){
                         //MAke Node for this new User if they are texting first time
-                        new CreateChatListOfUserAndSubscriber().execute();
+
                     }
 
                     Msg = edt_Massage.getText().toString();
-                    sendMassage(edt_Massage.getText().toString(),fuser.getUid(), userUid,currentDateAndTime);
+                    sendMassage(Msg
+                            ,PreferenceData.getUserId(GroupChatViewerActivity.this),
+                            ReceiverList,
+                            currentDateAndTime);
                 }else{
                     Toast.makeText(GroupChatViewerActivity.this, "You Can't Send Empty massage", Toast.LENGTH_SHORT).show();
                 }
@@ -182,7 +194,7 @@ public class GroupChatViewerActivity extends AppCompatActivity {
     private void readMassages() {
         mOneToOneChatModel = new ArrayList<>();
 
-        myRef.child("Massages").child(chatNodeName).addValueEventListener(new ValueEventListener() {
+        myRef.child("GroupMessages").child(groupKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
@@ -191,20 +203,17 @@ public class GroupChatViewerActivity extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         // snapshot object is every child of "Restaurant" that match the filter
                         //now here set data in to the field
-
-                        mOneToOneChatModel.add(new OneToOneChatModel(
-                                snapshot.child("sender").getValue(String.class),
-                                snapshot.child("receiver").getValue(String.class),
-                                snapshot.child("message").getValue(String.class),
-                                snapshot.child("time_stemp").getValue(String.class),
-                                snapshot.getKey()
-                        ));
+                        ManytoManyChatModel list = new ManytoManyChatModel();
+                        mOneToOneChatModel.add(list);
 
                     }
                     mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
 
                     mLayoutManager = new LinearLayoutManager(GroupChatViewerActivity.this);
-                    mAdapter = new RecyclerChatViewer(mOneToOneChatModel,fuser.getUid(),chatNodeName, PreferenceData.getUserImage(GroupChatViewerActivity.this),imgProfileUrl);
+                    mAdapter = new RecyclerGroupChat(mOneToOneChatModel,
+                            PreferenceData.getUserId(GroupChatViewerActivity.this),
+                            groupKey,
+                            PreferenceData.getUserImage(GroupChatViewerActivity.this));
 
                     mRecyclerView.setLayoutManager(mLayoutManager);
                     mRecyclerView.setAdapter(mAdapter);
@@ -254,11 +263,11 @@ public class GroupChatViewerActivity extends AppCompatActivity {
 
     private void checkHaveChatOrNot(){
         //check if User have already chat with this Subscriber
-        myRef.child("Massages").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("GroupMessages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //Here check Node of this User Email and Subscriber Email is exit or not
-                if (snapshot.hasChild(chatNodeName)) {
+                if (snapshot.hasChild(groupKey)) {
 
                     alreadyHaveChat = true;
                     readMassages();
@@ -278,15 +287,15 @@ public class GroupChatViewerActivity extends AppCompatActivity {
 
     }
 
-    private void sendMassage (String Massage, String Sender, String Receiver,String sendTime) {
+    private void sendMassage (String Massage, String Sender, String[] Receivers,String sendTime) {
 
         //ChatModel chatModel = new ChatModel(Sender, Receiver, Massage,sendTime);
-        OneToOneChatModel oneToOneChatModel = new OneToOneChatModel();
-        oneToOneChatModel.setSender(Sender);
-        oneToOneChatModel.setReceiver(Receiver);
-        oneToOneChatModel.setMessage(Massage);
-        oneToOneChatModel.setTime_stemp(sendTime);
-        myRef.child("Massages").child(chatNodeName).push().setValue(oneToOneChatModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+        ManytoManyChatModel manytoManyChatModel = new ManytoManyChatModel();
+        manytoManyChatModel.setSender(Sender);
+        manytoManyChatModel.setReceivers(Receivers);
+        manytoManyChatModel.setMessage(Massage);
+        manytoManyChatModel.setTime_stemp(sendTime);
+        myRef.child("GroupMessages").child(groupKey).push().setValue(manytoManyChatModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(GroupChatViewerActivity.this, "Send", Toast.LENGTH_SHORT).show();
@@ -309,7 +318,7 @@ public class GroupChatViewerActivity extends AppCompatActivity {
                 //nead to check this line what is the propose of this line
                 // String user= dataSnapshot.getValue(String.class);
                 if(notify){
-                    sendNotification(userUid,PreferenceData.getUserName(GroupChatViewerActivity.this),Msg);
+                   // sendNotification("userUid",PreferenceData.getUserName(GroupChatViewerActivity.this),Msg);
                 }
                 notify = false;
             }
@@ -330,7 +339,7 @@ public class GroupChatViewerActivity extends AppCompatActivity {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
                     Data data = new Data(fuser.getUid(),R.mipmap.ic_launcher,userName+": "+messaage,"New Message",
-                            userUid);
+                            String.valueOf(ReceiverList));
 
                     Sender sender = new Sender(data, token.getToken());
 
@@ -396,30 +405,6 @@ public class GroupChatViewerActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    private class CreateChatListOfUserAndSubscriber extends AsyncTask<Void,Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            //Saving this User into Subscriber Node for make list of chat with
-            UserChatListModel userChatListModel = new UserChatListModel();
-            userChatListModel.setuser_Id(String.valueOf(userId));
-            userChatListModel.setuser_Uid(userUid);
-            userChatListModel.setuser_Name(userName);
-            userChatListModel.setImageUrl(imgProfileUrl);
-            myRef.child("chatListOfSubscriber").child(String.valueOf(CurrentSubscriberId)).push().setValue(userChatListModel);
-
-            //Saving this Subscriber into User Node for make list of chat with
-            Map<String, String> userData = new HashMap<>();
-            userData.put("subscriber_Id", CurrentSubscriberId);
-            userData.put("subscriber_Name",userName);
-            userData.put("subscriber_Uid", fuser.getUid());
-            userData.put("imageUrl",imgProfileUrl);
-            myRef.child("chatListOfUser").child(String.valueOf(userId)).push().setValue(userData);
-
-            return null;
-        }
     }
 
     @Override

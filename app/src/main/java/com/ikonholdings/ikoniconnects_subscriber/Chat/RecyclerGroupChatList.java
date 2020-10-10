@@ -37,8 +37,6 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
 
         public CircularImageView img_msg_Subscriber_Profile;
         public TextView txt_msg_Sender_Name;
-       // public TextView  txt_Last_msg,txt_Recive_Time;
-        public TextView  txt_UnRead;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -54,7 +52,7 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
 //constructor
     public RecyclerGroupChatList(List<GroupChatListModel> chat_List_modelArrayList, String currentUserId) {
         this.mChatList = chat_List_modelArrayList;
-        myRef = FirebaseDatabase.getInstance().getReference("Chats").child("chatListOfUser").child(currentUserId);
+        myRef = FirebaseDatabase.getInstance().getReference("Chats").child("groups").child(currentUserId);
     }
 
 
@@ -84,12 +82,13 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
        holder.itemView.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-             //  Intent i = new Intent(view.getContext(), ChatViewerActivity.class);
-//               i.putExtra("user_Id",currentItem.getUser_Id());
-//               i.putExtra("user_Uid",currentItem.getUser_Uid());
-//               i.putExtra("user_Name",currentItem.getUser_Name());
-//               i.putExtra("imgProfileUrl",currentItem.getImageUrl());
-               //view.getContext().startActivity(i);
+               Intent i = new Intent(view.getContext(), GroupChatViewerActivity.class);
+
+               i.putExtra("userList",String.valueOf(currentItem.getGroup_User_Ids()));
+               i.putExtra("groupKey",currentItem.getGroupId());
+               i.putExtra("groupName",currentItem.getGroup_Name());
+               i.putExtra("groupImage",currentItem.getGroup_Profile());
+               view.getContext().startActivity(i);
            }
        });
 
@@ -106,7 +105,7 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
                    public boolean onMenuItemClick(MenuItem item) {
                        switch (item.getItemId()) {
                            case R.id.delete:
-                              deleteNode(currentItem.getKey(),position);
+                              deleteNode(currentItem.getGroupId(),position);
                                break;
                            default:
                                break;

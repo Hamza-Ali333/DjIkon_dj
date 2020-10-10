@@ -24,7 +24,6 @@ import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.R;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.OneToOneChatModel;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.APIService;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Client;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Data;

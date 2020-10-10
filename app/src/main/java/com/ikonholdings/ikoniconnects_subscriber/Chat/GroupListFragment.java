@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -173,17 +174,22 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
             GroupChatListModel listModel = new GroupChatListModel();
             listModel.setGroup_Profile("no");
             listModel.setGroup_Name(GroupName);
-            listModel.setGroup_User_Ids(String.valueOf(UserIds));
+            listModel.setCreator_Id(PreferenceData.getUserId(getContext()));
+
+            listModel.setGroup_User_Ids(UserIds);
             DatabaseReference Ref = FirebaseDatabase.getInstance().getReference().child("Chats");
-            Ref.child("groupChatListOfSubscriber").child(currentUserId).push().setValue(listModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+            listModel.setGroupId(Ref.push().getKey());
+            Ref.child("groups").child(currentUserId).push().setValue(listModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(getContext(), "Send", Toast.LENGTH_SHORT).show();
+                    //GroupCreated Successfully
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), "Not Send", Toast.LENGTH_SHORT).show();
+                    DialogsUtils.showAlertDialog(getContext(),
+                            false,
+                            "Error","Something went wrong please check your internet and try again.");
                 }
             });
         }
@@ -208,7 +214,7 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
                 @Override
                 public void onResponse(Call<List<FollowersModel>> call, Response<List<FollowersModel>> response) {
                     if(response.isSuccessful()){
-                       follwersList = response.body();
+                        follwersList = response.body();
 
                     }else {
                         DialogsUtils.showAlertDialog(getContext(),
@@ -230,7 +236,14 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             isCompleted = true;
-            loadingDialog.dismiss();
+
+            try {
+                loadingDialog.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
         }
     }
 
@@ -239,18 +252,14 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
         @Override
         protected Void doInBackground(Void... voids) {
             if (!currentUserId.isEmpty() && !currentUserId.equals("No Id")) {
-                myRef.child("groupChatListOfSubscriber").child(currentUserId).addValueEventListener(new ValueEventListener() {
+                myRef.child("groups").child(currentUserId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()) {
                             mGroupChatList.clear();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                 mGroupChatList.add(new GroupChatListModel(
-                                        snapshot.child("group_Name").getValue(String.class),
-                                        snapshot.child("user_Ids").getValue(String.class),
-                                        snapshot.child("group_Profile").getValue(String.class),
-                                        snapshot.getKey()
-                                ));
+                               GroupChatListModel listModel = snapshot.getValue(GroupChatListModel.class);
+                               mGroupChatList.add(listModel);
                             }
                             mAdapter = new RecyclerGroupChatList(mGroupChatList,currentUserId);
                             mRecyclerView.setAdapter(mAdapter);

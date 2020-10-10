@@ -81,6 +81,9 @@
             android:name=".Chat.ChatViewerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".Chat.GroupChatViewerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".PurchaseServiceActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity android:name=".PackageActivity" />
@@ -105,7 +108,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".Notification.MyFirebaseIdService"
+        <service android:name=".Chat.Notification.MyFirebaseIdService"
+
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -113,7 +117,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".Notification.MyFirebaseMessaging"
+        <service android:name=".Chat.Notification.MyFirebaseMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

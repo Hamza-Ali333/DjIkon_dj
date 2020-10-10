@@ -1,27 +1,30 @@
 package com.ikonholdings.ikoniconnects_subscriber.Chat;
 
+import java.util.List;
+
 public class GroupChatListModel {
 
-   private String group_Name, group_Profile, key;
+    private String group_Name,creator_Id, group_Profile, groupId;
 
-   private String group_User_Ids;
+    private List<Integer> group_User_Ids;
     public GroupChatListModel() {
         //required
     }
 
-    public GroupChatListModel(String group_Name, String group_User_Ids, String group_Profile, String key) {
+    public GroupChatListModel(String group_Name, List<Integer> group_User_Ids, String group_Profile, String creator_Id, String groupId) {
         this.group_Name = group_Name;
-        this.key = key;
+        this.groupId = groupId;
         this.group_User_Ids = group_User_Ids;
         this.group_Profile = group_Profile;
+        this.creator_Id = creator_Id;
     }
 
-    public String getKey() {
-        return key;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getGroup_Name() {
@@ -32,11 +35,19 @@ public class GroupChatListModel {
         this.group_Name = group_Name;
     }
 
-    public String getGroup_User_Ids() {
+    public String getCreator_Id() {
+        return creator_Id;
+    }
+
+    public void setCreator_Id(String creator_Id) {
+        this.creator_Id = creator_Id;
+    }
+
+    public List<Integer> getGroup_User_Ids() {
         return group_User_Ids;
     }
 
-    public void setGroup_User_Ids(String group_User_Ids) {
+    public void setGroup_User_Ids(List<Integer> group_User_Ids) {
         this.group_User_Ids = group_User_Ids;
     }
 

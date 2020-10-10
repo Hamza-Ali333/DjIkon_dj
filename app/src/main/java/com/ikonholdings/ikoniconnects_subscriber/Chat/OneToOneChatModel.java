@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.ResponseModels;
+package com.ikonholdings.ikoniconnects_subscriber.Chat;
 
 public class OneToOneChatModel {
     public String sender,

@@ -26,9 +26,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.ViewHolder>{
+public class RecyclerGroupChat extends RecyclerView.Adapter<RecyclerGroupChat.ViewHolder>{
 
-    private List<OneToOneChatModel> mChat_model;
+    private List<ManytoManyChatModel> mChat_model;
     public  String currentSubscriberUid;
 
     public DatabaseReference myRef;
@@ -58,16 +58,14 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
     }
 
     //constructor
-    public RecyclerChatViewer(List<OneToOneChatModel> chat_modelList,
-                              String currentSubscriberUid,
-                              String chatMainNode,
-                              String senderimg,
-                              String recieverimg) {
+    public RecyclerGroupChat(List<ManytoManyChatModel> chat_modelList,
+                             String currentSubscriberId,
+                             String chatMainNode,
+                             String senderimg) {
         this.mChat_model = chat_modelList;
-        this.currentSubscriberUid = currentSubscriberUid;
+        this.currentSubscriberUid = currentSubscriberId;
         this.senderImage = senderimg;
-        this.receiverImage = recieverimg;
-        myRef = FirebaseDatabase.getInstance().getReference("Chats").child("Massages").child(chatMainNode);
+        myRef = FirebaseDatabase.getInstance().getReference("Chats").child("GroupMessages").child(chatMainNode);
     }
 
     @Override
@@ -84,7 +82,7 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final OneToOneChatModel currentItem = mChat_model.get(position);
+        final ManytoManyChatModel currentItem = mChat_model.get(position);
 
         holder.txt_msg.setText(currentItem.getMessage());
         holder.txt_Time.setText(currentItem.getTime_stemp());
@@ -136,7 +134,6 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
                 });
                 popupMenu.show();
                 return true;
-
 
             }
         });

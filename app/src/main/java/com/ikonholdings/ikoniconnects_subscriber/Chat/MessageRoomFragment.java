@@ -29,7 +29,7 @@ public class MessageRoomFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        mFragment =  inflater.inflate(R.layout.fragment_checking,container,false);
+        mFragment =  inflater.inflate(R.layout.fragment_msg_room,container,false);
 
         mViewPager = mFragment.findViewById(R.id.viewPager);
         mTabLayout = mFragment.findViewById(R.id.tabMode);

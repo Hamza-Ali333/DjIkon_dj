@@ -86,7 +86,8 @@ public class SelectFollowersDialog extends DialogFragment {
 
             @Override
             public void onClickRemove(Integer UserId) {
-                for (int i: UserIds) {
+
+                for (int i = 0; i < UserIds.size(); i++) {
                     if(i == UserId){
                         UserIds.remove(i);
                     }
