@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.Chat;
+package com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler;
 
 import android.os.Build;
 import android.view.Gravity;
@@ -20,15 +20,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Model.OneToOneChatModel;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerGroupChat extends RecyclerView.Adapter<RecyclerGroupChat.ViewHolder>{
+public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.ViewHolder>{
 
-    private List<ManytoManyChatModel> mChat_model;
+    private List<OneToOneChatModel> mChat_model;
     public  String currentSubscriberUid;
 
     public DatabaseReference myRef;
@@ -58,14 +59,16 @@ public class RecyclerGroupChat extends RecyclerView.Adapter<RecyclerGroupChat.Vi
     }
 
     //constructor
-    public RecyclerGroupChat(List<ManytoManyChatModel> chat_modelList,
-                             String currentSubscriberId,
-                             String chatMainNode,
-                             String senderimg) {
+    public RecyclerChatViewer(List<OneToOneChatModel> chat_modelList,
+                              String currentSubscriberUid,
+                              String chatMainNode,
+                              String senderimg,
+                              String recieverimg) {
         this.mChat_model = chat_modelList;
-        this.currentSubscriberUid = currentSubscriberId;
+        this.currentSubscriberUid = currentSubscriberUid;
         this.senderImage = senderimg;
-        myRef = FirebaseDatabase.getInstance().getReference("Chats").child("GroupMessages").child(chatMainNode);
+        this.receiverImage = recieverimg;
+        myRef = FirebaseDatabase.getInstance().getReference("Chats").child("Massages").child(chatMainNode);
     }
 
     @Override
@@ -82,7 +85,7 @@ public class RecyclerGroupChat extends RecyclerView.Adapter<RecyclerGroupChat.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final ManytoManyChatModel currentItem = mChat_model.get(position);
+        final OneToOneChatModel currentItem = mChat_model.get(position);
 
         holder.txt_msg.setText(currentItem.getMessage());
         holder.txt_Time.setText(currentItem.getTime_stemp());
@@ -134,6 +137,7 @@ public class RecyclerGroupChat extends RecyclerView.Adapter<RecyclerGroupChat.Vi
                 });
                 popupMenu.show();
                 return true;
+
 
             }
         });

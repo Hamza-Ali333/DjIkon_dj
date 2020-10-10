@@ -16,7 +16,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ikonholdings.ikoniconnects_subscriber.Chat.RecyclerFollwers;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler.RecyclerFollwers;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FollowersModel;
 
@@ -86,9 +86,8 @@ public class SelectFollowersDialog extends DialogFragment {
 
             @Override
             public void onClickRemove(Integer UserId) {
-
                 for (int i = 0; i < UserIds.size(); i++) {
-                    if(i == UserId){
+                    if(UserIds.get(i) == UserId){
                         UserIds.remove(i);
                     }
                 }

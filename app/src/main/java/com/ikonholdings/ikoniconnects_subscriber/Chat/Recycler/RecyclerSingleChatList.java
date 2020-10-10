@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.Chat;
+package com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler;
 
 import android.content.Intent;
 import android.os.Build;
@@ -15,21 +15,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.ChatViewerActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.UserChatListModel;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
-import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupChatList.ViewHolder>{
+public class RecyclerSingleChatList extends RecyclerView.Adapter<RecyclerSingleChatList.ViewHolder>{
 
-    private List<GroupChatListModel> mChatList;
+    private List<UserChatListModel> mChatList;
     private DatabaseReference myRef;
 
     //view holder class
@@ -37,12 +39,17 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
 
         public CircularImageView img_msg_Subscriber_Profile;
         public TextView txt_msg_Sender_Name;
+       // public TextView  txt_Last_msg,txt_Recive_Time;
+        public TextView  txt_UnRead;
 
         public ViewHolder(View itemView){
             super(itemView);
             img_msg_Subscriber_Profile = itemView.findViewById(R.id.img_msg_sender);
 
             txt_msg_Sender_Name = itemView.findViewById(R.id.txt_msg_sender_name);
+//            txt_Last_msg = itemView.findViewById(R.id.txt_last_send_msg);
+//            txt_Recive_Time = itemView.findViewById(R.id.txt_recieve_time);
+//            txt_UnRead = itemView.findViewById(R.id.txt_unRead_msgs);
 
         }
 
@@ -50,9 +57,9 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
     }
 
 //constructor
-    public RecyclerGroupChatList(List<GroupChatListModel> chat_List_modelArrayList, String currentUserId) {
+    public RecyclerSingleChatList(List<UserChatListModel> chat_List_modelArrayList, String currentUserId) {
         this.mChatList = chat_List_modelArrayList;
-        myRef = FirebaseDatabase.getInstance().getReference("Chats").child("groups").child(currentUserId);
+        myRef = FirebaseDatabase.getInstance().getReference("Chats").child("chatListOfUser").child(currentUserId);
     }
 
 
@@ -65,29 +72,31 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-       final GroupChatListModel currentItem = mChatList.get(position);
+       final UserChatListModel currentItem = mChatList.get(position);
 
-       holder.txt_msg_Sender_Name.setText(currentItem.getGroup_Name());
+       holder.txt_msg_Sender_Name.setText(currentItem.getUser_Name());
 
-        if (currentItem.getGroup_Profile() != null && !currentItem.getGroup_Profile().equals("no")) {
+        if (currentItem.getImageUrl() != null && !currentItem.getImageUrl().equals("no")) {
 
-            Picasso.get().load(ApiClient.Base_Url+currentItem.getGroup_Profile())
+            Picasso.get().load(ApiClient.Base_Url+currentItem.getImageUrl())
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.ic_avatar)
                     .into(holder.img_msg_Subscriber_Profile);
         }
 
+//       holder.txt_Last_msg.setText(currentItem.getMsg_last_send());
+//       holder.txt_UnRead.setText(currentItem.getId());
+//       holder.txt_Recive_Time.setText(currentItem.getMsg_Recieved_Time());
 
        holder.itemView.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               Intent i = new Intent(view.getContext(), GroupChatViewerActivity.class);
-
-               i.putExtra("userList",String.valueOf(currentItem.getGroup_User_Ids()));
-               i.putExtra("groupKey",currentItem.getGroupId());
-               i.putExtra("groupName",currentItem.getGroup_Name());
-               i.putExtra("groupImage",currentItem.getGroup_Profile());
+               Intent i = new Intent(view.getContext(), ChatViewerActivity.class);
+               i.putExtra("user_Id",currentItem.getUser_Id());
+               i.putExtra("user_Uid",currentItem.getUser_Uid());
+               i.putExtra("user_Name",currentItem.getUser_Name());
+               i.putExtra("imgProfileUrl",currentItem.getImageUrl());
                view.getContext().startActivity(i);
            }
        });
@@ -105,7 +114,7 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
                    public boolean onMenuItemClick(MenuItem item) {
                        switch (item.getItemId()) {
                            case R.id.delete:
-                              deleteNode(currentItem.getGroupId(),position);
+                              deleteNode(currentItem.getKey(),position);
                                break;
                            default:
                                break;
@@ -125,7 +134,7 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
         return mChatList.size();
     }
 
-    public void filterList(List<GroupChatListModel> list) {
+    public void filterList(List<UserChatListModel> list) {
         mChatList = list;
         notifyDataSetChanged();
     }

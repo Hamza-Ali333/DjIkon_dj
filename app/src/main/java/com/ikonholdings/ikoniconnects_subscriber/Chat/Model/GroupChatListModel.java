@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.Chat;
+package com.ikonholdings.ikoniconnects_subscriber.Chat.Model;
 
 import java.util.List;
 

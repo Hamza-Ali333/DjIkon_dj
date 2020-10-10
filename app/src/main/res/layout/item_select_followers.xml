@@ -36,7 +36,7 @@
 
         <TextView
             android:id="@+id/txt_User_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
@@ -46,6 +46,8 @@
             android:text="Jhon Ibrahim"
             android:textColor="@color/grey"
             android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/checkBox"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/img_profile"
             app:layout_constraintTop_toTopOf="@+id/img_profile" />
 

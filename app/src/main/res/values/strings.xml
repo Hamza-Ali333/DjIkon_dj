@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Subscriber</string>
+    <string name="app_name">IKONICONNECTS Admin Portal</string>
     <string name="profile">Profile Info</string>
     <string name="myFeed">My Feed</string>
     <string name="bookingRequest">Bookings</string>

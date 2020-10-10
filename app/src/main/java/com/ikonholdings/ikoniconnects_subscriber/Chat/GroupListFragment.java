@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,8 +21,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Model.GroupChatListModel;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler.RecyclerGroupChatList;
 import com.ikonholdings.ikoniconnects_subscriber.CustomDialogs.SelectFollowersDialog;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
@@ -46,7 +45,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class GroupListFragment extends Fragment implements SelectFollowersDialog.OnCreateGroup {
-    private TextView Msg;
+    private TextView txt_Msg;
     private RecyclerView mRecyclerView;
     private RecyclerGroupChatList mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -64,9 +63,6 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
     private DatabaseReference myRef;
     private List<GroupChatListModel> mGroupChatList;
     private String currentUserId;
-    private FirebaseUser fuser;
-
-    private List <Integer> UserIds;
 
     @Nullable
     @Override
@@ -75,8 +71,6 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
         createReferences(v);
         new GetFollowers().execute();
 
-
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
         //this will contain the currentUser id
         currentUserId = PreferenceData.getUserId(getContext());
 
@@ -88,7 +82,6 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
         ((LinearLayoutManager) mLayoutManager).setStackFromEnd(true);//always at new entry at the top
         mRecyclerView.setLayoutManager(mLayoutManager);
         mGroupChatList = new ArrayList<>();
-        UserIds = new ArrayList<>();//this should be check
 
         new GetAllGroupsOfThisSubscriber().execute();
 
@@ -142,11 +135,6 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
         return v;
     }
 
-    private void makeNoteOnFirebase(String GroupName){
-
-
-    }
-
     private void filter(String searchText){
         List<GroupChatListModel> filteredlist = new ArrayList<>();
         String ConcatinatName;
@@ -161,7 +149,7 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
     }
 
     private void createReferences(View v) {
-        Msg = v.findViewById(R.id.msg);
+        txt_Msg = v.findViewById(R.id.msg);
         mSearchView = v.findViewById(R.id.edt_search);
         mRecyclerView = v.findViewById(R.id.recyclerViewChatGroup);
         btn_AddGroup = v.findViewById(R.id.fab);
@@ -257,14 +245,16 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()) {
                             mGroupChatList.clear();
+                            txt_Msg.setVisibility(View.GONE);
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                GroupChatListModel listModel = snapshot.getValue(GroupChatListModel.class);
                                mGroupChatList.add(listModel);
                             }
                             mAdapter = new RecyclerGroupChatList(mGroupChatList,currentUserId);
                             mRecyclerView.setAdapter(mAdapter);
+                        }else {
+                            txt_Msg.setVisibility(View.VISIBLE);
                         }
-
                     }
 
                     @Override
@@ -284,9 +274,9 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if(mGroupChatList == null){
-                Msg.setVisibility(View.VISIBLE);
+                txt_Msg.setVisibility(View.VISIBLE);
             }else {
-                Msg.setVisibility(View.GONE);
+                txt_Msg.setVisibility(View.GONE);
             }
         }
     }

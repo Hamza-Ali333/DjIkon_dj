@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Token;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler.RecyclerSingleChatList;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.R;
@@ -44,6 +46,7 @@ public class ChatListFragment extends Fragment {
     private SwipeRefreshLayout pullToRefresh;
 
     private SearchView mSearchView;
+    private TextView txt_Info;
 
     private DatabaseReference myRef;
     private List<UserChatListModel> mUserChatList;
@@ -166,6 +169,7 @@ public class ChatListFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()) {
                         mUserChatList.clear();
+                        txt_Info.setVisibility(View.GONE);
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             mUserChatList.add(new UserChatListModel(
                                     snapshot.child("user_Id").getValue(String.class),
@@ -178,15 +182,11 @@ public class ChatListFragment extends Fragment {
 
                         mAdapter = new RecyclerSingleChatList(mUserChatList,currentUserId);
                         mRecyclerView.setAdapter(mAdapter);
-                        loadingDialog.dismiss();
 
                     }else {
-                         DialogsUtils.showAlertDialog(getContext(),
-                                 false,
-                                 "Note",
-                                 "It's seems like you didn't have conversation with any User");
-                        loadingDialog.dismiss();
+                        txt_Info.setVisibility(View.VISIBLE);
                     }
+                    loadingDialog.dismiss();
                 }
 
                 @Override
@@ -205,6 +205,7 @@ public class ChatListFragment extends Fragment {
         mRecyclerView = v.findViewById(R.id.recyclerView_Chat);
         pullToRefresh =v.findViewById(R.id.pullToRefresh);
         mSearchView = v.findViewById(R.id.edt_search);
+        txt_Info = v.findViewById(R.id.info);
     }
 
 }

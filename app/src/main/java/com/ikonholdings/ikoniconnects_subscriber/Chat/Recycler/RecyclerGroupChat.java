@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.Chat;
+package com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler;
 
 import android.os.Build;
 import android.view.Gravity;
@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,15 +19,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Model.ManytoManyChatModel;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.ViewHolder>{
+public class RecyclerGroupChat extends RecyclerView.Adapter<RecyclerGroupChat.ViewHolder>{
 
-    private List<OneToOneChatModel> mChat_model;
+    private List<ManytoManyChatModel> mChat_model;
     public  String currentSubscriberUid;
 
     public DatabaseReference myRef;
@@ -37,37 +37,31 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
     public static final int MSG_TYPE_LEFT = 1;
     public Boolean sender = false;
 
-    public String senderImage, receiverImage;
+    public String senderImage;
 
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
 
         public CircularImageView img_Profile;
         public TextView txt_msg, txt_Time;
-        public RelativeLayout rlt_ChatItem;
 
         public ViewHolder(View itemView){
             super(itemView);
             img_Profile = itemView.findViewById(R.id.profile_image);
             txt_Time = itemView.findViewById(R.id.time);
             txt_msg = itemView.findViewById(R.id.msg);
-
-
-            rlt_ChatItem = itemView.findViewById(R.id.rlt_chatitem);
         }
     }
 
     //constructor
-    public RecyclerChatViewer(List<OneToOneChatModel> chat_modelList,
-                              String currentSubscriberUid,
-                              String chatMainNode,
-                              String senderimg,
-                              String recieverimg) {
+    public RecyclerGroupChat(List<ManytoManyChatModel> chat_modelList,
+                             String currentSubscriberId,
+                             String chatMainNode,
+                             String senderimg) {
         this.mChat_model = chat_modelList;
-        this.currentSubscriberUid = currentSubscriberUid;
+        this.currentSubscriberUid = currentSubscriberId;
         this.senderImage = senderimg;
-        this.receiverImage = recieverimg;
-        myRef = FirebaseDatabase.getInstance().getReference("Chats").child("Massages").child(chatMainNode);
+        myRef = FirebaseDatabase.getInstance().getReference("Chats").child("GroupMessages").child(chatMainNode);
     }
 
     @Override
@@ -84,7 +78,7 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final OneToOneChatModel currentItem = mChat_model.get(position);
+        final ManytoManyChatModel currentItem = mChat_model.get(position);
 
         holder.txt_msg.setText(currentItem.getMessage());
         holder.txt_Time.setText(currentItem.getTime_stemp());
@@ -92,7 +86,7 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
         if(sender){
             imageUrl = senderImage;
         }else {
-            imageUrl = receiverImage;
+            imageUrl = currentItem.getImage();
         }
         if(imageUrl != null){
             Picasso.get().load((ApiClient.Base_Url+imageUrl))
@@ -100,24 +94,11 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
                     .into(holder.img_Profile);
         }
 
-        //image setting remaining
-
-/*       holder.rlt_ChatItem.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-
-//               Intent i = new Intent(view.getContext(),ChatViewerActivity.class);
-//               i.putExtra("email",currentItem.getMsg_Sender_Name());
-//               view.getContext().startActivity(i);
-
-           }
-       });*/
-
-        holder.rlt_ChatItem.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public boolean onLongClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.rlt_ChatItem);
+                PopupMenu popupMenu = new PopupMenu(view.getContext(), holder.itemView);
                 popupMenu.inflate(R.menu.chat_option);
                 popupMenu.setGravity(Gravity.END);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -136,7 +117,6 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
                 });
                 popupMenu.show();
                 return true;
-
 
             }
         });

@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber.Chat;
+package com.ikonholdings.ikoniconnects_subscriber.Chat.Model;
 
 public class GroupMessageModel {
     private String message, sender_profile, sender_Uid, receivers_UIds;

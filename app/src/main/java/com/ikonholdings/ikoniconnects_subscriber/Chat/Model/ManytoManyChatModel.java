@@ -1,29 +1,39 @@
-package com.ikonholdings.ikoniconnects_subscriber.Chat;
+package com.ikonholdings.ikoniconnects_subscriber.Chat.Model;
 
 import java.util.List;
 
 public class ManytoManyChatModel {
 
-    private String[] receivers;
-    private String sender, message, time_stemp, key;
+    private String receivers;
+    private String sender, message, time_stemp, image, key;
 
 
     public ManytoManyChatModel() {
+        //required
     }
 
-    public ManytoManyChatModel( String[] receivers, String sender, String message, String time_stemp, String key) {
+    public ManytoManyChatModel(String receivers, String sender, String message, String time_stemp, String image, String key) {
         this.receivers = receivers;
         this.sender = sender;
         this.message = message;
         this.time_stemp = time_stemp;
+        this.image = image;
         this.key = key;
     }
 
-    public  String[] getReceivers() {
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public  String getReceivers() {
         return receivers;
     }
 
-    public void setReceivers( String[] receivers) {
+    public void setReceivers( String receivers) {
         this.receivers = receivers;
     }
 

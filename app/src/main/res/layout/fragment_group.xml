@@ -18,7 +18,6 @@
                 android:text="Create Group For User"
                 android:textSize="25sp"
                 android:textColor="@color/grey"
-                android:visibility="gone"
                 android:layout_centerInParent="true"/>
             <SearchView
                 android:id="@+id/edt_search"
