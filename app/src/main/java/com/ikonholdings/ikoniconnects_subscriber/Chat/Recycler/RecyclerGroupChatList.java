@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,8 +26,10 @@ import com.ikonholdings.ikoniconnects_subscriber.Chat.Model.GroupChatListModel;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.GroupChatViewerActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupChatList.ViewHolder>{
@@ -39,16 +42,14 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
 
         public CircularImageView img_msg_Subscriber_Profile;
         public TextView txt_msg_Sender_Name;
+        private ProgressBar mProgressBar;
 
         public ViewHolder(View itemView){
             super(itemView);
             img_msg_Subscriber_Profile = itemView.findViewById(R.id.img_msg_sender);
-
             txt_msg_Sender_Name = itemView.findViewById(R.id.txt_msg_sender_name);
-
+            mProgressBar = itemView.findViewById(R.id.progressBar);
         }
-
-
     }
 
 //constructor
@@ -72,21 +73,32 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
        holder.txt_msg_Sender_Name.setText(currentItem.getGroup_Name());
 
         if (currentItem.getGroup_Profile() != null && !currentItem.getGroup_Profile().equals("no")) {
-
-            Picasso.get().load(ApiClient.Base_Url+currentItem.getGroup_Profile())
+            holder.mProgressBar.setVisibility(View.VISIBLE);
+            Picasso.get().load(currentItem.getGroup_Profile())
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.ic_avatar)
-                    .into(holder.img_msg_Subscriber_Profile);
+                    .into(holder.img_msg_Subscriber_Profile, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                       holder.mProgressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            holder.mProgressBar.setVisibility(View.GONE);
+                        }
+                    });
         }
 
        holder.itemView.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                Intent i = new Intent(view.getContext(), GroupChatViewerActivity.class);
-
                i.putExtra("userList",String.valueOf(currentItem.getGroup_User_Ids()));
+               i.putExtra("list",(Serializable)currentItem.getGroup_User_Ids());
                i.putExtra("groupKey",currentItem.getGroupId());
+               i.putExtra("node",currentItem.getNode());
                i.putExtra("groupName",currentItem.getGroup_Name());
                i.putExtra("groupImage",currentItem.getGroup_Profile());
                view.getContext().startActivity(i);

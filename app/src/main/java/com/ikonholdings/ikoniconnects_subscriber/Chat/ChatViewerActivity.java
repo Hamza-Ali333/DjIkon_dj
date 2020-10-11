@@ -86,7 +86,6 @@ public class ChatViewerActivity extends AppCompatActivity {
     private String userUid;
     private String userName, imgProfileUrl;
     private String CurrentSubscriberId;
-    private String CurrentSubscriberName;
 
     private APIService apiService;
     private FirebaseUser fuser;
@@ -99,7 +98,6 @@ public class ChatViewerActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         fuser = FirebaseAuth.getInstance().getCurrentUser();
-        CurrentSubscriberName = PreferenceData.getUserName(this);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");

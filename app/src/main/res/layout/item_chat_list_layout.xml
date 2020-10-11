@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorBlack">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rlt_chatitem"
         android:paddingTop="10dp"
         android:background="#000"
@@ -18,70 +18,51 @@
             android:id="@+id/img_msg_sender"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:civ_border_width="2dp"
+            android:layout_marginStart="8dp"
             app:civ_border_color="@color/colorWhite"
+            app:civ_border_width="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_avatar" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/progressbar"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/img_msg_sender"
+            app:layout_constraintEnd_toEndOf="@+id/img_msg_sender"
+            app:layout_constraintStart_toStartOf="@+id/img_msg_sender"
+            app:layout_constraintTop_toTopOf="@+id/img_msg_sender" />
+
 
         <TextView
             android:id="@+id/txt_msg_sender_name"
-            android:layout_toRightOf="@+id/img_msg_sender"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="8dp"
+            android:layout_toRightOf="@+id/img_msg_sender"
             android:text="Jhon Ibrahim"
             android:textColor="@color/colorWhite"
             android:textSize="20sp"
-            />
-
-        <!--<TextView
-            android:id="@+id/txt_last_send_msg"
-            android:layout_toRightOf="@+id/img_msg_sender"
-            android:layout_below="@+id/txt_msg_sender_name"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CEO of WE 6 Band"
-            android:textColor="#fff"
-            android:textSize="13sp"
-            />
-
-
-        <TextView
-            android:id="@+id/txt_recieve_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#fff"
-            android:padding="6dp"
-            android:textSize="12sp"
-            android:text="Time"
-            android:layout_alignBaseline="@+id/txt_msg_sender_name"
-            android:layout_alignParentRight="true"/>
-
-
-
-        <TextView
-            android:id="@+id/txt_unRead_msgs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#fff"
-            android:padding="6dp"
-            android:textSize="12sp"
-            android:text="0"
-            android:inputType="number"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/txt_recieve_time"/>-->
-
+            app:layout_constraintBottom_toBottomOf="@+id/img_msg_sender"
+            app:layout_constraintStart_toEndOf="@+id/img_msg_sender"
+            app:layout_constraintTop_toTopOf="@+id/img_msg_sender" />
 
         <View
+            android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="2dp"
             android:layout_below="@+id/img_msg_sender"
             android:background="@color/Graycolor"
-            />
+            app:layout_constraintTop_toBottomOf="parent" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

@@ -25,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
@@ -167,7 +168,11 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
             listModel.setGroup_User_Ids(UserIds);
             DatabaseReference Ref = FirebaseDatabase.getInstance().getReference().child("Chats");
             listModel.setGroupId(Ref.push().getKey());
-            Ref.child("groups").child(currentUserId).push().setValue(listModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+            String node = Ref.push().getKey();
+            listModel.setNode(node);
+            
+            //Creating Group
+            Ref.child("groups").child(node).setValue(listModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     //GroupCreated Successfully
@@ -224,14 +229,11 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             isCompleted = true;
-
             try {
                 loadingDialog.dismiss();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 
@@ -240,7 +242,10 @@ public class GroupListFragment extends Fragment implements SelectFollowersDialog
         @Override
         protected Void doInBackground(Void... voids) {
             if (!currentUserId.isEmpty() && !currentUserId.equals("No Id")) {
-                myRef.child("groups").child(currentUserId).addValueEventListener(new ValueEventListener() {
+
+                Query query = myRef.child("groups").orderByChild("creator_Id").equalTo(PreferenceData.getUserId(getContext()));
+
+               query.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()) {

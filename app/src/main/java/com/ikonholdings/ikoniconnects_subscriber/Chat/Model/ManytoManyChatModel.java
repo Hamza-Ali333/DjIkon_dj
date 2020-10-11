@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ManytoManyChatModel {
 
-    private String receivers;
+    private List<Integer> receivers;
     private String sender, message, time_stemp, image, key;
 
 
@@ -12,7 +12,7 @@ public class ManytoManyChatModel {
         //required
     }
 
-    public ManytoManyChatModel(String receivers, String sender, String message, String time_stemp, String image, String key) {
+    public ManytoManyChatModel(List<Integer> receivers, String sender, String message, String time_stemp, String image, String key) {
         this.receivers = receivers;
         this.sender = sender;
         this.message = message;
@@ -29,11 +29,11 @@ public class ManytoManyChatModel {
         this.image = image;
     }
 
-    public  String getReceivers() {
+    public List<Integer> getReceivers() {
         return receivers;
     }
 
-    public void setReceivers( String receivers) {
+    public void setReceivers(List<Integer> receivers) {
         this.receivers = receivers;
     }
 

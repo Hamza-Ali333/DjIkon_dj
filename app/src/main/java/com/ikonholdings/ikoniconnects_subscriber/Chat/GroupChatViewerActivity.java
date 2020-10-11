@@ -1,10 +1,16 @@
 package com.ikonholdings.ikoniconnects_subscriber.Chat;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,8 +27,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,10 +44,13 @@ import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Token;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler.RecyclerGroupChat;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,26 +84,22 @@ public class GroupChatViewerActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     private Boolean alreadyHaveChat = false;
 
-
-    private String groupName, imgProfileUrl, groupKey;
-    private String[] ReceiverList;
-
-    private String CurrentSubscriberId;
-    private String CurrentSubscriberName;
+    private String groupName, imgProfileUrl, groupId, groupNode;
 
     private APIService apiService;
-    private FirebaseUser fuser;
     private Boolean notify = false;
 
     private String Msg;
+
+    private Uri Image_uri;
+
+    private static final int IMAGE_PICK_GALLARY_REQUEST_CODE = 1000;
+    private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 2000;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
     @Override
     protected void onStart() {
         super.onStart();
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
-        CurrentSubscriberName = PreferenceData.getUserName(this);
-
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
@@ -119,30 +122,24 @@ public class GroupChatViewerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                //group profile image click on it
+                if ( PermissionHelper.checkDefaultPermissions(GroupChatViewerActivity.this)) {
+                    showImageImportDailog();
+                }else {
+                    PermissionHelper.managePermissions(GroupChatViewerActivity.this);
+                }
             }
         });
+
+
 
         //getting data of the Receiver
         Intent i = getIntent();
         groupName = i.getStringExtra("groupName");
-        groupKey = i.getStringExtra("groupKey");
+        groupId = i.getStringExtra("groupKey");
         imgProfileUrl = i.getStringExtra("groupImage");
-        String userlist = i.getStringExtra("userList");
+        groupNode = i.getStringExtra("node");
+        List<Integer> list  = i.getIntegerArrayListExtra("list");
         setSubscriberProfile(imgProfileUrl);
-
-        //this part should only use in user application
-        userlist = userlist.replaceAll("\\[", "").replaceAll("\\]", "").replace("\"", "");
-        String[] list = userlist.split(",");
-
-        ReceiverList= new String[list.length-1];
-
-        if(list != null){
-            for (int j = 0; j < list.length-1 ; j++) {
-                if(!list[j].equals(PreferenceData.getUserId(this))){
-                    ReceiverList[j] = list[j];
-                }
-            }
-        }
 
 
         getSupportActionBar().setTitle("");
@@ -151,8 +148,6 @@ public class GroupChatViewerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         myRef = FirebaseDatabase.getInstance().getReference("Chats");
-
-        CurrentSubscriberId = PreferenceData.getUserId(this);
 
         checkHaveChatOrNot();
 
@@ -166,7 +161,7 @@ public class GroupChatViewerActivity extends AppCompatActivity {
 
         mProgressDialog = DialogsUtils.showProgressDialog(this,"Getting Massages","Please Wait");
 
-        String finalUserlist = userlist;
+
         btn_SendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,7 +176,7 @@ public class GroupChatViewerActivity extends AppCompatActivity {
                     Msg = edt_Massage.getText().toString();
                     sendMassage(Msg
                             ,PreferenceData.getUserId(GroupChatViewerActivity.this),
-                            finalUserlist,
+                            list,
                             currentDateAndTime);
                 }else{
                     Toast.makeText(GroupChatViewerActivity.this, "You Can't Send Empty massage", Toast.LENGTH_SHORT).show();
@@ -192,10 +187,28 @@ public class GroupChatViewerActivity extends AppCompatActivity {
 
     }
 
+    private void downloadImageFromFireBase() {
+        //download image from url
+        if (!imgProfileUrl.equals("No")) {
+            Picasso.get().load(imgProfileUrl)
+                    .placeholder(R.drawable.ic_avatar)
+                    .into(currentUserProfile,new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                        }
+                    });
+        }
+    }
+
     private void readMassages() {
         mManytoManyChatModels = new ArrayList<>();
 
-        myRef.child("GroupMessages").child(groupKey).addValueEventListener(new ValueEventListener() {
+        myRef.child("GroupMessages").child(groupId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
@@ -204,16 +217,16 @@ public class GroupChatViewerActivity extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         // snapshot object is every child of "Restaurant" that match the filter
                         //now here set data in to the field
-//                        ManytoManyChatModel list = snapshot.getValue(ManytoManyChatModel.class);
-//                        mOneToOneChatModel.add(list);
-                        mManytoManyChatModels.add(new ManytoManyChatModel(
-                                snapshot.child("receivers").getValue(String.class),
+                        ManytoManyChatModel list = snapshot.getValue(ManytoManyChatModel.class);
+                        mManytoManyChatModels.add(list);
+                       /* mManytoManyChatModels.add(new ManytoManyChatModel(
+                                snapshot.child("receivers").getValue(Long.class),
                                 snapshot.child("sender").getValue(String.class),
                                 snapshot.child("message").getValue(String.class),
                                 snapshot.child("time_stemp").getValue(String.class),
                                 snapshot.child("image").getValue(String.class),
                                 snapshot.getKey()
-                        ));
+                        ));*/
 
                     }
                     mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
@@ -221,7 +234,7 @@ public class GroupChatViewerActivity extends AppCompatActivity {
                     mLayoutManager = new LinearLayoutManager(GroupChatViewerActivity.this);
                     mAdapter = new RecyclerGroupChat(mManytoManyChatModels,
                             PreferenceData.getUserId(GroupChatViewerActivity.this),
-                            groupKey,
+                            groupId,
                             PreferenceData.getUserImage(GroupChatViewerActivity.this));
 
                     mRecyclerView.setLayoutManager(mLayoutManager);
@@ -251,7 +264,7 @@ public class GroupChatViewerActivity extends AppCompatActivity {
 
     private void setSubscriberProfile(String imageUrl){
         if (imageUrl != null && !imageUrl.equals("No Image") && !imageUrl.equals("no") ){
-            Picasso.get().load(ApiClient.Base_Url+imageUrl)
+            Picasso.get().load(imageUrl)
                     .placeholder(R.drawable.ic_avatar)
                     .fit()
                     .centerCrop()
@@ -276,7 +289,7 @@ public class GroupChatViewerActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //Here check Node of this User Email and Subscriber Email is exit or not
-                if (snapshot.hasChild(groupKey)) {
+                if (snapshot.hasChild(groupId)) {
 
                     alreadyHaveChat = true;
                     readMassages();
@@ -296,7 +309,7 @@ public class GroupChatViewerActivity extends AppCompatActivity {
 
     }
 
-    private void sendMassage (String Massage, String Sender, String Receivers,String sendTime) {
+    private void sendMassage (String Massage, String Sender, List<Integer> Receivers,String sendTime) {
 
         ManytoManyChatModel manytoManyChatModel = new ManytoManyChatModel();
         manytoManyChatModel.setSender(Sender);
@@ -312,11 +325,10 @@ public class GroupChatViewerActivity extends AppCompatActivity {
             manytoManyChatModel.setImage(PreferenceData.getUserImage(GroupChatViewerActivity.this));
         }
 
-        myRef.child("GroupMessages").child(groupKey).push().setValue(manytoManyChatModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+        myRef.child("GroupMessages").child(groupId).push().setValue(manytoManyChatModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(GroupChatViewerActivity.this, "Send", Toast.LENGTH_SHORT).show();
-
                 if(!alreadyHaveChat){
                     checkHaveChatOrNot();
                 }
@@ -355,8 +367,8 @@ public class GroupChatViewerActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(fuser.getUid(),R.mipmap.ic_launcher,userName+": "+messaage,"New Message",
-                            String.valueOf(ReceiverList));
+                    Data data = new Data(PreferenceData.getUserId(GroupChatViewerActivity.this),R.mipmap.ic_launcher,userName+": "+messaage,"New Message",
+                            "Notification Recieverid");
 
                     Sender sender = new Sender(data, token.getToken());
 
@@ -418,6 +430,96 @@ public class GroupChatViewerActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.withdraw_recycler);
     }
 
+    //image import
+    private void showImageImportDailog() {
+        String[] items = {"Camera", "Gallary"};
+        AlertDialog.Builder dailog = new AlertDialog.Builder(GroupChatViewerActivity.this);
+        dailog.setTitle("Select Image");
+        dailog.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 1) {
+                    //pick Gallary
+                    pickGallary();
+                }
+                if (which == 0) {
+                    //pick Camera
+                    pickCamera();
+                }
+            }
+        });
+        dailog.create().show();
+    }
+
+    private void pickCamera() {
+        //Intent to take Image for camera
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New Pic");//title of the picture
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Image To Text");//discription of the picture
+        Image_uri = this.getContentResolver()
+                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Image_uri);
+        startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_REQUEST_CODE);
+    }
+
+    private void pickGallary() {
+        //  intent for the Image from Gallary
+        Intent gallery = new Intent(Intent.ACTION_PICK);
+        gallery.setType("image/*");
+        startActivityForResult(gallery, IMAGE_PICK_GALLARY_REQUEST_CODE);
+    }
+
+
+    //handle Request for permission
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == 200){
+            if (grantResults.length > 0) {
+                boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+                if (!cameraAccepted || !storageAccepted) {
+                    PermissionHelper.showPermissionAlert(GroupChatViewerActivity.this);
+                }
+            }
+        }
+    }
+
+    //Handle Image Result
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //get selected image Image
+        if (resultCode == RESULT_OK) {
+            if (requestCode == IMAGE_PICK_CAMERA_REQUEST_CODE) {
+                CropImage.activity(Image_uri)
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .start(GroupChatViewerActivity.this);
+            }
+            //from gallary
+            if (requestCode == IMAGE_PICK_GALLARY_REQUEST_CODE) {
+                CropImage.activity(data.getData())
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .start(this);
+            }
+            //getcroped Image
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                Image_uri = result.getUri();
+                currentUserProfile.setImageURI(Image_uri);
+                if(Image_uri != null){
+                    UploadImageToFirebase.uploadimage(Image_uri, groupNode,this);
+                }
+            }
+
+        } else {
+            Toast.makeText(this, "Image is not Selected try Again", Toast.LENGTH_SHORT).show();
+        }
+
+    }//onActivity Result
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -433,4 +535,7 @@ public class GroupChatViewerActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+
 }

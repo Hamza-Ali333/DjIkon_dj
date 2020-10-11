@@ -4,19 +4,28 @@ import java.util.List;
 
 public class GroupChatListModel {
 
-    private String group_Name,creator_Id, group_Profile, groupId;
+    private String group_Name,creator_Id, group_Profile, groupId, node;
 
     private List<Integer> group_User_Ids;
     public GroupChatListModel() {
         //required
     }
 
-    public GroupChatListModel(String group_Name, List<Integer> group_User_Ids, String group_Profile, String creator_Id, String groupId) {
+    public GroupChatListModel(String group_Name, List<Integer> group_User_Ids, String group_Profile, String creator_Id, String groupId, String node) {
         this.group_Name = group_Name;
+        this.node = node;
         this.groupId = groupId;
         this.group_User_Ids = group_User_Ids;
         this.group_Profile = group_Profile;
         this.creator_Id = creator_Id;
+    }
+
+    public String getNode() {
+        return node;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
     }
 
     public String getGroupId() {

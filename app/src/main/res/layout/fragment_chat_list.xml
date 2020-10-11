@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:textSize="28sp"
             android:textColor="@color/grey"
-            android:text="No chats"/>
+            android:text="No Chats."/>
 
         <SearchView
             android:id="@+id/edt_search"
