@@ -28,7 +28,7 @@
             android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Upload New Fram"
+            android:text="Upload New Frame"
             android:textAllCaps="false"
             android:textColor="#fff"
             android:background="@drawable/roundshape"
