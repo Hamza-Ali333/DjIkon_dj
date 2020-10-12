@@ -153,7 +153,7 @@ public class RecyclerMyFeed extends RecyclerView.Adapter<RecyclerMyFeed.ViewHold
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
-                                case R.id.edit:
+                                case R.id.add:
                                         Intent i = new Intent(v.getContext(), EditBlogActivity.class);
                                         i.putExtra("url", currentItem.getPhoto());
                                         i.putExtra("id", String.valueOf(currentItem.getId()));
