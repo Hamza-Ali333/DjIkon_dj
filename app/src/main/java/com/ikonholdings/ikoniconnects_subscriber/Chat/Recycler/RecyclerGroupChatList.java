@@ -1,7 +1,15 @@
 package com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -24,10 +33,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Model.GroupChatListModel;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.GroupChatViewerActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.UploadImageToFirebase;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.Serializable;
 import java.util.List;
@@ -36,17 +49,16 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
 
     private List<GroupChatListModel> mChatList;
     private DatabaseReference myRef;
-
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
 
-        public CircularImageView img_msg_Subscriber_Profile;
+        public CircularImageView img_GroupProfile;
         public TextView txt_msg_Sender_Name;
         private ProgressBar mProgressBar;
 
         public ViewHolder(View itemView){
             super(itemView);
-            img_msg_Subscriber_Profile = itemView.findViewById(R.id.img_msg_sender);
+            img_GroupProfile = itemView.findViewById(R.id.img_msg_sender);
             txt_msg_Sender_Name = itemView.findViewById(R.id.txt_msg_sender_name);
             mProgressBar = itemView.findViewById(R.id.progressBar);
         }
@@ -57,7 +69,6 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
         this.mChatList = chat_List_modelArrayList;
         myRef = FirebaseDatabase.getInstance().getReference("Chats").child("groups").child(currentUserId);
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
@@ -78,7 +89,7 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
                     .fit()
                     .centerCrop()
                     .placeholder(R.drawable.ic_avatar)
-                    .into(holder.img_msg_Subscriber_Profile, new Callback() {
+                    .into(holder.img_GroupProfile, new Callback() {
                         @Override
                         public void onSuccess() {
                        holder.mProgressBar.setVisibility(View.GONE);
@@ -161,6 +172,5 @@ public class RecyclerGroupChatList extends RecyclerView.Adapter<RecyclerGroupCha
             }
         });
     }
-
 
 }

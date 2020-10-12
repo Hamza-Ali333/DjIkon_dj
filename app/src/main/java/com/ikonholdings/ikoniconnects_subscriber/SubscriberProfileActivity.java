@@ -595,12 +595,14 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
             if (requestCode == IMAGE_PICK_CAMERA_REQUEST_CODE) {
                 CropImage.activity(Image_uri)
                         .setGuidelines(CropImageView.Guidelines.ON)
+                        .setCropMenuCropButtonTitle("Select")
                         .start(SubscriberProfileActivity.this);
             }
             //from gallary
             if (requestCode == IMAGE_PICK_GALLARY_REQUEST_CODE) {
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON)
+                        .setCropMenuCropButtonTitle("Select")
                         .start(this);
             }
             //getcroped Image

@@ -21,6 +21,17 @@
         app:fabSize="normal"
         />
 
+    <TextView
+        android:id="@+id/msg"
+        android:fontFamily="@font/montserrat"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        android:visibility="gone"
+        android:textColor="@color/grey"
+        android:text="Create Service"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/services_recycler"
         android:layout_width="match_parent"

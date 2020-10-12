@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +34,6 @@ import retrofit2.Retrofit;
 
 import static android.content.ContentValues.TAG;
 
-
 public class ServicesFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
@@ -43,11 +43,14 @@ public class ServicesFragment extends Fragment {
     private FloatingActionButton btn_Add_New_Services;
 
     private AlertDialog loadingDialog;
+
+    private TextView txt_Msg;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View v =  inflater.inflate(R.layout.fragment_services,container,false);
        mRecyclerView = v.findViewById(R.id.services_recycler);
+       txt_Msg = v.findViewById(R.id.msg);
 
        loadingDialog = DialogsUtils.showLoadingDialogue(getContext());
        new DownloadThisArtistServices().execute();
@@ -102,7 +105,10 @@ public class ServicesFragment extends Fragment {
                     List<ServicesModel> services = response.body();
 
                   if(!services.isEmpty()){
+                      txt_Msg.setVisibility(View.GONE);
                       buildRecyclerView(services);
+                  }else {
+                      txt_Msg.setVisibility(View.VISIBLE);
                   }
                     loadingDialog.dismiss();
                 }

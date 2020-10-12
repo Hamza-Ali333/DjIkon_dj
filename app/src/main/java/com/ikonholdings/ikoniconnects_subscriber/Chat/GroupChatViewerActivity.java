@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -187,24 +188,6 @@ public class GroupChatViewerActivity extends AppCompatActivity {
 
     }
 
-    private void downloadImageFromFireBase() {
-        //download image from url
-        if (!imgProfileUrl.equals("No")) {
-            Picasso.get().load(imgProfileUrl)
-                    .placeholder(R.drawable.ic_avatar)
-                    .into(currentUserProfile,new com.squareup.picasso.Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                        }
-                    });
-        }
-    }
-
     private void readMassages() {
         mManytoManyChatModels = new ArrayList<>();
 
@@ -219,14 +202,6 @@ public class GroupChatViewerActivity extends AppCompatActivity {
                         //now here set data in to the field
                         ManytoManyChatModel list = snapshot.getValue(ManytoManyChatModel.class);
                         mManytoManyChatModels.add(list);
-                       /* mManytoManyChatModels.add(new ManytoManyChatModel(
-                                snapshot.child("receivers").getValue(Long.class),
-                                snapshot.child("sender").getValue(String.class),
-                                snapshot.child("message").getValue(String.class),
-                                snapshot.child("time_stemp").getValue(String.class),
-                                snapshot.child("image").getValue(String.class),
-                                snapshot.getKey()
-                        ));*/
 
                     }
                     mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
@@ -310,7 +285,6 @@ public class GroupChatViewerActivity extends AppCompatActivity {
     }
 
     private void sendMassage (String Massage, String Sender, List<Integer> Receivers,String sendTime) {
-
         ManytoManyChatModel manytoManyChatModel = new ManytoManyChatModel();
         manytoManyChatModel.setSender_Id(Sender);
         manytoManyChatModel.setSender_Name(PreferenceData.getUserName(this));
@@ -472,7 +446,6 @@ public class GroupChatViewerActivity extends AppCompatActivity {
         startActivityForResult(gallery, IMAGE_PICK_GALLARY_REQUEST_CODE);
     }
 
-
     //handle Request for permission
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -497,12 +470,14 @@ public class GroupChatViewerActivity extends AppCompatActivity {
             if (requestCode == IMAGE_PICK_CAMERA_REQUEST_CODE) {
                 CropImage.activity(Image_uri)
                         .setGuidelines(CropImageView.Guidelines.ON)
+                        .setCropMenuCropButtonTitle("Select")
                         .start(GroupChatViewerActivity.this);
             }
             //from gallary
             if (requestCode == IMAGE_PICK_GALLARY_REQUEST_CODE) {
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON)
+                        .setCropMenuCropButtonTitle("Select")
                         .start(this);
             }
             //getcroped Image
@@ -537,6 +512,12 @@ public class GroupChatViewerActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.drawer_menu, menu);
+        return true;
+    }
 
 
 }

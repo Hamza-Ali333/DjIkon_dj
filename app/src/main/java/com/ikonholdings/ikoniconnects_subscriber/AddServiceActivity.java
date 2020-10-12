@@ -284,12 +284,14 @@ public class AddServiceActivity extends AppCompatActivity {
             if(requestCode == IMAGE_PICK_CAMERA_REQUEST_CODE){
                 CropImage.activity(Image_uri)
                         .setGuidelines(CropImageView.Guidelines.ON)
+                        .setCropMenuCropButtonTitle("Select")
                         .start( this);
             }
             //from gallary
             if(requestCode == IMAGE_PICK_GALLERY_REQUEST_CODE){
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON)
+                        .setCropMenuCropButtonTitle("Select")
                         .start( this);
             }
 

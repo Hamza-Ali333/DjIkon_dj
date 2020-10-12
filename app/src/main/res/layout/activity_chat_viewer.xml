@@ -43,6 +43,11 @@
             android:textColor="#fff"
             android:textSize="20dp"
             android:text="Hamza Ali"/>
+
+
+
+
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
