@@ -312,7 +312,8 @@ public class GroupChatViewerActivity extends AppCompatActivity {
     private void sendMassage (String Massage, String Sender, List<Integer> Receivers,String sendTime) {
 
         ManytoManyChatModel manytoManyChatModel = new ManytoManyChatModel();
-        manytoManyChatModel.setSender(Sender);
+        manytoManyChatModel.setSender_Id(Sender);
+        manytoManyChatModel.setSender_Name(PreferenceData.getUserName(this));
         manytoManyChatModel.setReceivers(Receivers);
         manytoManyChatModel.setMessage(Massage);
         manytoManyChatModel.setTime_stemp(sendTime);

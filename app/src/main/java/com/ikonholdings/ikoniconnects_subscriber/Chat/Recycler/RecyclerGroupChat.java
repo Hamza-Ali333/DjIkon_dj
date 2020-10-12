@@ -43,13 +43,14 @@ public class RecyclerGroupChat extends RecyclerView.Adapter<RecyclerGroupChat.Vi
     public static class ViewHolder extends  RecyclerView.ViewHolder{
 
         public CircularImageView img_Profile;
-        public TextView txt_msg, txt_Time;
+        public TextView txt_msg,txt_SenderName, txt_Time;
 
         public ViewHolder(View itemView){
             super(itemView);
             img_Profile = itemView.findViewById(R.id.profile_image);
             txt_Time = itemView.findViewById(R.id.time);
             txt_msg = itemView.findViewById(R.id.msg);
+            txt_SenderName = itemView.findViewById(R.id.sender_name);
         }
     }
 
@@ -68,9 +69,9 @@ public class RecyclerGroupChat extends RecyclerView.Adapter<RecyclerGroupChat.Vi
     public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
         View v;
         if (viewType == MSG_TYPE_RIGHT) {
-            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_right, parent, false);
+            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group_chat_right, parent, false);
         }else {
-            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat_left, parent, false);
+            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group_chat_left, parent, false);
         }
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
@@ -83,13 +84,16 @@ public class RecyclerGroupChat extends RecyclerView.Adapter<RecyclerGroupChat.Vi
         holder.txt_msg.setText(currentItem.getMessage());
         holder.txt_Time.setText(currentItem.getTime_stemp());
         String imageUrl = null;
+        //is sender
         if(sender){
             imageUrl = senderImage;
         }else {
+            //left side layout // receiver
             imageUrl = currentItem.getImage();
+            holder.txt_SenderName.setText(currentItem.getSender_Name());
         }
         if(imageUrl != null){
-            Picasso.get().load((ApiClient.Base_Url+imageUrl))
+            Picasso.get().load(ApiClient.Base_Url+imageUrl)
                     .placeholder(R.drawable.ic_avatar)
                     .into(holder.img_Profile);
         }
@@ -125,7 +129,7 @@ public class RecyclerGroupChat extends RecyclerView.Adapter<RecyclerGroupChat.Vi
 
     @Override
     public int getItemViewType(int position) {
-        if(mChat_model.get(position).getSender().equals(currentSubscriberUid)){
+        if(mChat_model.get(position).getSender_Id().equals(currentSubscriberUid)){
             sender = true;
             return MSG_TYPE_RIGHT;
         }else {

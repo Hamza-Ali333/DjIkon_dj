@@ -27,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello"
+        android:fontFamily="@font/montserrat"
         android:textColor="@color/colorBlack"
         android:textSize="18sp"/>
     </RelativeLayout>
@@ -38,6 +39,7 @@
         android:layout_marginLeft="50dp"
         android:layout_below="@+id/rlt_chatitem"
         android:text="12:09 PM"
+        android:fontFamily="@font/montserrat"
         android:layout_alignParentLeft="true"
         android:textColor="#f1f1f1"
         android:textSize="10sp" />
