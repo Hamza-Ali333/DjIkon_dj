@@ -163,31 +163,7 @@ public class PackageActivity extends AppCompatActivity {
     }
 
     private void PostNonceToServer(String Nonce) {
-//        AsyncHttpClient client = new AsyncHttpClient();
-//        RequestParams params = new RequestParams();
-//        params.put("payment_method_nonce", Nonce);
-//        params.put("plan_id", planId);
-//
-//        client.post(ApiClient.Base_Url+"api/subscribe", params,
-//                new AsyncHttpResponseHandler() {
-//                    @Override
-//                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//
-//                        progressDialog.dismiss();
-//                        DialogsUtils.showAlertDialog(context,
-//                                false,"Nonce","is post Successful");
-//                    }
-//
-//                    @Override
-//                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-//                        progressDialog.dismiss();
-//                        DialogsUtils.showAlertDialog(context,
-//                                false,
-//                                "Note",
-//                                "Please check your internet and try again \n"+error.getMessage());
-//                    }
-//                }
-//        );
+
         Retrofit  retrofit = ApiClient.retrofit(context);
         JSONApiHolder  jsonApiHolder = retrofit.create(JSONApiHolder.class);
         Call<SuccessErrorModel> call = jsonApiHolder.postPackage(
@@ -217,13 +193,6 @@ public class PackageActivity extends AppCompatActivity {
                         "Please check your internet and try again \n"+t.getMessage());
             }
         });
-    }
-
-
-    private void lunchMainActivity(){
-                Intent i = new Intent(PackageActivity.this,
-                        PaymentMethodActivity.class);
-                startActivity(i);
     }
 
     @Override
