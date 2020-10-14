@@ -2,6 +2,7 @@ package com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
+import com.ikonholdings.ikoniconnects_subscriber.PackageActivity;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerMyFeed;
@@ -110,20 +112,20 @@ MyFeedFragment extends Fragment {
                 @Override
                 public void onResponse(Call<List<MyFeedBlogModel>> call, Response<List<MyFeedBlogModel>> response) {
 
-                    if (!response.isSuccessful()) {
-                        Log.i(TAG, "onResponse: "+response.code());
-                        loadingDialog.dismiss();
-                        DialogsUtils.showAlertDialog(getContext(),
-                                false,"Error","Something happened wrong\nplease try again!");
-                        return;
+                    if (response.isSuccessful()) {
+                        List<MyFeedBlogModel> blogs = response.body();
+
+                        mAdapter = new RecyclerMyFeed(blogs,getContext());
+                        mRecyclerView.setLayoutManager(mLayoutManager);
+                        mRecyclerView.setAdapter(mAdapter);
+                        mRecyclerView.setAdapter(mAdapter);
+
+                    }else if(response.code() == 405){
+                        startActivity(new Intent(getContext(), PackageActivity.class));
+                    }else{
+                        DialogsUtils.showResponseMsg(getContext(),false);
                     }
 
-                    List<MyFeedBlogModel> blogs = response.body();
-
-                    mAdapter = new RecyclerMyFeed(blogs,getContext());
-                    mRecyclerView.setLayoutManager(mLayoutManager);
-                    mRecyclerView.setAdapter(mAdapter);
-                    mRecyclerView.setAdapter(mAdapter);
                     loadingDialog.dismiss();
 
                 }
