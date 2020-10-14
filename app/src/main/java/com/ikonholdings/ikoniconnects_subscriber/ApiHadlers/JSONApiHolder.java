@@ -194,6 +194,13 @@ public interface JSONApiHolder
     );
 
     @FormUrlEncoded
+    @POST("subscribe")
+    Call <SuccessErrorModel> postPackage(
+            @Field("payment_method_nonce") String Nonce,
+            @Field("plan_id") String planId
+    );
+
+    @FormUrlEncoded
     @POST("send_otp")
     Call <SuccessErrorModel> sendOTP(
             @Field("email") String email

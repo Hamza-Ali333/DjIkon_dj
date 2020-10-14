@@ -163,31 +163,60 @@ public class PackageActivity extends AppCompatActivity {
     }
 
     private void PostNonceToServer(String Nonce) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("payment_method_nonce", Nonce);
-        params.put("plan_id", planId);
-
-        client.post(ApiClient.Base_Url+"api/subscribe", params,
-                new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-                        progressDialog.dismiss();
-                        DialogsUtils.showAlertDialog(context,
-                                false,"Nonce","is post Successful");
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        progressDialog.dismiss();
-                        DialogsUtils.showAlertDialog(context,
-                                false,
-                                "Note",
-                                "Please check your internet and try again \n"+error.getMessage());
-                    }
-                }
+//        AsyncHttpClient client = new AsyncHttpClient();
+//        RequestParams params = new RequestParams();
+//        params.put("payment_method_nonce", Nonce);
+//        params.put("plan_id", planId);
+//
+//        client.post(ApiClient.Base_Url+"api/subscribe", params,
+//                new AsyncHttpResponseHandler() {
+//                    @Override
+//                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+//
+//                        progressDialog.dismiss();
+//                        DialogsUtils.showAlertDialog(context,
+//                                false,"Nonce","is post Successful");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+//                        progressDialog.dismiss();
+//                        DialogsUtils.showAlertDialog(context,
+//                                false,
+//                                "Note",
+//                                "Please check your internet and try again \n"+error.getMessage());
+//                    }
+//                }
+//        );
+        Retrofit  retrofit = ApiClient.retrofit(context);
+        JSONApiHolder  jsonApiHolder = retrofit.create(JSONApiHolder.class);
+        Call<SuccessErrorModel> call = jsonApiHolder.postPackage(
+                Nonce,
+                planId
         );
+
+        call.enqueue(new Callback<SuccessErrorModel>() {
+            @Override
+            public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
+                if(response.isSuccessful()){
+                    startActivity(new Intent(PackageActivity.this, com.ikonholdings.ikoniconnects_subscriber.MainActivity.class));
+                }else {
+                    DialogsUtils.showAlertDialog(context,
+                            false,"Nonce","is post Successful");
+                }
+                progressDialog.dismiss();
+
+            }
+
+            @Override
+            public void onFailure(Call<SuccessErrorModel> call, Throwable t) {
+                progressDialog.dismiss();
+                DialogsUtils.showAlertDialog(context,
+                        false,
+                        "Note",
+                        "Please check your internet and try again \n"+t.getMessage());
+            }
+        });
     }
 
 
