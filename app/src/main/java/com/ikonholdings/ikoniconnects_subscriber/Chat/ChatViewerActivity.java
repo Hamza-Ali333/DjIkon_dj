@@ -331,8 +331,11 @@ public class ChatViewerActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(fuser.getUid(),R.mipmap.ic_launcher,userName+": "+messaage,"New Message",
-                            userUid);
+                    Data data = new Data(true,fuser.getUid(),
+                            R.mipmap.ic_launcher,
+                            userName+": "+messaage,
+                            "New Message",
+                            userId);
 
                     Sender sender = new Sender(data, token.getToken());
 

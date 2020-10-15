@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.MainActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 
@@ -33,22 +34,15 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         String sented = remoteMessage.getData().get("sented");
+        Boolean signle = Boolean.valueOf(remoteMessage.getData().get("single"));
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(firebaseUser != null  && sented.equals(firebaseUser.getUid())){
-            //sendNotification(remoteMessage);
-            boolean foregroud = false;
-            try {
-                foregroud = new ForegroundCheckTask().execute(this).get();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-         //   if(!foregroud){
+        if(signle && sented.equals(PreferenceData.getUserId(getApplicationContext()))){
                 showNotification(this,remoteMessage.getData().get("title"),remoteMessage.getData().get("body"));
-          //  }
+        }
+        else if (!signle && sented.equals(PreferenceData.getUserId(getApplicationContext()))){
+
         }
     }
 
@@ -87,6 +81,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         noti.notify(i,builder.build());
     }
+
     public static void showNotification(Context context, String title, String messageBody) {
 
         boolean isLoggedIn = true;
