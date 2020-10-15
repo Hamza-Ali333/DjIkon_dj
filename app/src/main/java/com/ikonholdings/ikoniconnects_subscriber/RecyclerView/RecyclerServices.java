@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.R;
-import com.ikonholdings.ikoniconnects_subscriber.ServiceDetailActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.ServiceDetailActivity;
 import com.ikonholdings.ikoniconnects_subscriber.ServicesModel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;

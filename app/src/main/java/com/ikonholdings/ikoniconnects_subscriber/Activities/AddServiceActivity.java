@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -34,6 +34,7 @@ import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PathUtil;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerShowGalleryImages;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.GalleryImagesUri;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;

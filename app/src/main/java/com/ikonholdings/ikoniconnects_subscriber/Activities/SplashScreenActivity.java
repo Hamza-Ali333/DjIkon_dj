@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,8 +8,10 @@ import android.os.Handler;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.ikonholdings.ikoniconnects_subscriber.BuildConfig;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 
 
 public class SplashScreenActivity extends AppCompatActivity {

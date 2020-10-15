@@ -66,32 +66,32 @@
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".BookingRequestsActivity"
+            android:name=".Activities.BookingRequestsActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".AcceptRequestActivity"
+            android:name=".Activities.AcceptRequestActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".CancelRequestActivity"
+            android:name=".Activities.CancelRequestActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".SubscriberProfileActivity"
+            android:name=".Activities.SubscriberProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ServiceDetailActivity"
+        <activity android:name=".Activities.ServiceDetailActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".BlogDetailActivity"
+        <activity android:name=".Activities.BlogDetailActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
         <activity
@@ -105,35 +105,35 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".PurchaseServiceActivity"
+            android:name=".Activities.PurchaseServiceActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".PackageActivity"
+        <activity android:name=".Activities.PackageActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".AddServiceActivity"
+        <activity android:name=".Activities.AddServiceActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".EditFollowerActivity"
+        <activity android:name=".Activities.EditFollowerActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".EditBlogActivity"
+        <activity android:name=".Activities.EditBlogActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ShowUserActivity"
+        <activity android:name=".Activities.ShowUserActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ProfileSettingActivity"
+        <activity android:name=".Activities.ProfileSettingActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".PaymentMethodActivity"
+        <activity android:name=".Activities.PaymentMethodActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".SignInActivity"
+        <activity android:name=".Activities.SignInActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".RegistrationActivity"
+        <activity android:name=".Activities.RegistrationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
         <activity
@@ -142,7 +142,7 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:resizeableActivity="false"
             android:theme="@style/AppTheme" />
-        <activity android:name=".SplashScreenActivity"
+        <activity android:name=".Activities.SplashScreenActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>

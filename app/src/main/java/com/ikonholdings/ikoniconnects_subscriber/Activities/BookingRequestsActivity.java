@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.BookingRequestFetcher;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerBookingRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 

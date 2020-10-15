@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -27,6 +27,7 @@ import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.KeyBoard;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 
@@ -150,7 +151,7 @@ public class RegistrationActivity extends AppCompatActivity {
         btn_SignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RegistrationActivity.this,SignInActivity.class));
+                startActivity(new Intent(RegistrationActivity.this, SignInActivity.class));
             }
         });
 

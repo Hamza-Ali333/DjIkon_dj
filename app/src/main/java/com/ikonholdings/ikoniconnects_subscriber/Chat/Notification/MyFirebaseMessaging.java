@@ -22,11 +22,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
-import com.ikonholdings.ikoniconnects_subscriber.MainActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.MainActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
     @Override

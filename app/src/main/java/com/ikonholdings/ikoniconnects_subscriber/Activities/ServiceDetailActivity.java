@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -26,6 +25,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerServiceGallery;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.RecyclerServiceReviews;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SingleServiceModel;

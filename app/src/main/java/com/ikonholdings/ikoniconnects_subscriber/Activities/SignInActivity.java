@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -56,12 +56,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
+import com.ikonholdings.ikoniconnects_subscriber.BuildConfig;
 import com.ikonholdings.ikoniconnects_subscriber.CustomDialogs.CreateNewPasswordDialog;
 import com.ikonholdings.ikoniconnects_subscriber.CustomDialogs.ReferralCodeDialog;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.KeyBoard;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 
@@ -118,6 +120,7 @@ public class SignInActivity extends AppCompatActivity {
     private int OTP = 0;
     private String EmailForOTP;
     private int seconds;//seconds for showing CountDown
+    private int hour;//seconds for showing CountDown
 
     private FingerprintManager fingerprintManager;
     private KeyguardManager keyguardManager;
@@ -174,7 +177,7 @@ public class SignInActivity extends AppCompatActivity {
         //Handel the Result When User Sign In Throw the BioMetric
         biometricSingInCallBackHandler();
 
-        PreferenceData.setBuildVersion(this,BuildConfig.VERSION_CODE);//saving Version Number
+        PreferenceData.setBuildVersion(this, BuildConfig.VERSION_CODE);//saving Version Number
 
         retrofit = ApiClient.retrofit( this);
         jsonApiHolder = retrofit.create(JSONApiHolder.class);
@@ -793,7 +796,8 @@ public class SignInActivity extends AppCompatActivity {
     }//openVerifyOTPDialoge
 
     private void startTimer(TextView otp_timmer, Button resentOTP, ImageView closeDailoge) {
-        seconds = 30;
+        seconds = 60;
+        hour = 4;
         Timer t = new Timer();    //declare the timer
         t.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -801,8 +805,11 @@ public class SignInActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (seconds == 00) {
-                            otp_timmer.setText(String.format("%02d", seconds));
+                        if (seconds == 00 && hour != 00) {
+                            hour--;
+                            seconds = 60;
+                        }else if(seconds == 00 && hour == 00){
+                            otp_timmer.setText(String.format("%02d : %02d", hour, seconds));
 
                             t.cancel();
                             otp_timmer.setVisibility(View.GONE);
@@ -811,7 +818,7 @@ public class SignInActivity extends AppCompatActivity {
                             closeDailoge.setClickable(true);
                         }
                         seconds--;
-                        otp_timmer.setText("Resend OTP In " + String.format("%02d", seconds));
+                        otp_timmer.setText("Resend OTP In " + String.format("%02d : %02d", hour, seconds));
                     }
                 });
             }
@@ -1009,6 +1016,7 @@ public class SignInActivity extends AppCompatActivity {
                             true);
 
                     lunchNextActivity();
+
 
                 } else if (response.code() == 402) {
                     EmailForOTP = edt_Email.getText().toString();

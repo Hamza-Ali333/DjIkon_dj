@@ -16,7 +16,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
-import com.ikonholdings.ikoniconnects_subscriber.MainActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.MainActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
 

@@ -23,8 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
-import com.ikonholdings.ikoniconnects_subscriber.BlogDetailActivity;
-import com.ikonholdings.ikoniconnects_subscriber.EditBlogActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.BlogDetailActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.EditBlogActivity;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;

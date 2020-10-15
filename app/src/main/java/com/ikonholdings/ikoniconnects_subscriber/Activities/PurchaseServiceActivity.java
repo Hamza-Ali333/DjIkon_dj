@@ -1,20 +1,22 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
-import com.ikonholdings.ikoniconnects_subscriber.UserAdminControrls.BlockUnBlockDeleteUser;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 
-public class EditFollowerActivity extends AppCompatActivity {
+public class PurchaseServiceActivity extends AppCompatActivity {
 
-    Button btn_delete_User, btn_Block_User, btn_Block_User_Access;
-    String id;
+    private Button btn_Confirm_Payment;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
     @Override
@@ -25,57 +27,62 @@ public class EditFollowerActivity extends AppCompatActivity {
         registerReceiver(mNetworkChangeReceiver, filter);
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_follwer);
-        getSupportActionBar().setTitle("User Actions");
+        setContentView(R.layout.activity_purchase_service);
+        getSupportActionBar().setTitle("Purchase Service");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        createReference();
+        createRefrences();
 
         mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
-        Intent i = getIntent();
-        id = i.getStringExtra("id");
-
-        btn_Block_User.setOnClickListener(new View.OnClickListener() {
+        btn_Confirm_Payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new BlockUnBlockDeleteUser("blockUser/"+id,1,
-                        EditFollowerActivity.this).execute();
+                openPaymentSuccessFullDailogue();
             }
         });
+    }
 
-        btn_delete_User.setOnClickListener(new View.OnClickListener() {
+
+    private void openPaymentSuccessFullDailogue() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.payment_successfull_dialoge, null);
+
+
+        TextView txt_OK = view.findViewById(R.id.txt_ok);
+
+        builder.setView(view);
+        builder.setCancelable(true);
+
+
+        final AlertDialog alertDialog =  builder.show();
+
+        txt_OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new BlockUnBlockDeleteUser("deleteReferralUser/"+id,0,
-                        EditFollowerActivity.this).execute();
-            }
-        });
-
-        btn_Block_User_Access.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new BlockUnBlockDeleteUser("blockReferralUserAccess/"+id,2,
-                        EditFollowerActivity.this).execute();
+                    alertDialog.dismiss();
+                    Intent i = new Intent(view.getContext(),MainActivity.class);
+                    view.getContext().startActivity(i);
             }
         });
 
     }
 
-    private void createReference() {
-        btn_delete_User = findViewById(R.id.delete_user);
-        btn_Block_User = findViewById(R.id.block_user);
-        btn_Block_User_Access = findViewById(R.id.block_user_access);
-    }
 
+    private void createRefrences () {
+        btn_Confirm_Payment = findViewById(R.id.btn_confirm);
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
+        finish();
         return true;
     }
 

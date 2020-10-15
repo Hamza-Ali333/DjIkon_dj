@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.ikonholdings.ikoniconnects_subscriber.AcceptRequestActivity;
-import com.ikonholdings.ikoniconnects_subscriber.BookingRequestsActivity;
-import com.ikonholdings.ikoniconnects_subscriber.CancelRequestActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.AcceptRequestActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.BookingRequestsActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.CancelRequestActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 
 

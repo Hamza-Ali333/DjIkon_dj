@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,12 +19,9 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import cz.msebera.android.httpclient.Header;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -175,7 +172,8 @@ public class PackageActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
                 if(response.isSuccessful()){
-                    startActivity(new Intent(PackageActivity.this, com.ikonholdings.ikoniconnects_subscriber.MainActivity.class));
+                    startActivity(new Intent(PackageActivity.this, MainActivity.class));
+                    finish();
                 }else {
                     DialogsUtils.showAlertDialog(context,
                             false,"Nonce","is post Successful");

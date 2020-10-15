@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -40,7 +40,7 @@ import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.GetAppAboutAndDis
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.AboutModel;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.DjAndUserProfileModel;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 import com.squareup.picasso.Picasso;

@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -10,19 +10,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.BookingRequestFetcher;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerCancelAndAcceptRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CancelRequestActivity extends AppCompatActivity implements BookingRequestFetcher.onRequestProcessComplete {
+public class AcceptRequestActivity extends AppCompatActivity implements BookingRequestFetcher.onRequestProcessComplete {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private TextView txt_total_canceled_request;
+    TextView txt_total_canceled_request;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
     @Override
@@ -37,22 +39,23 @@ public class CancelRequestActivity extends AppCompatActivity implements BookingR
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_requests);
-        getSupportActionBar().setTitle("Canceled Requests");
+        getSupportActionBar().setTitle("Approved Requests");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         txt_total_canceled_request = findViewById(R.id.txt_total);
+
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);
 
-        new BookingRequestFetcher(txt_total_canceled_request,"rejectBookings").execute();
+        new BookingRequestFetcher(txt_total_canceled_request,"acceptBookings").execute();
     }
 
     private void buildRecyclerView(List<MyBookingRequests> list){
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new RecyclerCancelAndAcceptRequests(list,true);
+       mAdapter = new RecyclerCancelAndAcceptRequests(list,true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -77,4 +80,5 @@ public class CancelRequestActivity extends AppCompatActivity implements BookingR
             e.printStackTrace();
         }
     }
+
 }

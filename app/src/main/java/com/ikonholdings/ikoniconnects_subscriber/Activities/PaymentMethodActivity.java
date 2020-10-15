@@ -1,21 +1,19 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 
-public class PurchaseServiceActivity extends AppCompatActivity {
+public class PaymentMethodActivity extends AppCompatActivity {
 
-    private Button btn_Confirm_Payment;
+    private Button btn_PayNow;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
     @Override
@@ -29,59 +27,29 @@ public class PurchaseServiceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_purchase_service);
-        getSupportActionBar().setTitle("Purchase Service");
+        setContentView(R.layout.activity_payment_method);
+        getSupportActionBar().setTitle("Payment Method");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         createRefrences();
-
         mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
-        btn_Confirm_Payment.setOnClickListener(new View.OnClickListener() {
+        btn_PayNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openPaymentSuccessFullDailogue();
+                Intent i = new Intent(PaymentMethodActivity.this, PurchaseServiceActivity.class);
+                startActivity(i);
             }
         });
     }
-
-
-    private void openPaymentSuccessFullDailogue() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        final View view = inflater.inflate(R.layout.payment_successfull_dialoge, null);
-
-
-        TextView txt_OK = view.findViewById(R.id.txt_ok);
-
-        builder.setView(view);
-        builder.setCancelable(true);
-
-
-        final AlertDialog alertDialog =  builder.show();
-
-        txt_OK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    alertDialog.dismiss();
-                    Intent i = new Intent(view.getContext(),MainActivity.class);
-                    view.getContext().startActivity(i);
-            }
-        });
-
-    }
-
 
     private void createRefrences () {
-        btn_Confirm_Payment = findViewById(R.id.btn_confirm);
+        btn_PayNow = findViewById(R.id.btn_Pay_Now);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        finish();
         return true;
     }
 

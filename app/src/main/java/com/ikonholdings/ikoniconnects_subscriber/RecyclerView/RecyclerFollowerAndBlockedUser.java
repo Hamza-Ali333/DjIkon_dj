@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
-import com.ikonholdings.ikoniconnects_subscriber.EditFollowerActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.EditFollowerActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.FollowersModel;
 import com.ikonholdings.ikoniconnects_subscriber.UserAdminControrls.BlockUnBlockDeleteUser;

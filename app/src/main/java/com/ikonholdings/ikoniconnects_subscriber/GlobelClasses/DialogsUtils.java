@@ -5,13 +5,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-import com.ikonholdings.ikoniconnects_subscriber.MainActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 
 public class DialogsUtils extends AppCompatDialogFragment {

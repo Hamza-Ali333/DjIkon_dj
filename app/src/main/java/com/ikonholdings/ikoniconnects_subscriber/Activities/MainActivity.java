@@ -1,4 +1,4 @@
-package com.ikonholdings.ikoniconnects_subscriber;
+package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -37,6 +37,7 @@ import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.UserAdminFrag
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ViewSongRequestFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.WithDrawFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.PaymentHistoryFragment;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.MyFeedFragment;
 import com.google.android.gms.tasks.OnCompleteListener;

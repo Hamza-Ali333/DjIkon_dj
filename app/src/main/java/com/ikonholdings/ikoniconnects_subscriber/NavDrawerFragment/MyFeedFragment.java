@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
-import com.ikonholdings.ikoniconnects_subscriber.PackageActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.PackageActivity;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerMyFeed;
@@ -32,8 +31,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static android.content.ContentValues.TAG;
 
 
 public class
