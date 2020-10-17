@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 
-import com.google.firebase.auth.FirebaseAuth;
+
 import com.ikonholdings.ikoniconnects_subscriber.BuildConfig;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
@@ -16,7 +16,7 @@ import com.ikonholdings.ikoniconnects_subscriber.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private FirebaseAuth mFirebaseAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

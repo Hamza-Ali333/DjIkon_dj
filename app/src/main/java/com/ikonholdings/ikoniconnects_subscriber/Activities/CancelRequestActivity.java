@@ -14,7 +14,6 @@ import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerCancelAndAcceptRequests;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CancelRequestActivity extends AppCompatActivity implements BookingRequestFetcher.onRequestProcessComplete {
@@ -53,7 +52,7 @@ public class CancelRequestActivity extends AppCompatActivity implements BookingR
     private void buildRecyclerView(List<MyBookingRequests> list){
         mRecyclerView.setHasFixedSize(true);//if the recycler view not increase run time
         mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new RecyclerCancelAndAcceptRequests(list,true);
+        mAdapter = new RecyclerCancelAndAcceptRequests(list,false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }

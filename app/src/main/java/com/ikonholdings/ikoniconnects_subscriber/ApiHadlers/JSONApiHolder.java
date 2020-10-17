@@ -123,6 +123,7 @@ public interface JSONApiHolder
     Call <SuccessErrorModel> uploadBlog(
             @Part MultipartBody.Part profile,
             @Part List<MultipartBody.Part> gallery,
+            @Part MultipartBody.Part video,
             @Part("title") RequestBody  title,
             @Part("description") RequestBody description
     );

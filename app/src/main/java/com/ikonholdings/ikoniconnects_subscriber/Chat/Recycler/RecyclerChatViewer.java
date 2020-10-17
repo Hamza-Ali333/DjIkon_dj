@@ -1,5 +1,6 @@
 package com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler;
 
+import android.content.Context;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Model.OneToOneChatModel;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
@@ -30,15 +32,15 @@ import java.util.List;
 public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.ViewHolder>{
 
     private List<OneToOneChatModel> mChat_model;
-    public  String currentSubscriberUid;
 
     public DatabaseReference myRef;
+    public Context context;
 
     public static final int MSG_TYPE_RIGHT = 0;
     public static final int MSG_TYPE_LEFT = 1;
     public Boolean sender = false;
 
-    public String senderImage, receiverImage;
+    public String receiverImage;
 
     //view holder class
     public static class ViewHolder extends  RecyclerView.ViewHolder{
@@ -60,14 +62,12 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
 
     //constructor
     public RecyclerChatViewer(List<OneToOneChatModel> chat_modelList,
-                              String currentSubscriberUid,
                               String chatMainNode,
-                              String senderimg,
-                              String recieverimg) {
+                              String recieverimg,
+                              Context context) {
         this.mChat_model = chat_modelList;
-        this.currentSubscriberUid = currentSubscriberUid;
-        this.senderImage = senderimg;
         this.receiverImage = recieverimg;
+        this.context= context;
         myRef = FirebaseDatabase.getInstance().getReference("Chats").child("Massages").child(chatMainNode);
     }
 
@@ -91,7 +91,7 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
         holder.txt_Time.setText(currentItem.getTime_stemp());
         String imageUrl = null;
         if(sender){
-            imageUrl = senderImage;
+            imageUrl = PreferenceData.getUserImage(context);
         }else {
             imageUrl = receiverImage;
         }
@@ -146,7 +146,7 @@ public class RecyclerChatViewer extends RecyclerView.Adapter<RecyclerChatViewer.
 
     @Override
     public int getItemViewType(int position) {
-        if(mChat_model.get(position).getSender().equals(currentSubscriberUid)){
+        if(mChat_model.get(position).getSender().equals(PreferenceData.getUserId(context))){
             sender = true;
             return MSG_TYPE_RIGHT;
         }else {

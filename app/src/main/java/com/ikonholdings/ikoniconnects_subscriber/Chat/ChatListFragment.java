@@ -18,8 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,7 +52,6 @@ public class ChatListFragment extends Fragment {
 
     private String currentUserId;
     private AlertDialog loadingDialog;
-    private FirebaseUser fuser;
 
     @Override
     public void onStart() {
@@ -74,7 +72,7 @@ public class ChatListFragment extends Fragment {
         ((LinearLayoutManager) mLayoutManager).setStackFromEnd(true);//always at new entry at the top
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
+
         //this will contain the currentUser id
         currentUserId = PreferenceData.getUserId(getContext());
 
@@ -143,8 +141,8 @@ public class ChatListFragment extends Fragment {
     private void updateToken(String token){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
         Token token1 = new Token(token);
-        if(fuser != null)
-        reference.child(fuser.getUid()).setValue(token1);
+
+        reference.child(PreferenceData.getUserId(getContext())).setValue(token1);
     }
 
     private void filter(String searchText){
@@ -173,7 +171,6 @@ public class ChatListFragment extends Fragment {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             mUserChatList.add(new UserChatListModel(
                                     snapshot.child("user_Id").getValue(String.class),
-                                    snapshot.child("user_Uid").getValue(String.class),
                                     snapshot.child("user_Name").getValue(String.class),
                                     snapshot.child("imgProfileUrl").getValue(String.class),
                                     snapshot.getKey()

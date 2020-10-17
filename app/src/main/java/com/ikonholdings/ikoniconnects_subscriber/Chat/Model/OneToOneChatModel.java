@@ -2,7 +2,6 @@ package com.ikonholdings.ikoniconnects_subscriber.Chat.Model;
 
 public class OneToOneChatModel {
     public String sender,
-    receiver,
     message,
             time_stemp,
     key;
@@ -12,9 +11,8 @@ public class OneToOneChatModel {
         //required for firebase
     }
 
-    public OneToOneChatModel(String sender, String receiver, String message, String time_stemp, String key) {
+    public OneToOneChatModel(String sender, String message, String time_stemp, String key) {
         this.sender = sender;
-        this.receiver = receiver;
         this.message = message;
         this.time_stemp = time_stemp;
         this.key = key;
@@ -34,14 +32,6 @@ public class OneToOneChatModel {
 
     public void setSender(String sender) {
         this.sender = sender;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
     }
 
     public String getMessage() {

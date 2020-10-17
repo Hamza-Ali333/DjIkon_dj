@@ -7,7 +7,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -59,16 +60,18 @@ import static android.app.Activity.RESULT_OK;
 public class AddBlogFragment extends Fragment {
 
     private EditText edt_Title, edt_Description;
-    private ImageView img_Video, img_Gallery, img_Camera, img_Featured, img_Selected;
+    private ImageView img_Video, img_Gallery, img_Camera, img_Featured, img_Delete_Video;
     private Button btn_Post;
     private VideoView videoView;
+    private RelativeLayout mVideoLayout;
 
     private static final int IMAGE_PICK_GALLERY_REQUEST_CODE = 1000;
     private static final int MULTIPLE_IMAGE_PICK_GALLERY_REQUEST_CODE = 3784;
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 2000;
     private static final int REQUEST_TAKE_GALLERY_VIDEO = 2342;
 
-    private Uri Image_uri;
+    private static Uri Image_uri;
+    private static Uri Video_uri;
     private Boolean isFeatureImageSelected= false;
 
     private RecyclerView mGalleryRecycler;
@@ -82,7 +85,7 @@ public class AddBlogFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View v =  inflater.inflate(R.layout.fragment_blog,container,false);
-       createRefrences(v);
+       createReferences(v);
 
        GalleryArray = new ArrayList<>();
 
@@ -126,13 +129,29 @@ public class AddBlogFragment extends Fragment {
            }
        });
 
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                videoView.seekTo(1);
+            }
+        });
+
+       img_Delete_Video.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Video_uri = null;
+               videoView.pause();
+               mVideoLayout.setVisibility(View.GONE);
+           }
+       });
+
        btn_Post.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                if(isInfoRight()){
-                   new UploadBlogToServer().execute();
+                   videoView.pause();
+                   new UploadBlogToServer(edt_Title.getText().toString(),edt_Description.getText().toString()).execute();
                }
-
            }
        });
 
@@ -147,20 +166,21 @@ public class AddBlogFragment extends Fragment {
         }
     }
 
-    private void createRefrences(View v){
-        edt_Title= v.findViewById(R.id.txt_blog_title);
-        edt_Description = v.findViewById(R.id.txt_blog_discription);
+    private void createReferences(View v){
+          edt_Title= v.findViewById(R.id.txt_blog_title);
+          edt_Description = v.findViewById(R.id.txt_blog_discription);
 
           img_Camera = v.findViewById(R.id.camera);
           img_Featured = v.findViewById(R.id.featuredimg);
           img_Gallery = v.findViewById(R.id.imgGallery);
+          img_Delete_Video = v.findViewById(R.id.deleteVideo);
           img_Video = v.findViewById(R.id.imgVideo);
-          img_Selected = v.findViewById(R.id.image);
+          mVideoLayout = v.findViewById(R.id.fram);
 
           mGalleryRecycler = v.findViewById(R.id.gallryIamgesRecycler);
 
-        btn_Post = v.findViewById(R.id.btn_publish);
-        videoView = v.findViewById(R.id.videoView2);
+          btn_Post = v.findViewById(R.id.btn_publish);
+          videoView = v.findViewById(R.id.videoView2);
     }
 
     private Boolean isInfoRight () {
@@ -254,42 +274,27 @@ public class AddBlogFragment extends Fragment {
 
             //getcroped Image
             if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
-
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 Image_uri = result.getUri();
                 img_Featured.setImageURI(Image_uri);
                 isFeatureImageSelected = true;
-
             }
 
             //video
             if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
-                Uri selectedImageUri = data.getData();
+                Video_uri = data.getData();
 
-                String file = null;
-                try {
-                    file = PathUtil.getPath(getContext(), selectedImageUri);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-
-                // MEDIA GALLERY
-                String selectedImagePath = getVideoPath(selectedImageUri);
-                if (selectedImageUri != null) {
-                    videoView.setVisibility(View.VISIBLE);
-                    videoView.setVideoURI(selectedImageUri);
+                    mVideoLayout.setVisibility(View.VISIBLE);
+                    videoView.setVideoURI(Video_uri);
 
                     //media controller
                     MediaController vidControl = new MediaController(getContext());
                     vidControl.setAnchorView(videoView);
                     videoView.setMediaController(vidControl);
-
-                } else {
-                    videoView.setVisibility(View.GONE);
-                }
+                    videoView.seekTo(1);
             }
 
-                    //Multiple Images For BlogGallery
+           //Multiple Images For BlogGallery
             if(requestCode == MULTIPLE_IMAGE_PICK_GALLERY_REQUEST_CODE){
 
                 if (data.getClipData() != null) {
@@ -298,8 +303,10 @@ public class AddBlogFragment extends Fragment {
                         ClipData.Item item = mClipData.getItemAt(i);
                        GalleryArray.add(new GalleryImagesUri(item.getUri()));
                     }
+                    mGalleryRecycler.setVisibility(View.VISIBLE);
                     buildGalleryImagesRecycler(GalleryArray);
                 } else  {
+                    mGalleryRecycler.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "No Image Found", Toast.LENGTH_SHORT).show();
                 }
 
@@ -311,23 +318,7 @@ public class AddBlogFragment extends Fragment {
 
     }//onActivity Result
 
-    // UPDATED!
-    public String getVideoPath(Uri uri) {
-        String[] projection = { MediaStore.Video.Media.DATA };
-        Cursor cursor = getContext().getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null) {
-            // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
-            // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
-            int column_index = cursor
-                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } else
-            return null;
-    }
-
     private void buildGalleryImagesRecycler(List<GalleryImagesUri> galleryImagesUriList) {
-
         mGalleryRecycler.setHasFixedSize(true);//if the recycler view not increase run time
         galleryLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         galleryAdapter = new RecyclerShowGalleryImages(galleryImagesUriList);
@@ -350,6 +341,11 @@ public class AddBlogFragment extends Fragment {
         ProgressDialog progressDialog;
         String Title, Description;
 
+        public UploadBlogToServer(String title, String description) {
+            Title = title;
+            Description = description;
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -367,7 +363,7 @@ public class AddBlogFragment extends Fragment {
             for (int i = 0; i < GalleryArray.size(); i++) {
                 Uri uri = GalleryArray.get(i).getUri();
                 try {
-                    File file =new File(PathUtil.getPath(getContext(),uri));
+                    File file = new File(PathUtil.getPath(getContext(),uri));
                     
                     galleryImages.add(MultipartBody.Part.createFormData("gallery[]",file.getName(),
                             RequestBody.create(MediaType.parse("multipart/form-data"), file)));
@@ -378,23 +374,33 @@ public class AddBlogFragment extends Fragment {
 
             }
 
+            File videoFile;
+            MultipartBody.Part videoPart = null;
+            if(Video_uri != null){
+                try {
+                    videoFile = new File(PathUtil.getPath(getContext(),Video_uri));
+                    RequestBody videoBody = RequestBody.create(MediaType.parse("video/*"), videoFile);
+                    videoPart = MultipartBody.Part.createFormData("video", videoFile.getName(), videoBody);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+
             File profileFile = new File(Image_uri.getPath());
             MultipartBody.Part profileImage = MultipartBody.Part.createFormData("photo",profileFile.getName(),
                     RequestBody.create(MediaType.parse("multipart/form-data"), profileFile));
-
-            String name = edt_Title.getText().toString();
+           
             RequestBody title = RequestBody.create(MediaType.parse("text/plain"),
-                    name);
-
-            String descript = edt_Description.getText().toString();
-            RequestBody description = RequestBody.create(MediaType.parse("text/plain"),
-                    descript);
+                    Title);
+            
+            RequestBody descripton = RequestBody.create(MediaType.parse("text/plain"), Description);
 
             Call<SuccessErrorModel> call = jsonApiHolder.uploadBlog(
                     profileImage,
                     galleryImages,
+                    videoPart,
                     title,
-                    description
+                    descripton
             );
 
             call.enqueue(new Callback<SuccessErrorModel>() {
@@ -417,12 +423,10 @@ public class AddBlogFragment extends Fragment {
                 }
                 @Override
                 public void onFailure(Call<SuccessErrorModel> call, Throwable t) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            DialogsUtils.showResponseMsg(getContext(),true);
-                        }
-                    });
+                    progressDialog.dismiss();
+                    DialogsUtils.showAlertDialog(getContext(),false,"Failed",t.getMessage());
+                            //DialogsUtils.showResponseMsg(getContext(),true);
+
                 }
             });
             return null;

@@ -11,14 +11,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.ikonholdings.ikoniconnects_subscriber.Chat.ChatViewerActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
@@ -35,13 +34,8 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String sented = remoteMessage.getData().get("sented");
         Boolean signle = Boolean.valueOf(remoteMessage.getData().get("single"));
 
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if(signle && sented.equals(PreferenceData.getUserId(getApplicationContext()))){
+        if(sented.equals(PreferenceData.getUserId(getApplicationContext()))){
                 showNotification(this,remoteMessage.getData().get("title"),remoteMessage.getData().get("body"));
-        }
-        else if (!signle && sented.equals(PreferenceData.getUserId(getApplicationContext()))){
-
         }
     }
 

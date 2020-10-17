@@ -1,25 +1,26 @@
 package com.ikonholdings.ikoniconnects_subscriber.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.MessageRoomFragment;
@@ -30,32 +31,18 @@ import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.BankDetailFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.BookingsFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.LiveFeedToggleFragment;
+import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.MyFeedFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.NotificationFragment;
+import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.PaymentHistoryFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ServicesFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.SocialMediaFrameFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.UserAdminFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.ViewSongRequestFragment;
 import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.WithDrawFragment;
-import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.PaymentHistoryFragment;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.LoginRegistrationModel;
-import com.ikonholdings.ikoniconnects_subscriber.NavDrawerFragment.MyFeedFragment;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,17 +59,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ProgressDialog progressDialog;
 
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    private DatabaseReference myRef;
-
     private CircularImageView currentUserProfile;
     private ImageView UserProfileHeader;
     private TextView UserName;
-
-    private String currentUserEmail;
-    private String currentUserPassword;
-    private Boolean isComeFromRegistrationActivity;
 
     private Retrofit retrofit;
     private JSONApiHolder jsonApiHolder;
@@ -95,27 +74,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
-        mFirebaseAuth = FirebaseAuth.getInstance();
 
         PreferenceData.registerPref(this,this);
-
-        //if User in not Register on FireBase then Register him
-        try {
-            mFirebaseAuth = FirebaseAuth.getInstance();
-            mFirebaseUser = mFirebaseAuth.getCurrentUser();
-
-            if (mFirebaseUser == null) {
-                Intent i = getIntent();
-                isComeFromRegistrationActivity = i.getBooleanExtra("come_from_registration", false);
-                currentUserEmail = PreferenceData.getUserEmail(this);
-                currentUserPassword = PreferenceData.getUserPassword(this);
-                if (currentUserEmail != null && currentUserEmail != null)
-                    new RegisteringUserAlsoOnFirebase().execute(isComeFromRegistrationActivity);
-            }
-        } catch (Exception e) {
-            Log.i("TAG", "onStart: "+e.getMessage());
-        }
-
         retrofit = ApiClient.retrofit(this);
     }
 
@@ -313,7 +273,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(Call<LoginRegistrationModel> call, Response<LoginRegistrationModel> response) {
                 if (response.isSuccessful()) {
                     PreferenceData.clearLoginState(MainActivity.this);
-                    mFirebaseAuth.getInstance().signOut();
                     progressDialog.dismiss();
                     startActivity(new Intent(MainActivity.this, SignInActivity.class));
                     finish();
@@ -330,55 +289,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-    }
-
-    private void creatingUserOnFirebase(String Email, String Password) {
-        //Creating Subscriber also on Firebase for Chat System
-        mFirebaseAuth.createUserWithEmailAndPassword
-                (Email, Password)
-                .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            saveUserIDAndUIDOnFirebase();
-                            sendFCMToken();
-                        }
-                    }
-                });
-    }
-
-    private void signInUserOnFirebase(String Email, String Password) {
-        //SignIn Subscriber Also on FireBase For ChatSystem
-        mFirebaseAuth.signInWithEmailAndPassword(Email,
-                Password).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    //if user is not exit in data base but successfully Sign in ON server then should create also on firebase
-                    creatingUserOnFirebase(Email, Password);
-                }else {
-                    saveUserIDAndUIDOnFirebase();
-                    sendFCMToken();
-                }
-            }
-        });
-    }
-
-    private void saveUserIDAndUIDOnFirebase() {
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        myRef = FirebaseDatabase.getInstance().getReference("All_Users");
-
-        if (mFirebaseUser != null) {
-            String userUId = mFirebaseUser.getUid();
-            Map<String, String> userData = new HashMap<>();
-            userData.put("uid", userUId);
-            userData.put("server_id", PreferenceData.getUserId(this));
-
-            myRef.child("Subscribers").child(PreferenceData.getUserId(this)).setValue(userData);
-        } else {
-            Log.i("TAG", "saveUserIDAndUIDonFirebase: no user found");
-        }
     }
 
     //send fcm Token to the Server for sending notification form server to application
@@ -414,21 +324,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         UserName.setText(PreferenceData.getUserName(this));
         getCurrentUserImage();
-    }
-
-    private class RegisteringUserAlsoOnFirebase extends AsyncTask<Boolean, Void, Void> {
-        @Override
-        protected Void doInBackground(Boolean... booleans) {
-            if (booleans[0]) {
-                //isUserComeFromRegistrationActivity
-                creatingUserOnFirebase(currentUserEmail, currentUserPassword);
-            } else {
-                //isUserComeFromSignIn
-                signInUserOnFirebase(currentUserEmail, currentUserPassword);
-            }
-
-            return null;
-        }
     }
 
     @Override
