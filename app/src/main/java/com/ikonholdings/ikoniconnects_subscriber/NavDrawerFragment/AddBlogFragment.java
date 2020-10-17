@@ -19,7 +19,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,10 +34,10 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PathUtil;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.GalleryImagesUri;
-import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerShowGalleryImages;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 import com.ikonholdings.ikoniconnects_subscriber.R;
+import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerShowGalleryImages;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.GalleryImagesUri;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.SuccessErrorModel;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -59,6 +61,7 @@ public class AddBlogFragment extends Fragment {
     private EditText edt_Title, edt_Description;
     private ImageView img_Video, img_Gallery, img_Camera, img_Featured, img_Selected;
     private Button btn_Post;
+    private VideoView videoView;
 
     private static final int IMAGE_PICK_GALLERY_REQUEST_CODE = 1000;
     private static final int MULTIPLE_IMAGE_PICK_GALLERY_REQUEST_CODE = 3784;
@@ -156,7 +159,8 @@ public class AddBlogFragment extends Fragment {
 
           mGalleryRecycler = v.findViewById(R.id.gallryIamgesRecycler);
 
-          btn_Post = v.findViewById(R.id.btn_publish);
+        btn_Post = v.findViewById(R.id.btn_publish);
+        videoView = v.findViewById(R.id.videoView2);
     }
 
     private Boolean isInfoRight () {
@@ -262,17 +266,26 @@ public class AddBlogFragment extends Fragment {
             if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
                 Uri selectedImageUri = data.getData();
 
-                // OI FILE Manager
-                String filemanagerstring = selectedImageUri.getPath();
+                String file = null;
+                try {
+                    file = PathUtil.getPath(getContext(), selectedImageUri);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
 
                 // MEDIA GALLERY
                 String selectedImagePath = getVideoPath(selectedImageUri);
-                if (selectedImagePath != null) {
+                if (selectedImageUri != null) {
+                    videoView.setVisibility(View.VISIBLE);
+                    videoView.setVideoURI(selectedImageUri);
 
-//                    Intent intent = new Intent(HomeActivity.this,
-//                            VideoplayAvtivity.class);
-//                    intent.putExtra("path", selectedImagePath);
-//                    startActivity(intent);
+                    //media controller
+                    MediaController vidControl = new MediaController(getContext());
+                    vidControl.setAnchorView(videoView);
+                    videoView.setMediaController(vidControl);
+
+                } else {
+                    videoView.setVisibility(View.GONE);
                 }
             }
 
@@ -333,13 +346,15 @@ public class AddBlogFragment extends Fragment {
         mGalleryRecycler.setAdapter(galleryAdapter);
     }
 
-    private class UploadBlogToServer extends AsyncTask<Void,Void,Void> {
+    private class UploadBlogToServer extends AsyncTask<Void, Void, Void> {
         ProgressDialog progressDialog;
+        String Title, Description;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = DialogsUtils.showProgressDialog(getContext(),
-                    "Uploading","Please wait. While uploading blog on Server");
+                    "Uploading", "Please wait. While uploading blog on Server");
         }
 
         @Override
