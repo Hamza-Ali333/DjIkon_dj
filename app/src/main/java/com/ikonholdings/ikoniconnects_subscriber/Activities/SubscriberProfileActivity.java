@@ -34,6 +34,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.ChangeStatus;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.CountriesList;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.GetAppAboutAndDisclosure;
@@ -141,10 +142,20 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
         swt_Profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             if(swt_Profile.isChecked()){
-                 Toast.makeText(SubscriberProfileActivity.this, "Profile Status Active Now", Toast.LENGTH_SHORT).show();
-             } else {
-                 Toast.makeText(SubscriberProfileActivity.this, "Turn Off Profile", Toast.LENGTH_SHORT).show();
+                if(swt_Profile.isChecked()){
+                    new ChangeStatus(
+                            "Status Online",
+                            "Active",
+                            "Status is online for the users.",
+                            SubscriberProfileActivity.this
+                    ).execute();
+                }else {
+                    new ChangeStatus(
+                            "Status Offline",
+                            "Disabled",
+                            "Status change offline for the users.",
+                            SubscriberProfileActivity.this
+                    ).execute();
              }
             }
         });
@@ -246,7 +257,6 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
         i.putExtra("allowMessage",allowMessage);
         i.putExtra("allowBookings",allowBooking);
         i.putExtra("allowSongRequest",allowSongRequest);
-        i.putExtra("id",PreferenceData.getUserId(this));
         startActivity(i);
     }
 
@@ -262,7 +272,7 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
         builder.setView(view);
         builder.setCancelable(false);
 
-        txt_About.setText(about);
+        text.setText(about);
 
         final AlertDialog alertDialog =  builder.show();
 

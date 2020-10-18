@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.KeyBoard;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PathUtil;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PermissionHelper;
 import com.ikonholdings.ikoniconnects_subscriber.R;
@@ -149,6 +150,7 @@ public class AddBlogFragment extends Fragment {
            @Override
            public void onClick(View v) {
                if(isInfoRight()){
+                   KeyBoard.hideKeyboard(getActivity());
                    videoView.pause();
                    new UploadBlogToServer(edt_Title.getText().toString(),edt_Description.getText().toString()).execute();
                }

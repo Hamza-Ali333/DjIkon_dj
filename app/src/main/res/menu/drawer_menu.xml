@@ -9,6 +9,10 @@
         android:icon="@drawable/microsoft"
         android:title="My Feeds"/>
 
+        <item android:id="@+id/nav_MyServices"
+            android:icon="@drawable/delivery"
+            android:title="My Services"/>
+
         <item android:id="@+id/nav_BookingRequest"
             android:icon="@drawable/booking"
             android:title="Booking Requests"/>
@@ -36,10 +40,6 @@
         <item android:id="@+id/nav_ViewSongRequest"
             android:icon="@drawable/song"
             android:title="View Song Requests"/>
-
-        <item android:id="@+id/nav_MyServices"
-            android:icon="@drawable/delivery"
-            android:title="My Services"/>
 
         <item android:id="@+id/nav_BankDetail"
             android:icon="@drawable/ic_online_payment"

@@ -46,7 +46,7 @@ import retrofit2.Retrofit;
 
 public class WithDrawFragment extends Fragment {
 
-    private TextView txt_Total_Earning, txt_CurrentBalance;
+    private TextView txt_Total_Earning, txt_CurrentBalance, txt_Empty;
     private FloatingActionButton btn_CreateNew;
 
     private ConstraintLayout parentLayout;
@@ -140,6 +140,7 @@ public class WithDrawFragment extends Fragment {
     }
 
     private void createReferences (View v) {
+        txt_Empty = v.findViewById(R.id.info);
         txt_Total_Earning = v.findViewById(R.id.total);
         txt_CurrentBalance = v.findViewById(R.id.currentBalance);
         btn_CreateNew = v.findViewById(R.id.createNew);
@@ -228,8 +229,7 @@ public class WithDrawFragment extends Fragment {
                     txt_CurrentBalance.setText("$"+detail.getWallet());
                     txt_Total_Earning.setText("$"+detail.getTotalEarning());
                     progressBar.setVisibility(View.GONE);
-                    Log.i("TAG", "onResponse: current balance " +currentBalance);
-                    Log.i("TAG", "onResponse: wallet" +detail.getWallet());
+
                 }
 
                 @Override
@@ -273,13 +273,12 @@ public class WithDrawFragment extends Fragment {
 
                     transactionList = response.body();
                     if(transactionList.isEmpty()){
-                        DialogsUtils.showAlertDialog(getContext(),
-                                false,
-                                "No Transaction",
-                                "it's seems like you did not have any transaction yet!");
+                        txt_Empty.setVisibility(View.VISIBLE);
                     }else {
-                        buildRecyclerView(transactionList);
+                        txt_Empty.setVisibility(View.GONE);
                     }
+                        buildRecyclerView(transactionList);
+
 
                     recyclerProgressBar.setVisibility(View.GONE);
 
@@ -347,6 +346,7 @@ public class WithDrawFragment extends Fragment {
 
                     currentBalance = currentBalance - Integer.parseInt(Amount);
                     txt_CurrentBalance.setText("$"+currentBalance);
+                    txt_Empty.setVisibility(View.GONE);
                 }
 
                 @Override

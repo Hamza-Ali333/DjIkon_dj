@@ -363,6 +363,9 @@ public class AddServiceActivity extends AppCompatActivity {
         }else if(SelectedPriceType.equals("Select Type")){
             Toast.makeText(this, "Please select service price charge type", Toast.LENGTH_SHORT).show();
             result = false;
+        }else if(GalleryArray.isEmpty()){
+            Toast.makeText(this, "Please Select Gallery Images", Toast.LENGTH_SHORT).show();
+            result = false;
         }
         return result;
     }
@@ -449,9 +452,6 @@ public class AddServiceActivity extends AppCompatActivity {
             call.enqueue(new Callback<SuccessErrorModel>() {
                 @Override
                 public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
                             if (response.isSuccessful()) {
                                 DialogsUtils.showSuccessDialog(AddServiceActivity.this,
                                         "Uploaded Successfully","Your Service is uploaded successfully");
@@ -461,17 +461,11 @@ public class AddServiceActivity extends AppCompatActivity {
                                                 "And make sure you have strong internet connection");
                             }
                             progressDialog.dismiss();
-                        }
-                    });
                 }
                 @Override
                 public void onFailure(Call<SuccessErrorModel> call, Throwable t) {
-                   runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
                             DialogsUtils.showResponseMsg(AddServiceActivity.this,true);
-                        }
-                    });
+
                 }
             });
             return null;

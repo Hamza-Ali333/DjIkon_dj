@@ -131,6 +131,13 @@ public class BlogDetailActivity extends AppCompatActivity {
         MediaController mediaController = new MediaController(this);
         videoView.setMediaController(mediaController);
 
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                videoView.seekTo(1);
+            }
+        });
+
         btn_SendComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +145,6 @@ public class BlogDetailActivity extends AppCompatActivity {
                     String comment = edt_Comment.getText().toString().trim();
                     edt_Comment.getText().clear();
                     hideKeyboard(BlogDetailActivity.this);
-
                     new postComment().execute(comment);
 
                 } else {

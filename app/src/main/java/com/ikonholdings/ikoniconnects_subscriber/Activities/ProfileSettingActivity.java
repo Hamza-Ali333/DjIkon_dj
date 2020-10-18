@@ -21,6 +21,7 @@ import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.CustomDialogs.CreateNewPasswordDialog;
 import com.ikonholdings.ikoniconnects_subscriber.CustomDialogs.UpdatePasswordDialog;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.ChangeStatus;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
@@ -41,7 +42,6 @@ public class ProfileSettingActivity extends AppCompatActivity {
     private int allowBookings;
     private int allowMessage;
     private int allowSongRequest;
-    private int subscriberId;
 
     private  Boolean isHavePassword;
 
@@ -69,7 +69,6 @@ public class ProfileSettingActivity extends AppCompatActivity {
         allowBookings = i.getIntExtra("allowBookings", 0);
         allowMessage = i.getIntExtra("allowMessage", 0);
         allowSongRequest = i.getIntExtra("allowSongRequest", 0);
-        subscriberId = i.getIntExtra("id", 0);
         isHavePassword = i.getBooleanExtra("password",false);
         manageActiveDeActive();
 
@@ -108,6 +107,49 @@ public class ProfileSettingActivity extends AppCompatActivity {
             }
         });
 
+        //switch buttons
+        swt_AllowMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(swt_AllowMessage.isChecked()){
+                    new ChangeStatus(
+                            " Messaging Allow",
+                            "Active",
+                            "Messaging allow successfully. Now user can chat with you.",
+                            ProfileSettingActivity.this
+                    ).execute();
+                }else {
+                    new ChangeStatus(
+                            "Messaging Block",
+                            "Disabled",
+                            "Messaging Disabled successfully. Now user can't chat with you.",
+                            ProfileSettingActivity.this
+                    ).execute();
+                }
+            }
+        });
+
+        swt_AllowSongRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(swt_AllowSongRequest.isChecked()){
+                    new ChangeStatus(
+                            "Song Request Allow",
+                            "Active",
+                            "Song Request allow successfully. Now user can request you for the song.",
+                            ProfileSettingActivity.this
+                    ).execute();
+                }else {
+                    new ChangeStatus(
+                            "Song Request Disabled",
+                            "Disabled",
+                            "Song Request Disabled successfully. Now user can't request you for the song.",
+                            ProfileSettingActivity.this
+                    ).execute();
+                }
+            }
+        });
+
         swt_AllowBookings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,13 +157,15 @@ public class ProfileSettingActivity extends AppCompatActivity {
                     new ChangeStatus(
                             "Booking Allow",
                             "Active",
-                            "Booking Allow Successfully. Know User Can Book You."
+                            "Booking allow successfully. Now user can book you.",
+                            ProfileSettingActivity.this
                             ).execute();
                 }else {
                     new ChangeStatus(
-                            "Booking Disable",
+                            "Booking Disabled",
                             "Disable",
-                            "Booking Disable Successfully. Know user can't book you until you make it active."
+                            "Booking Disabled Successfully. Now user can't book you until you make it active.",
+                            ProfileSettingActivity.this
                     ).execute();
                 }
             }
@@ -271,73 +315,6 @@ public class ProfileSettingActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    public class ChangeStatus extends AsyncTask<Void,Void,Void> {
-        AlertDialog loadingDialog;
-        String status;
-        String title;
-        String msg;
-
-        public ChangeStatus(String status, String title, String msg) {
-            this.status = status;
-            this.title = title;
-            this.msg = msg;
-            loadingDialog = DialogsUtils.showProgressDialog(ProfileSettingActivity.this,"Working...",
-                    "Waiting for server response.");
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Retrofit retrofit = ApiClient.retrofit(ProfileSettingActivity.this);
-            JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
-            Call<SuccessErrorModel> call = jsonApiHolder.changeStatus(
-                    "settings/"+subscriberId,
-                    status);
-
-            call.enqueue(new Callback<SuccessErrorModel>() {
-                @Override
-                public void onResponse(Call<SuccessErrorModel> call, Response<SuccessErrorModel> response) {
-                    if(response.isSuccessful()){
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    DialogsUtils.showSuccessDialog(ProfileSettingActivity.this,
-                                            "Successfully",
-                                            "Booking is Successfully Done");
-                                    loadingDialog.dismiss();
-                                }
-                            });
-                    }else {
-                       runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                DialogsUtils.showAlertDialog(ProfileSettingActivity.this,
-                                        false,
-                                        "Error",
-                                        "Please try again and check your internet connection");
-                                loadingDialog.dismiss();
-                            }
-                        });
-                    }
-                }
-                @Override
-                public void onFailure(Call<SuccessErrorModel> call, Throwable t) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            DialogsUtils.showAlertDialog(ProfileSettingActivity.this,
-                                    false,
-                                    "No Server Connection",
-                                    t.getMessage());
-                            loadingDialog.dismiss();
-                        }
-                    });
-                }
-            });
-            return null;
-        }
-
     }
 
     @Override
