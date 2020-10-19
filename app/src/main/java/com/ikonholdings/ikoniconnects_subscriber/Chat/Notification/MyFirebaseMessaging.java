@@ -34,9 +34,9 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String sented = remoteMessage.getData().get("sented");
         Boolean signle = Boolean.valueOf(remoteMessage.getData().get("single"));
 
-        if(sented.equals(PreferenceData.getUserId(getApplicationContext()))){
-                showNotification(this,remoteMessage.getData().get("title"),remoteMessage.getData().get("body"));
-        }
+        //if(sented.equals(PreferenceData.getUserId(this))){
+        //        showNotification(this,remoteMessage.getData().get("title"),remoteMessage.getData().get("body"));
+       // }
     }
 
     private void sendNotification(RemoteMessage remoteMessage) {

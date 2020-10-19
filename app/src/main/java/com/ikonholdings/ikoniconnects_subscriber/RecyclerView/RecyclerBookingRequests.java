@@ -3,6 +3,7 @@ package com.ikonholdings.ikoniconnects_subscriber.RecyclerView;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.ChatViewerActivity;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyBookingRequests;
@@ -125,6 +127,17 @@ public class RecyclerBookingRequests extends RecyclerView.Adapter<RecyclerBookin
                 new AcceptRejectRequest(2,
                         position,
                         currentItem.getId()).execute();
+            }
+        });
+
+        holder.btn_Message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), ChatViewerActivity.class);
+                i.putExtra("user_Id",String.valueOf(currentItem.getId()));
+                i.putExtra("user_Name",currentItem.getName());
+                i.putExtra("imgProfileUrl",currentItem.getUser_profile_image());
+                view.getContext().startActivity(i);
             }
         });
 }
