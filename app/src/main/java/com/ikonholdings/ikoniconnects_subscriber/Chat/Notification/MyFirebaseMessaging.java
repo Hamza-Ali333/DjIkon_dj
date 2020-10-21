@@ -11,17 +11,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
-import com.ikonholdings.ikoniconnects_subscriber.Chat.ChatViewerActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
 import com.ikonholdings.ikoniconnects_subscriber.Activities.MainActivity;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.ChatViewerActivity;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 
 import java.util.Date;
@@ -35,7 +33,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         Boolean signle = Boolean.valueOf(remoteMessage.getData().get("single"));
 
         //if(sented.equals(PreferenceData.getUserId(this))){
-        //        showNotification(this,remoteMessage.getData().get("title"),remoteMessage.getData().get("body"));
+        showNotification(this, remoteMessage.getData().get("title"), remoteMessage.getData().get("body"));
        // }
     }
 

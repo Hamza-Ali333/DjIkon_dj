@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,12 +34,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Model.ManytoManyChatModel;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.APIService;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Client;
-import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Data;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.MyResponse;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Notification;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Sender;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Token;
 import com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler.RecyclerGroupChat;
@@ -343,10 +341,10 @@ public class GroupChatViewerActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(false,
+                    Notification data = new Notification(false,
                             PreferenceData.getUserId(GroupChatViewerActivity.this),
                             R.mipmap.ic_launcher,
-                            userName+": "+messaage,
+                            userName + ": " + messaage,
                             "New Message",
                             "Notification Recieverid");
 

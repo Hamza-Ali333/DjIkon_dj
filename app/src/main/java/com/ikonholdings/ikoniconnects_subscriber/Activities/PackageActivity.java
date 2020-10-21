@@ -29,7 +29,7 @@ import retrofit2.Retrofit;
 
 public class PackageActivity extends AppCompatActivity {
 
-    Button btn_Monthly_Pakage, btn_Yearly_Package;
+    Button btn_Monthly_Package, btn_Yearly_Package;
     ProgressDialog progressDialog;
 
     Context context;
@@ -58,11 +58,11 @@ public class PackageActivity extends AppCompatActivity {
 
         context = this;
 
-        btn_Monthly_Pakage = findViewById(R.id.btn_mothly_package);
+        btn_Monthly_Package = findViewById(R.id.btn_mothly_package);
         btn_Yearly_Package = findViewById(R.id.btn_year_package);
 
 
-        btn_Monthly_Pakage.setOnClickListener(new View.OnClickListener() {
+        btn_Monthly_Package.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 planId = "9sgr";

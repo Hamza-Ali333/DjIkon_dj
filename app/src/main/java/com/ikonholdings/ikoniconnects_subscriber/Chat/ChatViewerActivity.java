@@ -1,12 +1,5 @@
 package com.ikonholdings.ikoniconnects_subscriber.Chat;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -19,19 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
-import com.ikonholdings.ikoniconnects_subscriber.Chat.Model.OneToOneChatModel;
-import com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler.RecyclerChatViewer;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
-import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
-import com.ikonholdings.ikoniconnects_subscriber.R;
-import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.APIService;
-import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Client;
-import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Data;
-import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.MyResponse;
-import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Sender;
-import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Token;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -42,6 +29,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ikonholdings.ikoniconnects_subscriber.Activities.SubscriberProfileActivity;
+import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Model.OneToOneChatModel;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.APIService;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Client;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.MyResponse;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Notification;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Sender;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Notification.Token;
+import com.ikonholdings.ikoniconnects_subscriber.Chat.Recycler.RecyclerChatViewer;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.NetworkChangeReceiver;
+import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.PreferenceData;
+import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -125,10 +125,12 @@ public class ChatViewerActivity extends AppCompatActivity {
 
         //getting data of the Receiver
         Intent i = getIntent();
-        userId =i.getStringExtra("user_Id");
+        userId = i.getStringExtra("user_Id");
         userName = i.getStringExtra("user_Name");
         imgProfileUrl = i.getStringExtra("imgProfileUrl");
         setSubscriberProfile(imgProfileUrl);
+
+        Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
 
         getSupportActionBar().setTitle("");
         toolBarTitle.setText(userName);//set Subscriber Name in tool bar
@@ -331,9 +333,9 @@ public class ChatViewerActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(true,"this",
+                    Notification data = new Notification(true, "this",
                             R.mipmap.ic_launcher,
-                            userName+": "+messaage,
+                            userName + ": " + messaage,
                             "New Message",
                             userId);
 

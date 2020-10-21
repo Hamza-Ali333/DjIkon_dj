@@ -1,6 +1,6 @@
 package com.ikonholdings.ikoniconnects_subscriber.Chat.Notification;
 
-public class Data {
+public class Notification {
     private String user;
     private int icon;
     private String body;
@@ -8,7 +8,7 @@ public class Data {
     private String sented;
     private Boolean single;
 
-    public Data(Boolean single,String user, int icon, String body, String title, String sented) {
+    public Notification(Boolean single, String user, int icon, String body, String title, String sented) {
         this.single = single;
         this.user = user;
         this.icon = icon;
@@ -17,7 +17,7 @@ public class Data {
         this.sented = sented;
     }
 
-    public Data() {
+    public Notification() {
     }
 
     public Boolean getSingle() {
