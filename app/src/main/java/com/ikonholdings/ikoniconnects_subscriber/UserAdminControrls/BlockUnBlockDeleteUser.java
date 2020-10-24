@@ -41,7 +41,9 @@ public class BlockUnBlockDeleteUser extends AsyncTask<Void,Void, Void> {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful()){
                     progressDialog.dismiss();
-                    context.startActivity(new Intent(context, MainActivity.class));
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("fromAdminControl", true);
+                    context.startActivity(intent);
                 }else {
                     progressDialog.dismiss();
                     DialogsUtils.showResponseMsg(context,false);

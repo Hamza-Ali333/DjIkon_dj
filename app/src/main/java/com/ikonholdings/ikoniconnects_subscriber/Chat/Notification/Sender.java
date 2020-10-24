@@ -9,4 +9,5 @@ public class Sender {
         this.notification = notification;
         this.to = to;
     }
+
 }

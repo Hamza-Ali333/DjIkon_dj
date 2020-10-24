@@ -33,9 +33,9 @@
         android:icon="@drawable/user_admin"
         android:title="User Admin"/>
 
-        <item android:id="@+id/nav_SocialMediaFrame"
+       <!-- <item android:id="@+id/nav_SocialMediaFrame"
             android:icon="@drawable/frame"
-            android:title="Social Media Fram studio"/>
+            android:title="Social Media Fram studio"/>-->
 
         <item android:id="@+id/nav_ViewSongRequest"
             android:icon="@drawable/song"

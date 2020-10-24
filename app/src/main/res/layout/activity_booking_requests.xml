@@ -21,7 +21,6 @@
         android:background="@color/colorBlue"
          />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_booking_request"
         android:paddingLeft="10dp"

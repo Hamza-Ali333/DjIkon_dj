@@ -130,7 +130,6 @@ public class ChatViewerActivity extends AppCompatActivity {
         imgProfileUrl = i.getStringExtra("imgProfileUrl");
         setSubscriberProfile(imgProfileUrl);
 
-        Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
 
         getSupportActionBar().setTitle("");
         toolBarTitle.setText(userName);//set Subscriber Name in tool bar

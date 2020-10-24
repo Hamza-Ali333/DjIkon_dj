@@ -119,6 +119,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        Intent i  = getIntent();
+        Boolean comeFromControl = i.getBooleanExtra("fromAdminControl",false);
+
+        if(comeFromControl){
+            getSupportActionBar().setTitle(R.string.UserAdmin);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new UserAdminFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_UserAdmin);
+        }
+
         //if the activity luch for the first time and saveInstante null then it set the fragment
         if(savedInstanceState == null) {
             getSupportActionBar().setTitle(R.string.myFeed);
@@ -204,11 +214,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new NotificationFragment()).commit();
                 break;
 
-            case R.id.nav_SocialMediaFrame:
+            /*case R.id.nav_SocialMediaFrame:
                 getSupportActionBar().setTitle(R.string.SocialMediaFram);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new SocialMediaFrameFragment()).commit();
-                break;
+                break;*/
 
 
             case R.id.nav_LiveFeedToggle:

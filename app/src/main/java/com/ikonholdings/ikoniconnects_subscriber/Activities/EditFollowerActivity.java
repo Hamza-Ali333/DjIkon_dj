@@ -18,6 +18,7 @@ public class EditFollowerActivity extends AppCompatActivity {
     String id;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
+
     @Override
     protected void onStart() {
         super.onStart();
