@@ -38,9 +38,7 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Url;
 
-public interface JSONApiHolder
-
-{
+public interface JSONApiHolder {
     //will return all the blogs
     @GET ("artist_blogs")
     Call<List<MyFeedBlogModel>> getBlogs();
@@ -253,14 +251,6 @@ public interface JSONApiHolder
     );
 
     @FormUrlEncoded
-    @POST()
-    Call<SuccessErrorModel> postSongRequest(
-            @Url String relativeUrl,
-            @Field("name") String your_Name,
-            @Field("song_name") String Song_Name
-    );
-
-    @FormUrlEncoded
     @POST("updateToken")
     Call<Void> postFCMTokenForWeb(
             @Field("token") String Token
@@ -303,12 +293,6 @@ public interface JSONApiHolder
 
     @POST()
     Call<SuccessErrorModel> deleteEntry(@Url String Url);
-
-    @FormUrlEncoded
-    @POST()
-    Call<SuccessErrorModel> blockUser(
-            @Url String Url,
-            @Field("status") int status);
 
     @Multipart
     @POST("products")
