@@ -112,7 +112,7 @@ public class ChatViewerActivity extends AppCompatActivity {
         apiService = Client.getClient("https://fcm.googleapis.com").create(APIService.class);
 
         //give the Current Time and Date
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
         //tool bar UserProfile
         currentUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +157,7 @@ public class ChatViewerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 notify = true;
-                String currentDateAndTime = sdf.format(new Date());
+                String currentTime = sdf.format(new Date());
                 if(!edt_Massage.getText().toString().isEmpty()){
                     if(!alreadyHaveChat){
                         //MAke Node for this new User if they are texting first time
@@ -167,7 +167,7 @@ public class ChatViewerActivity extends AppCompatActivity {
                     Msg = edt_Massage.getText().toString();
                     sendMassage(Msg,
                             PreferenceData.getUserId(ChatViewerActivity.this)
-                            ,currentDateAndTime);
+                            ,currentTime);
                 }else{
                     Toast.makeText(ChatViewerActivity.this, "You Can't Send Empty massage", Toast.LENGTH_SHORT).show();
                 }
