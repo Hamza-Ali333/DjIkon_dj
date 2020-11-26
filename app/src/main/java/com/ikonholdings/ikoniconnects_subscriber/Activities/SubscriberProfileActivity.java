@@ -128,8 +128,7 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(R.string.profile);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         rlt_Parent.setVisibility(View.GONE);
         loadingDialog = DialogsUtils.showLoadingDialogue(this);

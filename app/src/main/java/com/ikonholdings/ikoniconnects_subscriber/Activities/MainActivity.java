@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createReferences();
+        sendFCMToken();
         mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         UserName.setText(PreferenceData.getUserName(MainActivity.this));
