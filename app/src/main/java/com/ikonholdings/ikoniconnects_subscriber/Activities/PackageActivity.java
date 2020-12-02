@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -105,6 +106,7 @@ public class PackageActivity extends AppCompatActivity {
                 // handle errors here, an exception may be available in
                 Toast.makeText(this, "Payment Failed", Toast.LENGTH_SHORT).show();
                 Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
+                Log.i("TAG", "onActivityResult: " + error);
             }
         } else {
             Toast.makeText(this, "Card not found.Try again", Toast.LENGTH_SHORT).show();

@@ -16,14 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.ikonholdings.ikoniconnects_subscriber.Activities.PackageActivity;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
 import com.ikonholdings.ikoniconnects_subscriber.GlobelClasses.DialogsUtils;
-import com.ikonholdings.ikoniconnects_subscriber.Activities.PackageActivity;
-import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
 import com.ikonholdings.ikoniconnects_subscriber.R;
 import com.ikonholdings.ikoniconnects_subscriber.RecyclerView.RecyclerMyFeed;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.ikonholdings.ikoniconnects_subscriber.ResponseModels.MyFeedBlogModel;
 
 import java.util.List;
 
@@ -133,7 +133,8 @@ MyFeedFragment extends Fragment {
                         @Override
                         public void run() {
                             loadingDialog.dismiss();
-                            DialogsUtils.showResponseMsg(getContext(),true);
+                            DialogsUtils.showAlertDialog(getContext(), false, "Error", t.getMessage());
+                            //DialogsUtils.showResponseMsg(getContext(),true);
                         }
                     });
                 }
