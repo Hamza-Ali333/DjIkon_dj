@@ -397,7 +397,7 @@ public class SignInActivity extends AppCompatActivity {
             manageUserLogin(true);
         } catch (ApiException e) {
             Log.i("TAG", "handleSignInResult: Failed " + e.getMessage());
-            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
