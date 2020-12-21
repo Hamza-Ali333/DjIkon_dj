@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.ikonholdings.ikoniconnects_subscriber">
+    package="com.Ikonholdings.ikoniconnects_subscriber">
 
     <uses-permission
         android:name="android.permission.MODIFY_PHONE_STATE"
@@ -66,83 +66,95 @@
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".Activities.MainActivity"
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".Activities.BookingRequestsActivity"
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.BookingRequestsActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".Activities.AcceptRequestActivity"
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.AcceptRequestActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".Activities.CancelRequestActivity"
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.CancelRequestActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:name=".Activities.SubscriberProfileActivity"
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.SubscriberProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.ServiceDetailActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.BlogDetailActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
         <activity
-            android:name=".Chat.ChatViewerActivity"
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.ServiceDetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.BlogDetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Chat.ChatViewerActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".Chat.GroupChatViewerActivity"
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Chat.GroupChatViewerActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.PurchaseServiceActivity"
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.PurchaseServiceActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.PackageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.PackageActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.AddServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.AddServiceActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.EditFollowerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.EditFollowerActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.EditBlogActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.EditBlogActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.ShowUserActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.ShowUserActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.ProfileSettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.ProfileSettingActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.PaymentMethodActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.PaymentMethodActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.SignInActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.SignInActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.RegistrationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.RegistrationActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:resizeableActivity="false"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.SplashScreenActivity"
+        <activity
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Activities.SplashScreenActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -151,19 +163,21 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".Chat.Notification.MyFirebaseIdService"
+        <service
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Chat.Notification.MyFirebaseIdService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
-        <service android:name=".Chat.Notification.MyFirebaseMessaging"
+        <service
+            android:name="com.Ikonholdings.ikoniconnects_subscriber.Chat.Notification.MyFirebaseMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
     </application>

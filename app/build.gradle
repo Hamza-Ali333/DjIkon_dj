@@ -12,10 +12,10 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ikonholdings.ikoniconnects_subscriber"
+        applicationId "com.Ikonholdings.ikoniconnects_subscriber"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 4
+        versionCode 1
         versionName "1.0."
         multiDexEnabled true
 
