@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +45,8 @@ MyFeedFragment extends Fragment {
     private AlertDialog loadingDialog;
 
     private FloatingActionButton AddNewBlog;
+
+    private TextView txt_Msg;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -89,6 +92,7 @@ MyFeedFragment extends Fragment {
         mRecyclerView = v.findViewById(R.id.recyclerViewLatestFeed);
         pullToRefresh =v.findViewById(R.id.pullToRefresh);
         AddNewBlog = v.findViewById(R.id.fab);
+        txt_Msg = v.findViewById(R.id.info);
     }
 
     private class DownloadThisArtistBlogs extends AsyncTask<Void,Void,Void> {
@@ -112,10 +116,16 @@ MyFeedFragment extends Fragment {
                     if (response.isSuccessful()) {
                         List<MyFeedBlogModel> blogs = response.body();
 
-                        mAdapter = new RecyclerMyFeed(blogs,getContext());
-                        mRecyclerView.setLayoutManager(mLayoutManager);
-                        mRecyclerView.setAdapter(mAdapter);
-                        mRecyclerView.setAdapter(mAdapter);
+                        if(blogs.isEmpty()){
+                            txt_Msg.setVisibility(View.VISIBLE);
+                        }else {
+                            txt_Msg.setVisibility(View.GONE);
+                            mAdapter = new RecyclerMyFeed(blogs,getContext());
+                            mRecyclerView.setLayoutManager(mLayoutManager);
+                            mRecyclerView.setAdapter(mAdapter);
+                            mRecyclerView.setAdapter(mAdapter);
+                        }
+
 
                     }else if(response.code() == 405){
                         startActivity(new Intent(getContext(), PackageActivity.class));
