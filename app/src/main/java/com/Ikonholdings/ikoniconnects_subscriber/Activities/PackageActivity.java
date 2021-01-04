@@ -30,10 +30,10 @@ import retrofit2.Retrofit;
 
 public class PackageActivity extends AppCompatActivity {
 
-    Button btn_Monthly_Package, btn_Yearly_Package;
-    ProgressDialog progressDialog;
+    private Button btn_Monthly_Package, btn_Yearly_Package;
+    private ProgressDialog progressDialog;
 
-    Context context;
+    private Context context;
 
     private String BrainTreeToken;
     private String planId;
@@ -41,6 +41,7 @@ public class PackageActivity extends AppCompatActivity {
     private static final int DROP_IN_REQUEST_CODE = 777;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
+
     @Override
     protected void onStart() {
         super.onStart();
