@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if(!response.isSuccessful()){
                             //if failed to send token on server then run Again
-                            sendFCMToken();
+                            //sendFCMToken();
                         }
                     }
                     @Override

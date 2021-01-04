@@ -1,6 +1,6 @@
 package com.Ikonholdings.ikoniconnects_subscriber.ApiHadlers;
 
-import com.Ikonholdings.ikoniconnects_subscriber.ResponseModels.AboutModel;
+import com.Ikonholdings.ikoniconnects_subscriber.ResponseModels.AboutAndDisclouserModel;
 import com.Ikonholdings.ikoniconnects_subscriber.ResponseModels.AllArtistModel;
 import com.Ikonholdings.ikoniconnects_subscriber.ResponseModels.DisclosureModel;
 import com.Ikonholdings.ikoniconnects_subscriber.ResponseModels.DjAndUserProfileModel;
@@ -100,7 +100,7 @@ public interface JSONApiHolder {
 
     //this will return current About of App
     @GET("about")
-    Call<AboutModel> getAbout();
+    Call<AboutAndDisclouserModel> getAboutAndDisclosure();
 
     //this will return current Disclosure of App
     @GET("disclosure")

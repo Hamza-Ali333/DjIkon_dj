@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 
 import com.Ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
 import com.Ikonholdings.ikoniconnects_subscriber.ApiHadlers.JSONApiHolder;
-import com.Ikonholdings.ikoniconnects_subscriber.ResponseModels.AboutModel;
+import com.Ikonholdings.ikoniconnects_subscriber.ResponseModels.AboutAndDisclouserModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,17 +19,20 @@ public class GetAppAboutAndDisclosure extends AsyncTask<Void, Void, Void> {
     Context context;
     AlertDialog progressDialog;
     private onGetAbout mOnGetAbout;
+    private boolean runingForAbout;
 
     public interface onGetAbout {
         void onGetAbout(String about);
+        void onGetDisclosure(String disclosure);
     }
 
     private void initializeInterface(onGetAbout onGetAbout){
         this.mOnGetAbout = onGetAbout;
     }
 
-    public GetAppAboutAndDisclosure(Context context) {
+    public GetAppAboutAndDisclosure(Context context, boolean runingForAbout) {
         this.context = context;
+        this.runingForAbout = runingForAbout;
         initializeInterface((onGetAbout) context);
         progressDialog = DialogsUtils.showProgressDialog(context,
                 "Getting...","Please Wait while fetching detail from server.");
@@ -40,13 +43,13 @@ public class GetAppAboutAndDisclosure extends AsyncTask<Void, Void, Void> {
 
         Retrofit retrofit = ApiClient.retrofit(context);
         JSONApiHolder jsonApiHolder = retrofit.create(JSONApiHolder.class);
-        Call<AboutModel> callAbout = jsonApiHolder.getAbout();
+        Call<AboutAndDisclouserModel> callAbout = jsonApiHolder.getAboutAndDisclosure();
 
 
-        callAbout.enqueue(new Callback<AboutModel>() {
+        callAbout.enqueue(new Callback<AboutAndDisclouserModel>() {
             @Override
-            public void onResponse(Call<AboutModel> call, Response<AboutModel> response) {
-                AboutModel data = response.body();
+            public void onResponse(Call<AboutAndDisclouserModel> call, Response<AboutAndDisclouserModel> response) {
+                AboutAndDisclouserModel data = response.body();
                 if(response.isSuccessful()){
                     if (data.getAbout().isEmpty()) {
                         ((Activity)context).runOnUiThread(new Runnable() {
@@ -58,8 +61,12 @@ public class GetAppAboutAndDisclosure extends AsyncTask<Void, Void, Void> {
                                         "it's seems like Admin is not Added about yet.");
                             }
                         });
-                    }else {
+                    }
+                    else if(runingForAbout) {
                        mOnGetAbout.onGetAbout(data.getAbout());
+                    }
+                    else {
+                        mOnGetAbout.onGetDisclosure(data.getDisclosure());
                     }
                 }
                  else {
@@ -83,7 +90,7 @@ public class GetAppAboutAndDisclosure extends AsyncTask<Void, Void, Void> {
             }
 
             @Override
-            public void onFailure(Call<AboutModel> call, Throwable t) {
+            public void onFailure(Call<AboutAndDisclouserModel> call, Throwable t) {
                 ((Activity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

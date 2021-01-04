@@ -178,14 +178,16 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
         txt_About.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetAppAboutAndDisclosure(SubscriberProfileActivity.this).execute();
+                new GetAppAboutAndDisclosure(SubscriberProfileActivity.this,
+                        true).execute();
             }
         });
 
         txt_Disclosure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDisclosureDialog();
+                new GetAppAboutAndDisclosure(SubscriberProfileActivity.this,
+                        false).execute();
             }
         });
 
@@ -199,14 +201,16 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
         img_About.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetAppAboutAndDisclosure(SubscriberProfileActivity.this).execute();
+                new GetAppAboutAndDisclosure(SubscriberProfileActivity.this,
+                        true).execute();
             }
         });
 
         img_Disclosure.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                openDisclosureDialog();
+            public void onClick(View v){
+                new GetAppAboutAndDisclosure(SubscriberProfileActivity.this,
+                        false).execute();
             }
         });
 
@@ -258,19 +262,21 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
         startActivity(i);
     }
 
-    private void openAboutAppDialoue(String about) {
+    private void openAboutAndDisclouserDialog(String text, String title) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.dialogue_about_app, null);
 
         ImageView img_close = view.findViewById(R.id.close);
-        TextView text = view.findViewById(R.id.txt_aboutapp);
+        TextView txt_title = view.findViewById(R.id.title);
+        TextView txt_text = view.findViewById(R.id.txt_aboutapp);
 
         builder.setView(view);
         builder.setCancelable(false);
 
-        text.setText(about);
+        txt_title.setText(title);
+        txt_text.setText(text);
 
         final AlertDialog alertDialog =  builder.show();
 
@@ -515,29 +521,6 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
 
     }
 
-    private void openDisclosureDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialogue_disclusore, null);
-
-        ImageView img_close = view.findViewById(R.id.close);
-
-        builder.setView(view);
-        builder.setCancelable(false);
-
-
-        final AlertDialog alertDialog =  builder.show();
-
-        img_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-
-    }
-
     //image import
     private void showImageImportDailog() {
         String[] items = {"Camera", "Gallary"};
@@ -672,7 +655,12 @@ public class SubscriberProfileActivity extends AppCompatActivity implements GetA
 
     @Override
     public void onGetAbout(String about) {
-        openAboutAppDialoue(about);
+        openAboutAndDisclouserDialog(about, "About App");
+    }
+
+    @Override
+    public void onGetDisclosure(String disclosure) {
+        openAboutAndDisclouserDialog(disclosure,"Disclosure");
     }
 }
 

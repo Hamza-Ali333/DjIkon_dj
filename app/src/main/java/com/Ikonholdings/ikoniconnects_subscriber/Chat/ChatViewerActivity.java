@@ -96,7 +96,6 @@ public class ChatViewerActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(mNetworkChangeReceiver, filter);
