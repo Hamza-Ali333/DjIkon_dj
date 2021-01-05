@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,19 +38,24 @@ public class ViewSongRequestFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private TextView txt_Msg;
+
     private AlertDialog loadingDialog;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-       View v =  inflater.inflate(R.layout.activity_booking_requests,container,false);
+        View v = inflater.inflate(R.layout.activity_booking_requests, container, false);
 
         mRecyclerView = v.findViewById(R.id.recyclerView_booking_request);
+        txt_Msg = v.findViewById(R.id.msg);
+        txt_Msg.setText("No Request.");
 
         loadingDialog = DialogsUtils.showLoadingDialogue(getContext());
         new DownloadSongsRequests().execute();
 
-       return v;
+        return v;
     }
 
     private void buildRecyclerView(List<RequestedSongsModel> list) {
@@ -90,9 +96,9 @@ public class ViewSongRequestFragment extends Fragment {
 
                     if(!requestedSongsModelList.isEmpty()){
                         buildRecyclerView(requestedSongsModelList);
+                        txt_Msg.setVisibility(View.GONE);
                     }else {
-                        DialogsUtils.showAlertDialog(getContext(),false,
-                                "No Request","OOPS! you don't have any request yet.");
+                        txt_Msg.setVisibility(View.VISIBLE);
                     }
                     loadingDialog.dismiss();
                 }

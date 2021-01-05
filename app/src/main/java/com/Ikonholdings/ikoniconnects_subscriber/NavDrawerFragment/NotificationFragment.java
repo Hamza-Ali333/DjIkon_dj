@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,20 +35,23 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
-public class NotificationFragment extends Fragment{
+public class NotificationFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private TextView txt_Msg;
+
     private AlertDialog loadingDialog;
-    private  List<NotificationModel> notificationList;
+    private List<NotificationModel> notificationList;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_notification, container, false);
         mRecyclerView = v.findViewById(R.id.recyclerViewSubscribeArtist);
+        txt_Msg = v.findViewById(R.id.msg);
 
         loadingDialog = DialogsUtils.showLoadingDialogue(getContext());
         new DownloadThisArtistBlogs().execute();
@@ -112,17 +116,15 @@ public class NotificationFragment extends Fragment{
 
                     if (!response.isSuccessful()) {
                         loadingDialog.dismiss();
-                        DialogsUtils.showAlertDialog(getContext(),
-                                false, "Error", "Something happened wrong\nplease try again!");
                         return;
                     }
 
                     notificationList = response.body();
                     if (!notificationList.isEmpty()) {
+                        txt_Msg.setVisibility(View.GONE);
                         buildRecyclerView(notificationList);
                     } else {
-                        DialogsUtils.showAlertDialog(getContext(),
-                                false, "No Notification", "You don't have any notification yet!");
+                        txt_Msg.setVisibility(View.VISIBLE);
                     }
                     loadingDialog.dismiss();
 

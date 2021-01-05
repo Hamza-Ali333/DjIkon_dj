@@ -19,9 +19,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class BookingRequestFetcher extends AsyncTask<Void,Void,Void> {
+public class BookingRequestFetcher extends AsyncTask<Void, Void, Void> {
     Context context;
-    TextView mTextView;
+    TextView txt_Total, txt_Msg;
     AlertDialog loadingDialog;
     List<MyBookingRequests> requestList;
     String Url;
@@ -36,9 +36,10 @@ public class BookingRequestFetcher extends AsyncTask<Void,Void,Void> {
         this.onRequestProcessComplete = onRequestProcessComplete;
     }
 
-    public BookingRequestFetcher(TextView total,String Url) {
+    public BookingRequestFetcher(TextView total, TextView Msg, String Url) {
         this.context = total.getContext();
-        this.mTextView = total;
+        this.txt_Total = total;
+        this.txt_Msg = Msg;
         this.Url = Url;
         loadingDialog = DialogsUtils.showLoadingDialogue(context);
         initializeGetBookingInterFace((onRequestProcessComplete) context);
@@ -58,20 +59,18 @@ public class BookingRequestFetcher extends AsyncTask<Void,Void,Void> {
                         requestList = (List<MyBookingRequests>) response.body();
 
                         if(requestList.isEmpty()) {
-                            ((Activity)context).runOnUiThread(new Runnable() {
+                            ((Activity) context).runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    DialogsUtils.showAlertDialog(context,
-                                            false,
-                                            "No Booking",
-                                            "it's seems like you did't get any request yet!");
+                                    txt_Msg.setVisibility(View.VISIBLE);
                                 }
                             });
-                        }else{
+                        } else {
+                            txt_Msg.setVisibility(View.GONE);
                             onRequestProcessComplete.onComplete(requestList);
                         }
-                        mTextView.setText("You have total "+String.valueOf(requestList.size()+" booking requests."));
-                        mTextView.setVisibility(View.VISIBLE);
+                        txt_Total.setText("You have total " + String.valueOf(requestList.size() + " booking requests."));
+                        txt_Total.setVisibility(View.VISIBLE);
                         loadingDialog.dismiss();
                     }else {
                         ((Activity)context).runOnUiThread(new Runnable() {

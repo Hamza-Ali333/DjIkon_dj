@@ -3,6 +3,7 @@ package com.Ikonholdings.ikoniconnects_subscriber.GlobelClasses;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.TextView;
 
 import com.Ikonholdings.ikoniconnects_subscriber.ApiHadlers.ApiClient;
@@ -17,9 +18,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class GetUsers extends AsyncTask<Void,Void,Void> {
+public class GetUsers extends AsyncTask<Void, Void, Void> {
     Context context;
-    TextView mTextView;
+    TextView txt_total, txt_Msg;
     AlertDialog loadingDialog;
     List<FollowersModel> requestList;
     String Url;
@@ -34,9 +35,10 @@ public class GetUsers extends AsyncTask<Void,Void,Void> {
         this.onServerResponse = onServerResponse;
     }
 
-    public GetUsers(TextView total, String Url) {
+    public GetUsers(TextView total, TextView txt_Msg, String Url) {
         this.context = total.getContext();
-        this.mTextView = total;
+        this.txt_total = total;
+        this.txt_Msg = txt_Msg;
         this.Url = Url;
         loadingDialog = DialogsUtils.showLoadingDialogue(context);
         initializeGetBookingInterFace((onServerResponse) context);
@@ -55,15 +57,13 @@ public class GetUsers extends AsyncTask<Void,Void,Void> {
                     if(response.isSuccessful()){
                         requestList = (List<FollowersModel>) response.body();
                         if(requestList.isEmpty()) {
-                                    DialogsUtils.showAlertDialog(context,
-                                            false,
-                                            "No User",
-                                            "No user found in this category.!");
+                            txt_Msg.setVisibility(View.VISIBLE);
 
                         }else{
+                            txt_Msg.setVisibility(View.GONE);
                             onServerResponse.onResponse(requestList);
                         }
-                        mTextView.setText("You have total "+String.valueOf(requestList.size()+" followers."));
+                        txt_total.setText("You have total " + String.valueOf(requestList.size() + " followers."));
                     }else {
                                 DialogsUtils.showAlertDialog(context,
                                         false,

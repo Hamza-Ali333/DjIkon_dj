@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,18 +36,22 @@ public class PaymentHistoryFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
 
     private AlertDialog loadingDialog;
+    private TextView txt_Msg;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-       View v =  inflater.inflate(R.layout.activity_booking_requests,container,false);
+        View v = inflater.inflate(R.layout.activity_booking_requests, container, false);
         mRecyclerView = v.findViewById(R.id.recyclerView_booking_request);
+        txt_Msg = v.findViewById(R.id.msg);
+        txt_Msg.setText("No History.");
+        txt_Msg.setVisibility(View.GONE);
 
         loadingDialog = DialogsUtils.showLoadingDialogue(getContext());
         new DownloadPaymentHistory().execute();
 
-       return v;
+        return v;
     }
 
     private void buildRecyclerView(List<PaymentHistoryModel> list) {
@@ -86,9 +91,9 @@ public class PaymentHistoryFragment extends Fragment {
 
                     if(!requestedSongsModelList.isEmpty()){
                         buildRecyclerView(requestedSongsModelList);
+                        txt_Msg.setVisibility(View.GONE);
                     }else {
-                        DialogsUtils.showAlertDialog(getContext(),false,
-                                "No History","it's seems like you don't have any payment history yet.");
+                        txt_Msg.setVisibility(View.VISIBLE);
                     }
                     loadingDialog.dismiss();
                 }

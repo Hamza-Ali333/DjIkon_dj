@@ -2,6 +2,7 @@ package com.Ikonholdings.ikoniconnects_subscriber.Activities;
 
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,9 +23,10 @@ public class AcceptRequestActivity extends AppCompatActivity implements BookingR
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    TextView txt_total_canceled_request;
+    TextView txt_total_canceled_request, txt_Msg;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -44,10 +46,13 @@ public class AcceptRequestActivity extends AppCompatActivity implements BookingR
         mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         txt_total_canceled_request = findViewById(R.id.txt_total);
+        txt_Msg = findViewById(R.id.msg);
+        txt_Msg.setText("No Accepted Bookings.");
+        txt_Msg.setVisibility(View.GONE);
 
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);
 
-        new BookingRequestFetcher(txt_total_canceled_request,"acceptBookings").execute();
+        new BookingRequestFetcher(txt_total_canceled_request, txt_Msg, "acceptBookings").execute();
     }
 
     private void buildRecyclerView(List<MyBookingRequests> list){

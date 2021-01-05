@@ -23,10 +23,11 @@ public class ShowUserActivity extends AppCompatActivity implements GetUsers.onSe
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private TextView total;
+    private TextView total, txt_Msg;
     private Integer User;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -42,9 +43,11 @@ public class ShowUserActivity extends AppCompatActivity implements GetUsers.onSe
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         Intent i = getIntent();
-        User = i.getIntExtra("user",0);
+        User = i.getIntExtra("user", 0);
         mRecyclerView = findViewById(R.id.recyclerViewFollwer);
         total = findViewById(R.id.total);
+        txt_Msg = findViewById(R.id.msg);
+        txt_Msg.setVisibility(View.GONE);
         String Url = null;
         String ToolBarTitle = null;
 
@@ -73,7 +76,7 @@ public class ShowUserActivity extends AppCompatActivity implements GetUsers.onSe
                 break;
         }
         getSupportActionBar().setTitle(ToolBarTitle);
-        if(Url != null) new GetUsers(total,Url).execute();
+        if (Url != null) new GetUsers(total, txt_Msg, Url).execute();
     }
 
     private void buildRecyclerView(List<FollowersModel> followersList){

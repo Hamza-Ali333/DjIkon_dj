@@ -69,14 +69,16 @@ public class WithDrawFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       View v =  inflater.inflate(R.layout.withdraws_fragment,container,false);
-       mRecyclerView = v.findViewById(R.id.withdraw_recycler);
-       createReferences(v);
+        View v = inflater.inflate(R.layout.withdraws_fragment, container, false);
+        mRecyclerView = v.findViewById(R.id.withdraw_recycler);
+        createReferences(v);
 
-       transactionList = new ArrayList<>();
+        txt_Empty.setVisibility(View.GONE);
 
-       new GetWalletCurrentDetail().execute();
-       new GetTansactionList().execute();
+        transactionList = new ArrayList<>();
+
+        new GetWalletCurrentDetail().execute();
+        new GetTansactionList().execute();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 R.layout.item_gender_spinner, R.id.genders, filterArray);

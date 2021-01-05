@@ -2,6 +2,7 @@ package com.Ikonholdings.ikoniconnects_subscriber.Activities;
 
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,7 @@ public class BookingRequestsActivity extends AppCompatActivity implements Bookin
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private TextView txt_Total;
+    private TextView txt_Total, txt_Msg;
 
     private NetworkChangeReceiver mNetworkChangeReceiver;
 
@@ -45,9 +46,12 @@ public class BookingRequestsActivity extends AppCompatActivity implements Bookin
         mNetworkChangeReceiver = new NetworkChangeReceiver(this);
 
         txt_Total = findViewById(R.id.txt_total);
+        txt_Msg = findViewById(R.id.msg);
+        txt_Msg.setText("No Bookings Request.");
+        txt_Msg.setVisibility(View.GONE);
 
         mRecyclerView = findViewById(R.id.recyclerView_booking_request);
-        new BookingRequestFetcher(txt_Total,"bookings").execute();
+        new BookingRequestFetcher(txt_Total, txt_Msg, "bookings").execute();
     }
 
     @Override
@@ -62,7 +66,6 @@ public class BookingRequestsActivity extends AppCompatActivity implements Bookin
         mAdapter = new RecyclerBookingRequests(myBookings,this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
     @Override
